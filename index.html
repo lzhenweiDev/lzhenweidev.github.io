@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Hub · lzhenwei.dev</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+    body {
+      background: #f4f6fa;
+      color: #1e293b;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2.5rem;
+    }
+    h1 {
+      font-weight: 600;
+      font-size: 2.2rem;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #0f172a, #3b82f6);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .auth-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: white;
+      padding: 0.5rem 1rem 0.5rem 1.5rem;
+      border-radius: 60px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.02);
+      border: 1px solid #e2e8f0;
+    }
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .user-badge i {
+      color: #3b82f6;
+    }
+    .btn {
+      background: white;
+      border: 1px solid #cbd5e1;
+      padding: 0.5rem 1.2rem;
+      border-radius: 40px;
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-primary {
+      background: #0f172a;
+      border-color: #0f172a;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #1e293b;
+    }
+    .btn-outline-blue {
+      border-color: #3b82f6;
+      color: #2563eb;
+      background: #eff6ff;
+    }
+    .btn-outline-blue:hover {
+      background: #dbeafe;
+    }
+    .btn-sm {
+      padding: 0.3rem 1rem;
+      font-size: 0.85rem;
+    }
+    .btn-danger {
+      color: #b91c1c;
+      border-color: #fecaca;
+      background: #fef2f2;
+    }
+
+    .departments-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 2rem 0 1.5rem 0;
+    }
+    .departments-header h2 {
+      font-weight: 600;
+      font-size: 1.6rem;
+    }
+    .department-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 1rem;
+    }
+    .dept-card {
+      background: white;
+      border-radius: 24px;
+      padding: 0.9rem 1.8rem;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.02);
+      border: 1px solid #eef2f6;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+    .dept-card.active {
+      border: 2px solid #2563eb;
+      background: #f8fafc;
+    }
+    .dept-card i {
+      color: #64748b;
+    }
+    .dept-actions {
+      margin-left: 8px;
+      display: flex;
+      gap: 6px;
+    }
+    .icon-btn {
+      background: transparent;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      padding: 6px;
+      border-radius: 30px;
+      width: 32px;
+      height: 32px;
+    }
+    .icon-btn:hover {
+      background: #eef2f6;
+      color: #0f172a;
+    }
+
+    .software-section {
+      background: white;
+      border-radius: 32px;
+      padding: 2rem 1.8rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.03);
+      border: 1px solid #eef2f6;
+      margin-top: 1rem;
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.8rem;
+    }
+    .section-title h3 {
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+    .software-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .software-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2rem 1.5rem;
+      background: #fafcff;
+      border-radius: 24px;
+      border: 1px solid #e9edf2;
+      flex-wrap: wrap;
+    }
+    .software-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex: 2;
+      min-width: 280px;
+    }
+    .software-icon {
+      width: 48px;
+      height: 48px;
+      background: #e6edf8;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2563eb;
+      font-size: 1.4rem;
+    }
+    .software-details {
+      flex: 1;
+    }
+    .software-name-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .software-name {
+      font-weight: 600;
+      font-size: 1.25rem;
+    }
+    .status-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 30px;
+      text-transform: uppercase;
+    }
+    .status-active { background: #dcfce7; color: #166534; }
+    .status-maintenance { background: #fef9c3; color: #854d0e; }
+    .status-discontinued { background: #fee2e2; color: #991b1b; }
+    .status-down { background: #f1f5f9; color: #334155; }
+    
+    .software-meta {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+    .software-link-badge {
+      background: #eef2f6;
+      padding: 4px 12px;
+      border-radius: 30px;
+      max-width: 320px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .update-time {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .software-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .empty-message {
+      color: #64748b;
+      text-align: center;
+      padding: 3rem;
+    }
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: #64748b;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.2);
+      backdrop-filter: blur(3px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.15s;
+    }
+    .modal {
+      background: white;
+      border-radius: 36px;
+      padding: 2rem;
+      max-width: 520px;
+      width: 90%;
+    }
+    .modal h3 {
+      font-size: 1.6rem;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    .input-group {
+      margin-bottom: 1.5rem;
+    }
+    .input-group label {
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .input-group input, .input-group select {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 24px;
+      font-size: 1rem;
+    }
+    .input-group input:focus, .input-group select:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 2rem;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .footer-note {
+      margin-top: 3rem;
+      text-align: center;
+      color: #62748c;
+      font-size: 0.9rem;
+    }
+    .register-link {
+      margin-top: 1rem;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+    .register-link a {
+      color: #2563eb;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1><i class="fas fa-cube" style="margin-right: 10px;"></i>SoftRepo · lzhenwei</h1>
+    <div class="auth-area">
+      <div class="user-badge">
+        <i class="fas fa-user-circle"></i>
+        <span id="userEmailDisplay">Nicht angemeldet</span>
+      </div>
+      <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Anmelden</button>
+      <button class="btn hidden" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</button>
+    </div>
+  </div>
+
+  <div class="departments-header">
+    <h2><i class="fas fa-folder-tree" style="margin-right: 10px;"></i>Abteilungen</h2>
+    <button class="btn btn-outline-blue btn-sm" id="addDeptBtn" disabled>
+      <i class="fas fa-plus"></i> Neue Abteilung
+    </button>
+  </div>
+  <div id="departmentsContainer" class="department-grid"></div>
+
+  <div class="software-section">
+    <div class="section-title">
+      <h3 id="currentDeptTitle">Alle Software</h3>
+      <button class="btn btn-outline-blue btn-sm" id="addSoftwareBtn" disabled>
+        <i class="fas fa-plus-circle"></i> Software hinzufügen
+      </button>
+    </div>
+    <div id="softwareListContainer" class="software-list">
+      <div class="loading"><i class="fas fa-spinner fa-spin"></i> Lade Software...</div>
+    </div>
+  </div>
+  <div class="footer-note">
+    <i class="far fa-eye"></i> Öffentlich einsehbar · Bearbeitung nur für lzhenwei.dev@gmail.com
+  </div>
+</div>
+
+<!-- Login/Register Modal -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <h3 id="loginModalTitle">Anmelden</h3>
+    <div class="input-group">
+      <label>E-Mail</label>
+      <input type="email" id="loginEmail" placeholder="deine@email.com">
+    </div>
+    <div class="input-group">
+      <label>Passwort</label>
+      <input type="password" id="loginPassword" placeholder="••••••••">
+    </div>
+    <div id="loginError" style="color: #dc2626; margin-bottom: 1rem; font-size: 0.9rem;"></div>
+    <div class="modal-actions">
+      <button class="btn" id="cancelLogin">Abbrechen</button>
+      <button class="btn btn-primary" id="submitLogin">Anmelden</button>
+    </div>
+    <div class="register-link">
+      Noch kein Konto? <a id="showRegisterLink">Jetzt registrieren</a>
+    </div>
+    <div style="margin-top: 1.5rem; text-align: center;">
+      <button class="btn" id="googleLoginBtn" style="width: 100%;"><i class="fab fa-google"></i> Mit Google anmelden</button>
+    </div>
+  </div>
+</div>
+
+<!-- Abteilung Modal -->
+<div class="modal-overlay" id="deptModal">
+  <div class="modal">
+    <h3 id="deptModalTitle">Neue Abteilung</h3>
+    <div class="input-group">
+      <label>Name der Abteilung</label>
+      <input type="text" id="deptNameInput" placeholder="z.B. Entwicklung, Grafik..." maxlength="30">
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="cancelDeptModal">Abbrechen</button>
+      <button class="btn btn-primary" id="saveDeptBtn">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Software Modal -->
+<div class="modal-overlay" id="softwareModal">
+  <div class="modal">
+    <h3 id="softwareModalTitle">Software hinzufügen</h3>
+    <div class="input-group">
+      <label>Name der Software</label>
+      <input type="text" id="swNameInput" placeholder="z.B. MyApp.dmg">
+    </div>
+    <div class="input-group">
+      <label>GitHub Release Download-Link</label>
+      <input type="url" id="swLinkInput" placeholder="https://github.com/.../file.dmg">
+    </div>
+    <div class="input-group">
+      <label>Projektstatus</label>
+      <select id="swStatusSelect">
+        <option value="active">🟢 Aktiv</option>
+        <option value="maintenance">🟡 Wartung</option>
+        <option value="discontinued">🔴 Eingestellt</option>
+        <option value="down">⚫ Down</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="cancelSwModal">Abbrechen</button>
+      <button class="btn btn-primary" id="saveSwBtn">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  // Deine Firebase Konfiguration
+  const firebaseConfig = {
+    apiKey: "AIzaSyDjXg0y3vnuk8L7xBh9d_W80kzmWjilheo",
+    authDomain: "software-lzw.firebaseapp.com",
+    projectId: "software-lzw",
+    storageBucket: "software-lzw.firebasestorage.app",
+    messagingSenderId: "115286936457",
+    appId: "1:115286936457:web:2f0d6be270bd4e3717ef58",
+    measurementId: "G-EYY6BFBDCF"
+  };
+
+  // Firebase imports
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+  import { 
+    getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp 
+  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { 
+    getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, 
+    onAuthStateChanged, GoogleAuthProvider, signInWithPopup 
+  } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const googleProvider = new GoogleAuthProvider();
+
+  const ADMIN_EMAIL = 'lzhenwei.dev@gmail.com';
+  
+  let departments = [];
+  let software = [];
+  let currentUser = null;
+  let selectedDeptId = null;
+  let editingDeptId = null;
+  let editingSwId = null;
+  let isRegisterMode = false;
+
+  // UI Elemente
+  const userEmailDisplay = document.getElementById('userEmailDisplay');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const addDeptBtn = document.getElementById('addDeptBtn');
+  const addSoftwareBtn = document.getElementById('addSoftwareBtn');
+  const departmentsContainer = document.getElementById('departmentsContainer');
+  const softwareListContainer = document.getElementById('softwareListContainer');
+  const currentDeptTitle = document.getElementById('currentDeptTitle');
+
+  // Modals
+  const loginModal = document.getElementById('loginModal');
+  const deptModal = document.getElementById('deptModal');
+  const softwareModal = document.getElementById('softwareModal');
+  const loginModalTitle = document.getElementById('loginModalTitle');
+  const loginEmail = document.getElementById('loginEmail');
+  const loginPassword = document.getElementById('loginPassword');
+  const loginError = document.getElementById('loginError');
+  const submitLogin = document.getElementById('submitLogin');
+  const showRegisterLink = document.getElementById('showRegisterLink');
+
+  // Helper
+  function escapeHtml(text) {
+    if (!text) return text;
+    return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
+  }
+  function truncateUrl(url, max=50) {
+    return url.length > max ? url.substring(0, max-3) + '...' : url;
+  }
+  function isAdmin() {
+    return currentUser && currentUser.email === ADMIN_EMAIL;
+  }
+
+  // Auth State Observer
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    updateUIForAuth();
+    if (user) {
+      loadData();
+    }
+  });
+
+  function updateUIForAuth() {
+    const admin = isAdmin();
+    addDeptBtn.disabled = !admin;
+    addSoftwareBtn.disabled = !admin;
+    
+    if (currentUser) {
+      userEmailDisplay.textContent = currentUser.email;
+      loginBtn.classList.add('hidden');
+      logoutBtn.classList.remove('hidden');
+    } else {
+      userEmailDisplay.textContent = 'Nicht angemeldet';
+      loginBtn.classList.remove('hidden');
+      logoutBtn.classList.add('hidden');
+    }
+    renderDepartments();
+  }
+
+  // Daten laden
+  function loadData() {
+    onSnapshot(collection(db, "departments"), (snapshot) => {
+      departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderDepartments();
+    });
+
+    onSnapshot(query(collection(db, "software"), orderBy("lastUpdated", "desc")), (snapshot) => {
+      software = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderSoftwareList();
+    });
+  }
+
+  // Rendering
+  function renderDepartments() {
+    let html = '';
+    departments.forEach(dept => {
+      html += `<div class="dept-card ${selectedDeptId === dept.id ? 'active' : ''}" data-dept-id="${dept.id}">
+        <i class="fas fa-folder"></i><span>${escapeHtml(dept.name)}</span>
+        ${isAdmin() ? `<div class="dept-actions">
+          <button class="icon-btn edit-dept" data-id="${dept.id}"><i class="fas fa-pen"></i></button>
+          <button class="icon-btn delete-dept" data-id="${dept.id}"><i class="fas fa-trash"></i></button>
+        </div>` : ''}
+      </div>`;
+    });
+    html += `<div class="dept-card ${selectedDeptId === null ? 'active' : ''}" data-dept-id="all">
+      <i class="fas fa-globe"></i><span>Alle Software</span>
+    </div>`;
+    departmentsContainer.innerHTML = html;
+
+    document.querySelectorAll('.dept-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        selectedDeptId = card.dataset.deptId === 'all' ? null : card.dataset.deptId;
+        renderDepartments();
+        renderSoftwareList();
+      });
+    });
+
+    if (isAdmin()) {
+      document.querySelectorAll('.edit-dept').forEach(b => {
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          openDeptModal(b.dataset.id);
+        });
+      });
+      document.querySelectorAll('.delete-dept').forEach(b => {
+        b.addEventListener('click', (e) => {
+          e.stopPropagation();
+          deleteDepartment(b.dataset.id);
+        });
+      });
+    }
+  }
+
+  function renderSoftwareList() {
+    const filtered = selectedDeptId 
+      ? software.filter(s => s.departmentId === selectedDeptId)
+      : software;
+    
+    const deptName = selectedDeptId 
+      ? (departments.find(d => d.id === selectedDeptId)?.name || 'Unbekannt')
+      : 'Alle Software';
+    currentDeptTitle.textContent = deptName;
+
+    if (filtered.length === 0) {
+      softwareListContainer.innerHTML = '<div class="empty-message"><i class="far fa-box-open"></i> Keine Software in dieser Abteilung.</div>';
+      return;
+    }
+
+    let html = '';
+    filtered.forEach(sw => {
+      const dept = departments.find(d => d.id === sw.departmentId);
+      const statusClass = {
+        active: 'status-active',
+        maintenance: 'status-maintenance',
+        discontinued: 'status-discontinued',
+        down: 'status-down'
+      }[sw.status] || 'status-active';
+      const statusText = {
+        active: 'Aktiv',
+        maintenance: 'Wartung',
+        discontinued: 'Eingestellt',
+        down: 'Down'
+      }[sw.status] || 'Aktiv';
+      
+      const updatedDate = sw.lastUpdated?.toDate ? sw.lastUpdated.toDate() : new Date();
+      const updatedStr = updatedDate.toLocaleDateString('de-DE', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric'
+      });
+
+      html += `<div class="software-item">
+        <div class="software-info">
+          <div class="software-icon"><i class="fas fa-file-archive"></i></div>
+          <div class="software-details">
+            <div class="software-name-row">
+              <span class="software-name">${escapeHtml(sw.name)}</span>
+              <span class="status-badge ${statusClass}">${statusText}</span>
+            </div>
+            <div class="software-meta">
+              <span class="software-link-badge" title="${escapeHtml(sw.url)}">
+                <i class="fas fa-link"></i> ${escapeHtml(truncateUrl(sw.url))}
+              </span>
+              ${dept ? `<span><i class="far fa-folder"></i> ${escapeHtml(dept.name)}</span>` : ''}
+              <span class="update-time"><i class="far fa-calendar-alt"></i> Update: ${updatedStr}</span>
+            </div>
+          </div>
+        </div>
+        <div class="software-actions">
+          <a href="${escapeHtml(sw.url)}" class="btn btn-sm" download style="text-decoration:none; background:#eef2ff;">
+            <i class="fas fa-download"></i> Download
+          </a>
+          ${isAdmin() ? `
+            <button class="icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-pen"></i></button>
+            <button class="icon-btn delete-sw" data-id="${sw.id}"><i class="fas fa-trash"></i></button>
+          ` : ''}
+        </div>
+      </div>`;
+    });
+    softwareListContainer.innerHTML = html;
+
+    if (isAdmin()) {
+      document.querySelectorAll('.edit-sw').forEach(b => {
+        b.addEventListener('click', () => openSoftwareModal(b.dataset.id));
+      });
+      document.querySelectorAll('.delete-sw').forEach(b => {
+        b.addEventListener('click', () => deleteSoftware(b.dataset.id));
+      });
+    }
+  }
+
+  // Department CRUD
+  function openDeptModal(deptId = null) {
+    if (!isAdmin()) return;
+    editingDeptId = deptId;
+    const dept = deptId ? departments.find(d => d.id === deptId) : null;
+    document.getElementById('deptNameInput').value = dept?.name || '';
+    document.getElementById('deptModalTitle').textContent = deptId ? 'Abteilung bearbeiten' : 'Neue Abteilung';
+    deptModal.style.visibility = 'visible';
+    deptModal.style.opacity = '1';
+  }
+
+  async function saveDepartment() {
+    const name = document.getElementById('deptNameInput').value.trim();
+    if (!name) return;
+
+    try {
+      if (editingDeptId) {
+        await updateDoc(doc(db, "departments", editingDeptId), { name });
+      } else {
+        await addDoc(collection(db, "departments"), { name });
+      }
+      closeDeptModal();
+    } catch (error) {
+      alert('Fehler: ' + error.message);
+    }
+  }
+
+  async function deleteDepartment(deptId) {
+    if (!isAdmin() || !confirm('Abteilung und alle enthaltene Software löschen?')) return;
+    
+    try {
+      const softwareToDelete = software.filter(s => s.departmentId === deptId);
+      for (const sw of softwareToDelete) {
+        await deleteDoc(doc(db, "software", sw.id));
+      }
+      await deleteDoc(doc(db, "departments", deptId));
+      if (selectedDeptId === deptId) selectedDeptId = null;
+    } catch (error) {
+      alert('Fehler: ' + error.message);
+    }
+  }
+
+  // Software CRUD
+  function openSoftwareModal(swId = null) {
+    if (!isAdmin()) return;
+    editingSwId = swId;
+    const sw = swId ? software.find(s => s.id === swId) : null;
+    
+    document.getElementById('swNameInput').value = sw?.name || '';
+    document.getElementById('swLinkInput').value = sw?.url || '';
+    document.getElementById('swStatusSelect').value = sw?.status || 'active';
+    document.getElementById('softwareModalTitle').textContent = swId ? 'Software bearbeiten' : 'Neue Software';
+    
+    softwareModal.style.visibility = 'visible';
+    softwareModal.style.opacity = '1';
+  }
+
+  async function saveSoftware() {
+    const name = document.getElementById('swNameInput').value.trim();
+    const url = document.getElementById('swLinkInput').value.trim();
+    const status = document.getElementById('swStatusSelect').value;
+
+    if (!name || !url) {
+      alert('Name und Link sind erforderlich');
+      return;
+    }
+
+    let targetDept = selectedDeptId;
+    if (!targetDept && !editingSwId) {
+      if (departments.length === 0) {
+        alert('Bitte zuerst eine Abteilung erstellen');
+        return;
+      }
+      targetDept = departments[0].id;
+    }
+
+    try {
+      const data = {
+        name,
+        url,
+        status,
+        lastUpdated: serverTimestamp()
+      };
+
+      if (editingSwId) {
+        await updateDoc(doc(db, "software", editingSwId), data);
+      } else {
+        data.departmentId = targetDept;
+        await addDoc(collection(db, "software"), data);
+      }
+      closeSoftwareModal();
+    } catch (error) {
+      alert('Fehler: ' + error.message);
+    }
+  }
+
+  async function deleteSoftware(swId) {
+    if (!isAdmin() || !confirm('Software löschen?')) return;
+    try {
+      await deleteDoc(doc(db, "software", swId));
+    } catch (error) {
+      alert('Fehler: ' + error.message);
+    }
+  }
+
+  // Auth Funktionen
+  async function loginWithEmail(email, password) {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      closeLoginModal();
+    } catch (error) {
+      loginError.textContent = 'Anmeldung fehlgeschlagen: ' + error.message;
+    }
+  }
+
+  async function registerWithEmail(email, password) {
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      closeLoginModal();
+      alert('Registrierung erfolgreich! Du bist jetzt angemeldet.');
+    } catch (error) {
+      loginError.textContent = 'Registrierung fehlgeschlagen: ' + error.message;
+    }
+  }
+
+  async function loginWithGoogle() {
+    try {
+      await signInWithPopup(auth, googleProvider);
+      closeLoginModal();
+    } catch (error) {
+      loginError.textContent = 'Google-Anmeldung fehlgeschlagen';
+    }
+  }
+
+  async function logout() {
+    try {
+      await signOut(auth);
+      selectedDeptId = null;
+      departments = [];
+      software = [];
+    } catch (error) {
+      alert('Fehler beim Abmelden');
+    }
+  }
+
+  function closeLoginModal() {
+    loginModal.style.visibility = 'hidden';
+    loginModal.style.opacity = '0';
+    loginError.textContent = '';
+    loginEmail.value = '';
+    loginPassword.value = '';
+    isRegisterMode = false;
+  }
+
+  function closeDeptModal() {
+    deptModal.style.visibility = 'hidden';
+    deptModal.style.opacity = '0';
+    editingDeptId = null;
+  }
+
+  function closeSoftwareModal() {
+    softwareModal.style.visibility = 'hidden';
+    softwareModal.style.opacity = '0';
+    editingSwId = null;
+  }
+
+  // Event Listener
+  loginBtn.addEventListener('click', () => {
+    loginModalTitle.textContent = 'Anmelden';
+    submitLogin.textContent = 'Anmelden';
+    isRegisterMode = false;
+    loginModal.style.visibility = 'visible';
+    loginModal.style.opacity = '1';
+  });
+
+  logoutBtn.addEventListener('click', logout);
+
+  document.getElementById('cancelLogin').addEventListener('click', closeLoginModal);
+
+  submitLogin.addEventListener('click', () => {
+    const email = loginEmail.value.trim();
+    const password = loginPassword.value;
+    
+    if (!email || !password) {
+      loginError.textContent = 'Bitte E-Mail und Passwort eingeben';
+      return;
+    }
+
+    if (isRegisterMode) {
+      registerWithEmail(email, password);
+    } else {
+      loginWithEmail(email, password);
+    }
+  });
+
+  showRegisterLink.addEventListener('click', () => {
+    loginModalTitle.textContent = 'Registrieren';
+    submitLogin.textContent = 'Registrieren';
+    isRegisterMode = true;
+    loginError.textContent = '';
+  });
+
+  document.getElementById('googleLoginBtn').addEventListener('click', loginWithGoogle);
+
+  loginModal.addEventListener('click', (e) => {
+    if (e.target === loginModal) closeLoginModal();
+  });
+
+  addDeptBtn.addEventListener('click', () => openDeptModal(null));
+  document.getElementById('cancelDeptModal').addEventListener('click', closeDeptModal);
+  document.getElementById('saveDeptBtn').addEventListener('click', saveDepartment);
+
+  addSoftwareBtn.addEventListener('click', () => {
+    if (!selectedDeptId && departments.length === 0) {
+      alert('Bitte zuerst eine Abteilung erstellen');
+      return;
+    }
+    openSoftwareModal(null);
+  });
+  
+  document.getElementById('cancelSwModal').addEventListener('click', closeSoftwareModal);
+  document.getElementById('saveSwBtn').addEventListener('click', saveSoftware);
+
+  deptModal.addEventListener('click', (e) => {
+    if (e.target === deptModal) closeDeptModal();
+  });
+  
+  softwareModal.addEventListener('click', (e) => {
+    if (e.target === softwareModal) closeSoftwareModal();
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeLoginModal();
+      closeDeptModal();
+      closeSoftwareModal();
+    }
+  });
+</script>
+</body>
+</html>
