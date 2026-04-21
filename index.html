@@ -95,11 +95,6 @@
       padding: 0.3rem 1rem;
       font-size: 0.85rem;
     }
-    .btn-danger {
-      color: #b91c1c;
-      border-color: #fecaca;
-      background: #fef2f2;
-    }
 
     .departments-header {
       display: flex;
@@ -349,7 +344,7 @@
     <div class="auth-area">
       <div class="user-badge">
         <i class="fas fa-user-circle"></i>
-        <span id="userEmailDisplay">Nicht angemeldet</span>
+        <span id="userEmailDisplay">Gast</span>
       </div>
       <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Anmelden</button>
       <button class="btn hidden" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</button>
@@ -358,7 +353,7 @@
 
   <div class="departments-header">
     <h2><i class="fas fa-folder-tree" style="margin-right: 10px;"></i>Abteilungen</h2>
-    <button class="btn btn-outline-blue btn-sm" id="addDeptBtn" disabled>
+    <button class="btn btn-outline-blue btn-sm hidden" id="addDeptBtn">
       <i class="fas fa-plus"></i> Neue Abteilung
     </button>
   </div>
@@ -367,7 +362,7 @@
   <div class="software-section">
     <div class="section-title">
       <h3 id="currentDeptTitle">Alle Software</h3>
-      <button class="btn btn-outline-blue btn-sm" id="addSoftwareBtn" disabled>
+      <button class="btn btn-outline-blue btn-sm hidden" id="addSoftwareBtn">
         <i class="fas fa-plus-circle"></i> Software hinzufügen
       </button>
     </div>
@@ -485,6 +480,8 @@
   let editingDeptId = null;
   let editingSwId = null;
   let isRegisterMode = false;
+  let unsubscribeDepts = null;
+  let unsubscribeSw = null;
 
   // UI Elemente
   const userEmailDisplay = document.getElementById('userEmailDisplay');
@@ -513,53 +510,76 @@
     return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
   }
   function truncateUrl(url, max=50) {
+    if (!url) return '';
     return url.length > max ? url.substring(0, max-3) + '...' : url;
   }
   function isAdmin() {
     return currentUser && currentUser.email === ADMIN_EMAIL;
   }
 
+  // Daten laden - WICHTIG: Immer laden, auch ohne Auth!
+  function loadData() {
+    // Alte Listener entfernen
+    if (unsubscribeDepts) unsubscribeDepts();
+    if (unsubscribeSw) unsubscribeSw();
+
+    // Departments laden
+    unsubscribeDepts = onSnapshot(collection(db, "departments"), (snapshot) => {
+      departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderDepartments();
+    }, (error) => {
+      console.error("Fehler beim Laden der Abteilungen:", error);
+    });
+
+    // Software laden
+    unsubscribeSw = onSnapshot(query(collection(db, "software"), orderBy("lastUpdated", "desc")), (snapshot) => {
+      software = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderSoftwareList();
+    }, (error) => {
+      console.error("Fehler beim Laden der Software:", error);
+    });
+  }
+
   // Auth State Observer
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     updateUIForAuth();
-    if (user) {
-      loadData();
-    }
   });
+
+  // Initial Daten laden (immer, auch ohne Auth!)
+  loadData();
 
   function updateUIForAuth() {
     const admin = isAdmin();
-    addDeptBtn.disabled = !admin;
-    addSoftwareBtn.disabled = !admin;
     
+    // Admin-Buttons anzeigen/verstecken
+    if (admin) {
+      addDeptBtn.classList.remove('hidden');
+      addSoftwareBtn.classList.remove('hidden');
+    } else {
+      addDeptBtn.classList.add('hidden');
+      addSoftwareBtn.classList.add('hidden');
+    }
+    
+    // User-Info anzeigen
     if (currentUser) {
       userEmailDisplay.textContent = currentUser.email;
       loginBtn.classList.add('hidden');
       logoutBtn.classList.remove('hidden');
     } else {
-      userEmailDisplay.textContent = 'Nicht angemeldet';
+      userEmailDisplay.textContent = 'Gast';
       loginBtn.classList.remove('hidden');
       logoutBtn.classList.add('hidden');
     }
+    
     renderDepartments();
-  }
-
-  // Daten laden
-  function loadData() {
-    onSnapshot(collection(db, "departments"), (snapshot) => {
-      departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderDepartments();
-    });
-
-    onSnapshot(query(collection(db, "software"), orderBy("lastUpdated", "desc")), (snapshot) => {
-      software = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderSoftwareList();
-    });
+    renderSoftwareList();
   }
 
   // Rendering
   function renderDepartments() {
+    if (!departmentsContainer) return;
+    
     let html = '';
     departments.forEach(dept => {
       html += `<div class="dept-card ${selectedDeptId === dept.id ? 'active' : ''}" data-dept-id="${dept.id}">
@@ -601,6 +621,8 @@
   }
 
   function renderSoftwareList() {
+    if (!softwareListContainer) return;
+    
     const filtered = selectedDeptId 
       ? software.filter(s => s.departmentId === selectedDeptId)
       : software;
@@ -808,7 +830,7 @@
       await signInWithPopup(auth, googleProvider);
       closeLoginModal();
     } catch (error) {
-      loginError.textContent = 'Google-Anmeldung fehlgeschlagen';
+      loginError.textContent = 'Google-Anmeldung fehlgeschlagen: ' + error.message;
     }
   }
 
@@ -816,10 +838,8 @@
     try {
       await signOut(auth);
       selectedDeptId = null;
-      departments = [];
-      software = [];
     } catch (error) {
-      alert('Fehler beim Abmelden');
+      alert('Fehler beim Abmelden: ' + error.message);
     }
   }
 
