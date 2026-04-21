@@ -10,25 +10,51 @@
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
     }
     
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
     body {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #1e293b;
-      padding: 2rem 1.5rem;
+      background: radial-gradient(circle at 20% 30%, #2d1b4e 0%, #1a0f2e 50%, #0d0620 100%);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       position: relative;
-      animation: gradientShift 15s ease infinite;
-      background-size: 200% 200%;
+      overflow-x: hidden;
     }
     
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+    /* Liquid Glass animierte Hintergrund-Elemente */
+    body::before {
+      content: '';
+      position: fixed;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: radial-gradient(circle at 30% 40%, rgba(147, 51, 234, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(168, 85, 247, 0.1) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 50%, rgba(192, 132, 252, 0.08) 0%, transparent 60%);
+      animation: liquidMove 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    
+    @keyframes liquidMove {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-3%, -2%) rotate(1deg); }
+      66% { transform: translate(2%, 3%) rotate(-1deg); }
+    }
+    
+    /* Floating Particles */
+    .particle {
+      position: fixed;
+      width: 2px;
+      height: 2px;
+      background: rgba(168, 85, 247, 0.3);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
     }
     
     .container {
@@ -36,85 +62,182 @@
       margin: 0 auto;
       width: 100%;
       position: relative;
-      z-index: 1;
+      z-index: 2;
+      padding: 2rem 1.5rem;
     }
 
+    /* Liquid Glass Header */
     .header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       flex-wrap: wrap;
       gap: 1rem;
-      margin-bottom: 2.5rem;
-      animation: slideDown 0.6s ease-out;
+      margin-bottom: 3rem;
+      animation: fadeInDown 0.8s ease-out;
     }
     
-    @keyframes slideDown {
-      from { opacity: 0; transform: translateY(-30px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
     
     h1 {
-      font-weight: 700;
-      font-size: 2.5rem;
-      background: linear-gradient(135deg, #ffffff, #f0f0f0);
+      font-weight: 800;
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #c084fc 0%, #e9d5ff 50%, #d8b4fe 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      text-shadow: 0 0 40px rgba(168, 85, 247, 0.5);
+      letter-spacing: -0.02em;
+      position: relative;
+      animation: titleGlow 3s ease-in-out infinite;
     }
     
+    @keyframes titleGlow {
+      0%, 100% { filter: brightness(1) drop-shadow(0 0 20px rgba(168, 85, 247, 0.3)); }
+      50% { filter: brightness(1.2) drop-shadow(0 0 40px rgba(168, 85, 247, 0.6)); }
+    }
+    
+    h1 i {
+      animation: float 3s ease-in-out infinite;
+      filter: drop-shadow(0 0 15px rgba(192, 132, 252, 0.5));
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-5px) rotate(5deg); }
+    }
+    
+    /* Liquid Glass Auth Area */
     .auth-area {
       display: flex;
       align-items: center;
-      gap: 12px;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: 0.5rem 1rem 0.5rem 1.5rem;
+      gap: 16px;
+      background: rgba(45, 27, 78, 0.4);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      padding: 0.6rem 1.2rem 0.6rem 1.8rem;
       border-radius: 60px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                  0 0 0 1px rgba(168, 85, 247, 0.2);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      animation: glassPulse 4s ease-in-out infinite;
     }
     
-    .btn {
-      background: white;
-      border: 1px solid rgba(203, 213, 225, 0.5);
-      padding: 0.6rem 1.4rem;
-      border-radius: 40px;
+    @keyframes glassPulse {
+      0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 1px rgba(168, 85, 247, 0.2); }
+      50% { box-shadow: 0 12px 40px rgba(168, 85, 247, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 0 1px rgba(168, 85, 247, 0.4); }
+    }
+    
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #e9d5ff;
       font-weight: 500;
+    }
+    
+    .user-badge i {
+      color: #a855f7;
+      font-size: 1.2rem;
+      filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.6));
+    }
+    
+    /* Liquid Glass Buttons */
+    .btn {
+      background: rgba(45, 27, 78, 0.5);
+      backdrop-filter: blur(10px) saturate(180%);
+      -webkit-backdrop-filter: blur(10px) saturate(180%);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      padding: 0.7rem 1.6rem;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      color: #e9d5ff;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    
+    .btn:hover::before {
+      left: 100%;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(168, 85, 247, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgba(168, 85, 247, 0.6);
+      background: rgba(88, 28, 135, 0.5);
     }
     
     .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border-color: transparent;
+      background: linear-gradient(135deg, rgba(147, 51, 234, 0.8), rgba(126, 34, 206, 0.8));
+      border-color: rgba(192, 132, 252, 0.5);
       color: white;
+      box-shadow: 0 8px 24px rgba(147, 51, 234, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
     
     .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.9), rgba(147, 51, 234, 0.9));
+      box-shadow: 0 12px 32px rgba(168, 85, 247, 0.5),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
     }
     
     .btn-outline-blue {
-      border-color: #667eea;
-      color: #667eea;
-      background: rgba(255,255,255,0.9);
+      background: rgba(45, 27, 78, 0.3);
+      border-color: rgba(168, 85, 247, 0.4);
     }
     
+    /* Liquid Glass Departments */
     .departments-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 2rem 0 1.5rem 0;
+      margin: 2.5rem 0 1.5rem 0;
+      animation: fadeIn 0.8s ease-out 0.2s both;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to { opacity: 1; transform: translateX(0); }
     }
     
     .departments-header h2 {
-      font-weight: 600;
-      font-size: 1.8rem;
-      color: white;
+      font-weight: 700;
+      font-size: 2rem;
+      background: linear-gradient(135deg, #d8b4fe, #e9d5ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
     }
     
     .department-grid {
@@ -125,49 +248,99 @@
     }
     
     .dept-card {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(45, 27, 78, 0.3);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
       border-radius: 24px;
-      padding: 0.9rem 1.8rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-      font-weight: 500;
+      padding: 1rem 2rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      font-weight: 600;
       display: flex;
       align-items: center;
       gap: 12px;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: #e9d5ff;
+      animation: cardAppear 0.5s ease-out backwards;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .dept-card::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .dept-card:hover::after {
+      opacity: 1;
     }
     
     .dept-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px rgba(102, 126, 234, 0.2);
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 16px 40px rgba(168, 85, 247, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgba(168, 85, 247, 0.5);
+      background: rgba(88, 28, 135, 0.3);
     }
     
     .dept-card.active {
-      border: 2px solid #667eea;
-      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      border: 1.5px solid #a855f7;
+      background: rgba(147, 51, 234, 0.2);
+      box-shadow: 0 12px 32px rgba(168, 85, 247, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1),
+                  0 0 0 2px rgba(168, 85, 247, 0.1);
+      animation: activeGlow 3s ease-in-out infinite;
     }
     
+    @keyframes activeGlow {
+      0%, 100% { box-shadow: 0 12px 32px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 0 0 2px rgba(168, 85, 247, 0.1); }
+      50% { box-shadow: 0 16px 40px rgba(168, 85, 247, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15), 0 0 0 3px rgba(168, 85, 247, 0.2); }
+    }
+    
+    .dept-card i {
+      color: #c084fc;
+      filter: drop-shadow(0 0 8px rgba(168, 85, 247, 0.5));
+    }
+    
+    /* Liquid Glass Software Section */
     .software-section {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(20px);
-      border-radius: 32px;
-      padding: 2rem 1.8rem;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      background: rgba(45, 27, 78, 0.25);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-radius: 40px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.2);
       margin-top: 1rem;
+      animation: slideUp 0.8s ease-out 0.4s both;
+    }
+    
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     
     .section-title {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 1.8rem;
+      margin-bottom: 2rem;
     }
     
     .section-title h3 {
       font-weight: 700;
-      font-size: 1.6rem;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, #d8b4fe, #f3e8ff);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
@@ -175,45 +348,80 @@
     
     .software-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
     }
     
+    /* Liquid Glass Software Cards */
     .software-card {
-      background: white;
-      border-radius: 20px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-      transition: all 0.3s;
-      border: 1px solid rgba(102, 126, 234, 0.1);
+      background: rgba(45, 27, 78, 0.3);
+      backdrop-filter: blur(16px) saturate(180%);
+      -webkit-backdrop-filter: blur(16px) saturate(180%);
+      border-radius: 28px;
+      padding: 1.8rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       position: relative;
       overflow: hidden;
+      animation: cardFloat 0.6s ease-out backwards;
+    }
+    
+    .software-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(circle at 30% 20%, rgba(168, 85, 247, 0.1) 0%, transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    
+    .software-card:hover::before {
+      opacity: 1;
     }
     
     .software-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 40px rgba(102, 126, 234, 0.15);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(168, 85, 247, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-color: rgba(168, 85, 247, 0.5);
     }
     
     .software-header {
       display: flex;
       align-items: center;
-      gap: 15px;
-      margin-bottom: 15px;
+      gap: 16px;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
     }
     
     .software-icon {
-      width: 60px;
-      height: 60px;
-      border-radius: 16px;
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2rem;
       overflow: hidden;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+      background: linear-gradient(135deg, rgba(147, 51, 234, 0.6), rgba(107, 33, 168, 0.6));
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(192, 132, 252, 0.4);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      color: #e9d5ff;
       flex-shrink: 0;
+      animation: iconPulse 3s ease-in-out infinite;
+    }
+    
+    @keyframes iconPulse {
+      0%, 100% { box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1); }
+      50% { box-shadow: 0 12px 28px rgba(168, 85, 247, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15); }
     }
     
     .software-icon img {
@@ -228,29 +436,35 @@
     
     .software-name {
       font-weight: 700;
-      font-size: 1.2rem;
-      margin-bottom: 5px;
+      font-size: 1.25rem;
+      margin-bottom: 6px;
+      color: #f3e8ff;
     }
     
     .software-version {
       font-size: 0.85rem;
-      color: #64748b;
+      color: #c084fc;
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 6px;
     }
     
     .software-preview {
       width: 100%;
-      height: 160px;
-      border-radius: 12px;
+      height: 170px;
+      border-radius: 18px;
       overflow: hidden;
-      margin: 15px 0;
-      background: #f1f5f9;
+      margin: 16px 0;
+      background: rgba(20, 10, 40, 0.4);
+      backdrop-filter: blur(8px);
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #94a3b8;
+      color: #a78bfa;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
     }
     
     .software-preview img {
@@ -259,64 +473,108 @@
       object-fit: cover;
     }
     
+    .software-description {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      margin: 12px 0;
+      line-height: 1.5;
+    }
+    
     .software-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
       margin: 12px 0;
+      position: relative;
+      z-index: 1;
     }
     
     .status-badge {
       font-size: 0.7rem;
-      font-weight: 600;
-      padding: 4px 10px;
+      font-weight: 700;
+      padding: 5px 12px;
       border-radius: 30px;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
     
-    .status-active { background: #10b981; color: white; }
-    .status-maintenance { background: #f59e0b; color: white; }
-    .status-discontinued { background: #ef4444; color: white; }
-    .status-down { background: #6b7280; color: white; }
+    .status-active { 
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+    .status-maintenance { 
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+    }
+    .status-discontinued { 
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      border-color: rgba(239, 68, 68, 0.4);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+    }
+    .status-down { 
+      background: rgba(107, 114, 128, 0.2);
+      color: #d1d5db;
+      border-color: rgba(107, 114, 128, 0.4);
+    }
     
     .dates-info {
       font-size: 0.8rem;
-      color: #64748b;
-      margin: 10px 0;
+      color: #a78bfa;
+      margin: 12px 0;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .dates-info i {
+      width: 18px;
+      color: #c084fc;
     }
     
     .software-actions {
       display: flex;
-      gap: 8px;
-      margin-top: 15px;
-      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 18px;
+      position: relative;
+      z-index: 1;
     }
     
     .icon-btn {
-      background: transparent;
-      border: none;
-      color: #64748b;
+      background: rgba(45, 27, 78, 0.4);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      color: #c084fc;
       cursor: pointer;
-      padding: 8px;
-      border-radius: 30px;
-      width: 36px;
-      height: 36px;
+      padding: 10px;
+      border-radius: 16px;
+      width: 42px;
+      height: 42px;
       transition: all 0.3s;
     }
     
     .icon-btn:hover {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
+      background: rgba(147, 51, 234, 0.4);
+      color: #e9d5ff;
+      border-color: #a855f7;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+      transform: scale(1.05);
     }
     
+    /* Modal - Liquid Glass Design */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      backdrop-filter: blur(8px);
+      background: rgba(10, 5, 20, 0.7);
+      backdrop-filter: blur(16px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -327,20 +585,35 @@
     }
     
     .modal {
-      background: white;
-      border-radius: 36px;
+      background: rgba(30, 15, 60, 0.6);
+      backdrop-filter: blur(30px) saturate(200%);
+      -webkit-backdrop-filter: blur(30px) saturate(200%);
+      border-radius: 40px;
       padding: 2.5rem;
       max-width: 600px;
       max-height: 90vh;
       overflow-y: auto;
       width: 90%;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      transform: scale(0.9) translateY(30px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      color: #e9d5ff;
+    }
+    
+    .modal-overlay[style*="visibility: visible"] .modal {
+      transform: scale(1) translateY(0);
     }
     
     .modal h3 {
-      font-size: 1.8rem;
-      margin-bottom: 1.5rem;
+      font-size: 2rem;
+      margin-bottom: 1.8rem;
       font-weight: 700;
+      background: linear-gradient(135deg, #d8b4fe, #f3e8ff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
     
     .input-group {
@@ -351,45 +624,67 @@
       font-weight: 600;
       display: block;
       margin-bottom: 8px;
+      color: #c084fc;
     }
     
-    .input-group input, .input-group select, .input-group textarea {
+    .input-group input, 
+    .input-group select, 
+    .input-group textarea {
       width: 100%;
-      padding: 12px 16px;
-      border: 2px solid #e2e8f0;
-      border-radius: 16px;
+      padding: 14px 18px;
+      background: rgba(20, 10, 40, 0.4);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid rgba(168, 85, 247, 0.3);
+      border-radius: 20px;
       font-size: 1rem;
       transition: all 0.3s;
+      color: #f3e8ff;
     }
     
-    .input-group input:focus, .input-group select:focus {
+    .input-group input:focus, 
+    .input-group select:focus,
+    .input-group textarea:focus {
       outline: none;
-      border-color: #667eea;
-      box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+      border-color: #a855f7;
+      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2), 0 0 20px rgba(168, 85, 247, 0.3);
+      background: rgba(30, 15, 60, 0.6);
+    }
+    
+    .input-group input::placeholder,
+    .input-group textarea::placeholder {
+      color: #8b5cf6;
     }
     
     .file-upload {
-      border: 2px dashed #cbd5e1;
-      border-radius: 16px;
-      padding: 1.5rem;
+      border: 2px dashed rgba(168, 85, 247, 0.4);
+      border-radius: 20px;
+      padding: 2rem;
       text-align: center;
       cursor: pointer;
       transition: all 0.3s;
+      background: rgba(20, 10, 40, 0.2);
+      backdrop-filter: blur(8px);
     }
     
     .file-upload:hover {
-      border-color: #667eea;
-      background: rgba(102, 126, 234, 0.05);
+      border-color: #a855f7;
+      background: rgba(147, 51, 234, 0.1);
+      box-shadow: 0 0 30px rgba(168, 85, 247, 0.2);
     }
     
     .file-upload i {
-      font-size: 2rem;
-      color: #667eea;
+      font-size: 2.5rem;
+      color: #c084fc;
       margin-bottom: 10px;
+      filter: drop-shadow(0 0 10px rgba(168, 85, 247, 0.5));
+    }
+    
+    .file-upload p {
+      color: #a78bfa;
     }
     
     .image-preview {
-      margin-top: 10px;
+      margin-top: 12px;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
@@ -398,8 +693,10 @@
     .image-preview img {
       width: 80px;
       height: 80px;
-      border-radius: 8px;
+      border-radius: 16px;
       object-fit: cover;
+      border: 2px solid rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
     }
     
     .modal-actions {
@@ -414,15 +711,70 @@
     }
     
     .footer-note {
-      margin-top: 3rem;
+      margin-top: 4rem;
       text-align: center;
-      color: rgba(255,255,255,0.9);
+      color: #a78bfa;
+      font-size: 0.95rem;
+      animation: fadeIn 1s ease-out 0.6s both;
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
     }
-
+    
+    .empty-message {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem;
+      color: #8b5cf6;
+      font-size: 1.2rem;
+      background: rgba(45, 27, 78, 0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+    }
+    
+    .empty-message i {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.6;
+      filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.3));
+    }
+    
+    .register-link a {
+      color: #c084fc;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+    
+    .register-link a:hover {
+      color: #e9d5ff;
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+    
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: rgba(20, 10, 40, 0.3);
+      border-radius: 10px;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: rgba(147, 51, 234, 0.5);
+      border-radius: 10px;
+      border: 2px solid rgba(20, 10, 40, 0.3);
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(168, 85, 247, 0.7);
+    }
+    
     @media (max-width: 768px) {
-      .software-grid {
-        grid-template-columns: 1fr;
-      }
+      .container { padding: 1rem; }
+      h1 { font-size: 2rem; }
+      .software-grid { grid-template-columns: 1fr; }
+      .modal { padding: 1.8rem; }
     }
   </style>
 </head>
@@ -456,7 +808,7 @@
       </button>
     </div>
     <div id="softwareListContainer" class="software-grid">
-      <div class="loading"><i class="fas fa-spinner fa-spin"></i> Lade Software...</div>
+      <div class="empty-message"><i class="fas fa-spinner fa-spin"></i><br>Lade Software...</div>
     </div>
   </div>
   <div class="footer-note">
@@ -476,12 +828,12 @@
       <label>Passwort</label>
       <input type="password" id="loginPassword" placeholder="••••••••">
     </div>
-    <div id="loginError" style="color: #dc2626; margin-bottom: 1rem;"></div>
+    <div id="loginError" style="color: #fca5a5; margin-bottom: 1rem;"></div>
     <div class="modal-actions">
       <button class="btn" id="cancelLogin">Abbrechen</button>
       <button class="btn btn-primary" id="submitLogin">Anmelden</button>
     </div>
-    <div class="register-link">
+    <div class="register-link" style="text-align: center; margin-top: 1.5rem;">
       Noch kein Konto? <a id="showRegisterLink">Jetzt registrieren</a>
     </div>
     <div style="margin-top: 1.5rem;">
@@ -490,7 +842,7 @@
   </div>
 </div>
 
-<!-- Software Modal mit Bild/Icon Upload -->
+<!-- Software Modal -->
 <div class="modal-overlay" id="softwareModal">
   <div class="modal">
     <h3 id="softwareModalTitle">Software hinzufügen</h3>
@@ -595,7 +947,6 @@
   let existingIconUrl = null;
   let existingPreviewUrl = null;
 
-  // UI Elemente
   const userEmailDisplay = document.getElementById('userEmailDisplay');
   const loginBtn = document.getElementById('loginBtn');
   const logoutBtn = document.getElementById('logoutBtn');
@@ -607,7 +958,6 @@
   const loginModal = document.getElementById('loginModal');
   const softwareModal = document.getElementById('softwareModal');
 
-  // Helper
   function escapeHtml(text) {
     if (!text) return '';
     return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
@@ -623,7 +973,6 @@
     return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
-  // Daten laden
   function loadData() {
     onSnapshot(collection(db, "departments"), (snapshot) => {
       departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -704,7 +1053,7 @@
     currentDeptTitle.textContent = deptName;
 
     if (filtered.length === 0) {
-      softwareListContainer.innerHTML = '<div class="empty-message" style="grid-column: 1/-1; text-align: center; padding: 3rem;"><i class="far fa-box-open"></i><br>Keine Software vorhanden</div>';
+      softwareListContainer.innerHTML = '<div class="empty-message"><i class="far fa-box-open"></i><br>Keine Software vorhanden</div>';
       return;
     }
 
@@ -741,11 +1090,11 @@
           ${sw.previewUrl ? `<img src="${escapeHtml(sw.previewUrl)}" alt="Preview">` : '<i class="fas fa-image fa-2x"></i>'}
         </div>
         
-        ${sw.description ? `<p style="margin: 10px 0; color: #475569; font-size: 0.9rem;">${escapeHtml(sw.description)}</p>` : ''}
+        ${sw.description ? `<div class="software-description">${escapeHtml(sw.description)}</div>` : ''}
         
         <div class="software-meta">
           <span class="status-badge ${statusClass}">${statusText}</span>
-          ${dept ? `<span style="font-size: 0.8rem; color: #64748b;"><i class="far fa-folder"></i> ${escapeHtml(dept.name)}</span>` : ''}
+          ${dept ? `<span style="font-size: 0.8rem; color: #a78bfa;"><i class="far fa-folder"></i> ${escapeHtml(dept.name)}</span>` : ''}
         </div>
         
         <div class="dates-info">
@@ -754,7 +1103,7 @@
         </div>
         
         <div class="software-actions">
-          <a href="${escapeHtml(sw.url)}" class="btn btn-sm" download style="flex: 1; text-align: center; text-decoration: none; background: #eef2ff;">
+          <a href="${escapeHtml(sw.url)}" class="btn btn-sm" download style="flex: 1; text-align: center; text-decoration: none;">
             <i class="fas fa-download"></i> Download
           </a>
           ${isAdmin() ? `
@@ -780,7 +1129,6 @@
     if (!isAdmin()) return;
     editingSwId = swId;
     
-    // Reset
     document.getElementById('swNameInput').value = '';
     document.getElementById('swVersionInput').value = '';
     document.getElementById('swLinkInput').value = '';
@@ -850,7 +1198,6 @@
     }
 
     try {
-      // Upload files
       let iconUrl = existingIconUrl;
       let previewUrl = existingPreviewUrl;
       
@@ -893,18 +1240,11 @@
     try {
       const sw = software.find(s => s.id === swId);
       
-      // Delete files from Storage if they exist
       if (sw?.iconUrl) {
-        try {
-          const iconRef = ref(storage, sw.iconUrl);
-          await deleteObject(iconRef);
-        } catch (e) {}
+        try { await deleteObject(ref(storage, sw.iconUrl)); } catch (e) {}
       }
       if (sw?.previewUrl) {
-        try {
-          const previewRef = ref(storage, sw.previewUrl);
-          await deleteObject(previewRef);
-        } catch (e) {}
+        try { await deleteObject(ref(storage, sw.previewUrl)); } catch (e) {}
       }
       
       await deleteDoc(doc(db, "software", swId));
@@ -954,13 +1294,11 @@
 
   // Drag & Drop
   ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    document.getElementById('iconUploadArea').addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-    });
-    document.getElementById('previewUploadArea').addEventListener(eventName, (e) => {
-      e.preventDefault();
-      e.stopPropagation();
+    ['iconUploadArea', 'previewUploadArea'].forEach(id => {
+      document.getElementById(id).addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+      });
     });
   });
 
@@ -1037,7 +1375,6 @@
   });
 
   logoutBtn.addEventListener('click', logout);
-  
   document.getElementById('cancelLogin').addEventListener('click', closeLoginModal);
   
   document.getElementById('submitLogin').addEventListener('click', () => {
