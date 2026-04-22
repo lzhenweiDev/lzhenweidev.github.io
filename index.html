@@ -112,6 +112,16 @@
       border-color: rgba(167, 139, 250, 0.6);
     }
     
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: rgba(239, 68, 68, 0.4);
+    }
+    
+    .btn-danger:hover {
+      background: rgba(239, 68, 68, 0.5);
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
+    }
+    
     /* Departments */
     .section-header {
       display: flex;
@@ -170,7 +180,7 @@
     
     .software-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 1.5rem;
       margin-top: 1.5rem;
     }
@@ -190,6 +200,13 @@
       border-color: rgba(139, 92, 246, 0.5);
     }
     
+    .software-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
     .software-icon {
       width: 60px;
       height: 60px;
@@ -200,21 +217,31 @@
       justify-content: center;
       font-size: 2rem;
       color: #c4b5fd;
-      margin-bottom: 1rem;
       border: 1px solid rgba(139, 92, 246, 0.4);
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    
+    .software-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .software-title {
+      flex: 1;
     }
     
     .software-name {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       font-weight: 700;
       color: #ede9fe;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
     }
     
     .software-version {
       color: #a78bfa;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
+      font-size: 0.85rem;
     }
     
     .software-preview {
@@ -236,24 +263,63 @@
       object-fit: cover;
     }
     
-    .status-badge {
-      display: inline-block;
-      padding: 0.3rem 1rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin: 0.5rem 0;
+    .software-description {
+      color: #cbd5e1;
+      font-size: 0.9rem;
+      margin: 0.75rem 0;
+      line-height: 1.4;
     }
     
-    .status-active { background: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
-    .status-maintenance { background: rgba(245, 158, 11, 0.3); color: #fcd34d; }
-    .status-discontinued { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
-    .status-down { background: rgba(107, 114, 128, 0.3); color: #d1d5db; }
+    .status-badge {
+      display: inline-block;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    .status-working { background: rgba(16, 185, 129, 0.3); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
+    .status-stable { background: rgba(59, 130, 246, 0.3); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .status-beta { background: rgba(245, 158, 11, 0.3); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
+    .status-discontinued { background: rgba(239, 68, 68, 0.3); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .status-down { background: rgba(107, 114, 128, 0.3); color: #d1d5db; border: 1px solid rgba(107, 114, 128, 0.4); }
+    
+    .software-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0.75rem 0;
+    }
+    
+    .dates-info {
+      font-size: 0.75rem;
+      color: #a78bfa;
+    }
+    
+    .dates-info i {
+      margin-right: 4px;
+    }
     
     .software-actions {
       display: flex;
       gap: 0.5rem;
       margin-top: 1rem;
+    }
+    
+    .software-actions .btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+    }
+    
+    .icon-btn {
+      padding: 0.5rem;
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     
     /* Modal */
@@ -274,7 +340,7 @@
       padding: 2rem;
       border-radius: 30px;
       border: 1px solid rgba(139, 92, 246, 0.4);
-      max-width: 500px;
+      max-width: 550px;
       width: 90%;
       max-height: 90vh;
       overflow-y: auto;
@@ -406,7 +472,7 @@
 <!-- Software Modal -->
 <div class="modal-overlay hidden" id="softwareModal">
   <div class="modal">
-    <h3>Software hinzufügen</h3>
+    <h3 id="modalTitle">Software hinzufügen</h3>
     
     <div class="input-group">
       <label>Name *</label>
@@ -426,9 +492,10 @@
     <div class="input-group">
       <label>Status</label>
       <select id="swStatus">
-        <option value="active">🟢 Aktiv</option>
-        <option value="maintenance">🟡 Wartung</option>
-        <option value="discontinued">🔴 Eingestellt</option>
+        <option value="working">🟢 Working</option>
+        <option value="stable">🔵 Stable</option>
+        <option value="beta">🟡 Beta</option>
+        <option value="discontinued">🔴 Discontinued</option>
         <option value="down">⚫ Down</option>
       </select>
     </div>
@@ -460,6 +527,7 @@
     
     <div class="modal-actions">
       <button class="btn" id="cancelSwBtn">Abbrechen</button>
+      <button class="btn btn-danger hidden" id="deleteSwBtn">Löschen</button>
       <button class="btn btn-primary" id="saveSwBtn">Speichern</button>
     </div>
   </div>
@@ -497,9 +565,9 @@
   };
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
@@ -512,8 +580,11 @@
   let software = [];
   let currentUser = null;
   let selectedDeptId = null;
+  let editingSwId = null;
   let iconFile = null;
   let previewFile = null;
+  let existingIconUrl = null;
+  let existingPreviewUrl = null;
 
   // UI Elements
   const userEmailDisplay = document.getElementById('userEmailDisplay');
@@ -525,6 +596,8 @@
   const currentDeptTitle = document.getElementById('currentDeptTitle');
   const loginModal = document.getElementById('loginModal');
   const softwareModal = document.getElementById('softwareModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const deleteSwBtn = document.getElementById('deleteSwBtn');
 
   function isAdmin() {
     return currentUser && currentUser.email === ADMIN_EMAIL;
@@ -533,6 +606,12 @@
   function escapeHtml(text) {
     if (!text) return '';
     return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
+  }
+
+  function formatDate(timestamp) {
+    if (!timestamp) return '—';
+    const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
   }
 
   // Auth Observer
@@ -551,14 +630,12 @@
 
   // Daten laden
   function loadData() {
-    // Departments
     onSnapshot(collection(db, "departments"), (snapshot) => {
       departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       renderDepartments();
     });
 
-    // Software
-    onSnapshot(query(collection(db, "software"), orderBy("createdAt", "desc")), (snapshot) => {
+    onSnapshot(query(collection(db, "software"), orderBy("lastUpdated", "desc")), (snapshot) => {
       software = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       renderSoftware();
     });
@@ -570,6 +647,7 @@
     departments.forEach(dept => {
       html += `<div class="dept-card ${selectedDeptId === dept.id ? 'active' : ''}" data-id="${dept.id}">
         <i class="fas fa-folder"></i> ${escapeHtml(dept.name)}
+        ${isAdmin() ? `<button class="delete-dept-btn" data-id="${dept.id}" style="margin-left: auto; background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2rem;">🗑️</button>` : ''}
       </div>`;
     });
     html += `<div class="dept-card ${selectedDeptId === null ? 'active' : ''}" data-id="all">
@@ -578,13 +656,31 @@
     container.innerHTML = html;
 
     container.querySelectorAll('.dept-card').forEach(card => {
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (e) => {
+        if (e.target.classList.contains('delete-dept-btn')) return;
         const id = card.dataset.id;
         selectedDeptId = id === 'all' ? null : id;
         renderDepartments();
         renderSoftware();
       });
     });
+
+    if (isAdmin()) {
+      container.querySelectorAll('.delete-dept-btn').forEach(btn => {
+        btn.addEventListener('click', async (e) => {
+          e.stopPropagation();
+          if (confirm('Abteilung und alle Software löschen?')) {
+            const deptId = btn.dataset.id;
+            const swToDelete = software.filter(s => s.departmentId === deptId);
+            for (const sw of swToDelete) {
+              await deleteDoc(doc(db, "software", sw.id));
+            }
+            await deleteDoc(doc(db, "departments", deptId));
+            if (selectedDeptId === deptId) selectedDeptId = null;
+          }
+        });
+      });
+    }
   }
 
   function renderSoftware() {
@@ -604,32 +700,60 @@
 
     let html = '';
     filtered.forEach(sw => {
-      const statusClass = `status-${sw.status || 'active'}`;
-      const statusText = { active: 'Aktiv', maintenance: 'Wartung', discontinued: 'Eingestellt', down: 'Down' }[sw.status] || 'Aktiv';
+      const statusClass = `status-${sw.status || 'working'}`;
+      const statusText = { 
+        working: 'Working', 
+        stable: 'Stable', 
+        beta: 'Beta', 
+        discontinued: 'Discontinued', 
+        down: 'Down' 
+      }[sw.status] || 'Working';
 
       html += `<div class="software-card">
-        <div class="software-icon">
-          ${sw.iconUrl ? `<img src="${escapeHtml(sw.iconUrl)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
+        <div class="software-header">
+          <div class="software-icon">
+            ${sw.iconUrl ? `<img src="${escapeHtml(sw.iconUrl)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
+          </div>
+          <div class="software-title">
+            <div class="software-name">${escapeHtml(sw.name)}</div>
+            <div class="software-version">
+              <i class="fas fa-code-branch"></i> v${escapeHtml(sw.version || '1.0.0')}
+            </div>
+          </div>
         </div>
-        <div class="software-name">${escapeHtml(sw.name)}</div>
-        <div class="software-version">v${escapeHtml(sw.version || '1.0.0')}</div>
         
         <div class="software-preview">
           ${sw.previewUrl ? `<img src="${escapeHtml(sw.previewUrl)}" alt="Preview">` : '<i class="fas fa-image fa-2x" style="color: #8b5cf6;"></i>'}
         </div>
         
-        ${sw.description ? `<p style="color: #cbd5e1; margin: 0.5rem 0;">${escapeHtml(sw.description)}</p>` : ''}
+        ${sw.description ? `<div class="software-description">${escapeHtml(sw.description)}</div>` : ''}
         
-        <span class="status-badge ${statusClass}">${statusText}</span>
+        <div class="software-meta">
+          <span class="status-badge ${statusClass}">${statusText}</span>
+        </div>
+        
+        <div class="dates-info">
+          <div><i class="far fa-calendar-plus"></i> Erstellt: ${formatDate(sw.createdAt)}</div>
+          <div><i class="far fa-calendar-check"></i> Update: ${formatDate(sw.lastUpdated)}</div>
+        </div>
         
         <div class="software-actions">
-          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download style="flex: 1; text-align: center; text-decoration: none;">
+          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download target="_blank" style="flex: 1; text-align: center; text-decoration: none;">
             <i class="fas fa-download"></i> Download
           </a>
+          ${isAdmin() ? `
+            <button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>
+          ` : ''}
         </div>
       </div>`;
     });
     softwareContainer.innerHTML = html;
+
+    if (isAdmin()) {
+      document.querySelectorAll('.edit-sw').forEach(btn => {
+        btn.addEventListener('click', () => openSoftwareModal(btn.dataset.id));
+      });
+    }
   }
 
   // Login
@@ -659,30 +783,63 @@
     }
   });
 
-  // Logout
   logoutBtn.addEventListener('click', () => signOut(auth));
 
   // Software Modal
-  addSoftwareBtn.addEventListener('click', () => {
-    if (departments.length === 0) {
-      alert('Erstelle zuerst eine Abteilung!');
-      // Erstelle automatisch eine Abteilung
-      addDoc(collection(db, "departments"), { name: "Allgemein" }).then(() => {
-        softwareModal.classList.remove('hidden');
-      });
-      return;
-    }
+  function openSoftwareModal(swId = null) {
+    if (!isAdmin()) return;
+    
+    editingSwId = swId;
     
     document.getElementById('swName').value = '';
     document.getElementById('swVersion').value = '1.0.0';
     document.getElementById('swLink').value = '';
+    document.getElementById('swStatus').value = 'working';
     document.getElementById('swDescription').value = '';
     document.getElementById('iconPreview').innerHTML = '';
     document.getElementById('previewImagePreview').innerHTML = '';
     iconFile = null;
     previewFile = null;
+    existingIconUrl = null;
+    existingPreviewUrl = null;
+    
+    if (swId) {
+      const sw = software.find(s => s.id === swId);
+      if (sw) {
+        document.getElementById('swName').value = sw.name || '';
+        document.getElementById('swVersion').value = sw.version || '1.0.0';
+        document.getElementById('swLink').value = sw.url || '';
+        document.getElementById('swStatus').value = sw.status || 'working';
+        document.getElementById('swDescription').value = sw.description || '';
+        existingIconUrl = sw.iconUrl;
+        existingPreviewUrl = sw.previewUrl;
+        
+        if (sw.iconUrl) {
+          document.getElementById('iconPreview').innerHTML = `<img src="${sw.iconUrl}">`;
+        }
+        if (sw.previewUrl) {
+          document.getElementById('previewImagePreview').innerHTML = `<img src="${sw.previewUrl}">`;
+        }
+        
+        modalTitle.textContent = 'Software bearbeiten';
+        deleteSwBtn.classList.remove('hidden');
+      }
+    } else {
+      modalTitle.textContent = 'Software hinzufügen';
+      deleteSwBtn.classList.add('hidden');
+    }
     
     softwareModal.classList.remove('hidden');
+  }
+
+  addSoftwareBtn.addEventListener('click', () => {
+    if (departments.length === 0) {
+      addDoc(collection(db, "departments"), { name: "Allgemein" }).then(() => {
+        openSoftwareModal(null);
+      });
+      return;
+    }
+    openSoftwareModal(null);
   });
   
   document.getElementById('cancelSwBtn').addEventListener('click', () => {
@@ -698,6 +855,7 @@
     const file = e.target.files[0];
     if (file) {
       iconFile = file;
+      existingIconUrl = null;
       const reader = new FileReader();
       reader.onload = (e) => {
         document.getElementById('iconPreview').innerHTML = `<img src="${e.target.result}">`;
@@ -714,6 +872,7 @@
     const file = e.target.files[0];
     if (file) {
       previewFile = file;
+      existingPreviewUrl = null;
       const reader = new FileReader();
       reader.onload = (e) => {
         document.getElementById('previewImagePreview').innerHTML = `<img src="${e.target.result}">`;
@@ -722,7 +881,24 @@
     }
   });
 
-  // Software speichern
+  // Delete Software
+  deleteSwBtn.addEventListener('click', async () => {
+    if (!editingSwId) return;
+    if (!confirm('Software wirklich löschen?')) return;
+    
+    const sw = software.find(s => s.id === editingSwId);
+    if (sw?.iconUrl) {
+      try { await deleteObject(ref(storage, sw.iconUrl)); } catch(e) {}
+    }
+    if (sw?.previewUrl) {
+      try { await deleteObject(ref(storage, sw.previewUrl)); } catch(e) {}
+    }
+    
+    await deleteDoc(doc(db, "software", editingSwId));
+    softwareModal.classList.add('hidden');
+  });
+
+  // Save Software
   document.getElementById('saveSwBtn').addEventListener('click', async () => {
     const name = document.getElementById('swName').value.trim();
     const version = document.getElementById('swVersion').value.trim() || '1.0.0';
@@ -741,8 +917,8 @@
     }
 
     try {
-      let iconUrl = null;
-      let previewUrl = null;
+      let iconUrl = existingIconUrl;
+      let previewUrl = existingPreviewUrl;
 
       if (iconFile) {
         const iconRef = ref(storage, `icons/${Date.now()}_${iconFile.name}`);
@@ -756,22 +932,28 @@
         previewUrl = await getDownloadURL(previewRef);
       }
 
-      await addDoc(collection(db, "software"), {
+      const softwareData = {
         name,
         version,
         url,
         status,
         description,
-        departmentId: targetDept,
         iconUrl,
         previewUrl,
-        createdAt: serverTimestamp()
-      });
+        lastUpdated: serverTimestamp()
+      };
+
+      if (editingSwId) {
+        await updateDoc(doc(db, "software", editingSwId), softwareData);
+      } else {
+        softwareData.departmentId = targetDept;
+        softwareData.createdAt = serverTimestamp();
+        await addDoc(collection(db, "software"), softwareData);
+      }
 
       softwareModal.classList.add('hidden');
-      alert('✅ Software erfolgreich hinzugefügt!');
     } catch (error) {
-      alert('❌ Fehler: ' + error.message);
+      alert('Fehler: ' + error.message);
     }
   });
 
@@ -784,12 +966,10 @@
     if (e.target === softwareModal) softwareModal.classList.add('hidden');
   });
 
-  // Enter für Login
   document.getElementById('loginPassword').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') document.getElementById('submitLoginBtn').click();
   });
 
-  // Automatische erste Abteilung erstellen
   addDeptBtn.addEventListener('click', async () => {
     const name = prompt('Name der Abteilung:');
     if (name) {
