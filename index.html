@@ -50,7 +50,6 @@
       border-radius: 60px;
       border: 1px solid rgba(139, 92, 246, 0.3);
       margin-bottom: 2rem;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     }
     
     h1 {
@@ -60,7 +59,6 @@
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      text-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
     }
     
     .auth-area { display: flex; align-items: center; gap: 1rem; color: #e0e7ff; }
@@ -75,18 +73,15 @@
       cursor: pointer;
       font-weight: 600;
       transition: all 0.3s;
-      font-size: 0.95rem;
     }
     
     .btn:hover {
       background: rgba(139, 92, 246, 0.4);
       transform: translateY(-2px);
       box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
-      border-color: rgba(167, 139, 250, 0.6);
     }
     
-    .btn-primary { background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6)); border-color: rgba(167, 139, 250, 0.6); }
-    .btn-danger { background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.4); }
+    .btn-primary { background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6)); }
     
     .section-header { display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 1.5rem; }
     h2 { font-size: 1.8rem; font-weight: 700; color: #ddd6fe; }
@@ -190,7 +185,7 @@
     
     .dates-info { font-size: 0.75rem; color: #a78bfa; margin: 0.5rem 0; }
     .software-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
-    .software-actions .btn { padding: 0.5rem 1rem; font-size: 0.85rem; flex: 1; text-align: center; text-decoration: none; }
+    .software-actions .btn { padding: 0.5rem 1rem; font-size: 0.85rem; flex: 1; text-align: center; }
     .icon-btn { padding: 0.5rem; width: 38px; height: 38px; flex: 0; }
     
     .modal-overlay {
@@ -425,6 +420,24 @@
     return date.toLocaleDateString('de-DE');
   }
 
+  // Direkter Download ohne neuen Tab
+  async function downloadFile(url, filename) {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = filename || url.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      window.open(url, '_blank');
+    }
+  }
+
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     userEmailDisplay.textContent = user ? user.email : 'Gast';
@@ -492,8 +505,9 @@
     filtered.forEach(sw => {
       const statusClass = `status-${sw.status || 'working'}`;
       const statusText = { working: 'Working', stable: 'Stable', beta: 'Beta', discontinued: 'Discontinued', down: 'Down' }[sw.status] || 'Working';
+      const filename = sw.url.split('/').pop() || 'download';
 
-      html += `<div class="software-card">
+      html += `<div class="software-card" data-sw-id="${sw.id}">
         <div class="software-header">
           <div class="software-icon">
             ${sw.iconBase64 ? `<img src="${escapeHtml(sw.iconBase64)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
@@ -516,12 +530,24 @@
         </div>
         
         <div class="software-actions">
-          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download style="text-decoration: none;">Download</a>
+          <button class="btn btn-primary download-btn" data-url="${escapeHtml(sw.url)}" data-filename="${escapeHtml(filename)}">
+            <i class="fas fa-download"></i> Download
+          </button>
           ${isAdmin() ? `<button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>` : ''}
         </div>
       </div>`;
     });
     softwareContainer.innerHTML = html;
+
+    // Download Event Listener
+    document.querySelectorAll('.download-btn').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const url = btn.dataset.url;
+        const filename = btn.dataset.filename;
+        await downloadFile(url, filename);
+      });
+    });
 
     if (isAdmin()) {
       document.querySelectorAll('.edit-sw').forEach(btn => {
@@ -532,9 +558,7 @@
 
   loginBtn.addEventListener('click', () => loginModal.classList.remove('hidden'));
   
-  document.getElementById('cancelLoginBtn').addEventListener('click', () => {
-    loginModal.classList.add('hidden');
-  });
+  document.getElementById('cancelLoginBtn').addEventListener('click', () => loginModal.classList.add('hidden'));
   
   document.getElementById('submitLoginBtn').addEventListener('click', async () => {
     const email = document.getElementById('loginEmail').value.trim();
@@ -653,28 +677,30 @@
 
     let targetDept = selectedDeptId || (departments[0]?.id || null);
 
-    // WICHTIG: Nur definierte Werte übergeben
     const softwareData = {
       name, version, url, status, description,
       lastUpdated: serverTimestamp()
     };
 
-    // Bilder nur hinzufügen wenn vorhanden
     if (iconBase64) softwareData.iconBase64 = iconBase64;
     else if (existingIcon) softwareData.iconBase64 = existingIcon;
     
     if (previewBase64) softwareData.previewBase64 = previewBase64;
     else if (existingPreview) softwareData.previewBase64 = existingPreview;
 
-    if (editingSwId) {
-      await updateDoc(doc(db, "software", editingSwId), softwareData);
-    } else {
-      softwareData.departmentId = targetDept;
-      softwareData.createdAt = serverTimestamp();
-      await addDoc(collection(db, "software"), softwareData);
+    try {
+      if (editingSwId) {
+        await updateDoc(doc(db, "software", editingSwId), softwareData);
+      } else {
+        softwareData.departmentId = targetDept;
+        softwareData.createdAt = serverTimestamp();
+        await addDoc(collection(db, "software"), softwareData);
+      }
+      softwareModal.classList.add('hidden');
+    } catch (error) {
+      console.error('Fehler:', error);
+      alert('Fehler beim Speichern: ' + error.message);
     }
-
-    softwareModal.classList.add('hidden');
   });
 
   loginModal.addEventListener('click', (e) => { if (e.target === loginModal) loginModal.classList.add('hidden'); });
@@ -688,6 +714,8 @@
     const name = prompt('Name der Abteilung:');
     if (name) await addDoc(collection(db, "departments"), { name });
   });
+
+  console.log('✅ Software Hub ist bereit!');
 </script>
 </body>
 </html>
