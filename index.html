@@ -3,111 +3,465 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Software Hub Test</title>
+  <title>Software Hub · lzhenwei.dev</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    :root {
+      --primary: #8b5cf6;
+      --primary-dark: #6d28d9;
+      --primary-light: #a78bfa;
+    }
+    
     body {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      font-family: Arial, sans-serif;
-      padding: 20px;
+      background: radial-gradient(circle at 20% 30%, #1e1b4b 0%, #111827 50%, #030712 100%);
+      min-height: 100vh;
+      padding: 2rem;
+      position: relative;
     }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .header {
-      background: rgba(255,255,255,0.2);
-      padding: 20px;
-      border-radius: 10px;
-      margin-bottom: 20px;
-    }
-    .btn {
-      background: white;
-      color: #667eea;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-    }
-    .modal {
+    
+    body::before {
+      content: '';
       position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: white;
-      color: #333;
-      padding: 30px;
-      border-radius: 10px;
-      z-index: 1000;
-      max-width: 500px;
-      width: 90%;
+      width: 200%;
+      height: 200%;
+      top: -50%;
+      left: -50%;
+      background: radial-gradient(circle at 30% 40%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+                  radial-gradient(circle at 70% 60%, rgba(109, 40, 217, 0.1) 0%, transparent 50%);
+      animation: liquidMove 20s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
     }
+    
+    @keyframes liquidMove {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-2%, -1%) rotate(1deg); }
+      66% { transform: translate(1%, 2%) rotate(-1deg); }
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+    
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      background: rgba(30, 27, 75, 0.4);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-radius: 60px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      margin-bottom: 2rem;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, #c4b5fd, #ede9fe);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
+    }
+    
+    .auth-area {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: #e0e7ff;
+    }
+    
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 40px;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      background: rgba(76, 29, 149, 0.3);
+      backdrop-filter: blur(10px);
+      color: #e0e7ff;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      font-size: 0.95rem;
+    }
+    
+    .btn:hover {
+      background: rgba(139, 92, 246, 0.4);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+      border-color: rgba(167, 139, 250, 0.6);
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6));
+      border-color: rgba(167, 139, 250, 0.6);
+    }
+    
+    /* Departments */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 2rem 0 1.5rem;
+    }
+    
+    h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #ddd6fe;
+    }
+    
+    .departments-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    
+    .dept-card {
+      padding: 0.9rem 1.8rem;
+      background: rgba(30, 27, 75, 0.3);
+      backdrop-filter: blur(15px);
+      border-radius: 20px;
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      color: #ddd6fe;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .dept-card:hover {
+      background: rgba(139, 92, 246, 0.3);
+      transform: translateY(-3px);
+    }
+    
+    .dept-card.active {
+      border: 2px solid #8b5cf6;
+      background: rgba(139, 92, 246, 0.4);
+      box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
+    }
+    
+    /* Software Grid */
+    .software-section {
+      background: rgba(30, 27, 75, 0.2);
+      backdrop-filter: blur(25px);
+      border-radius: 30px;
+      padding: 2rem;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    
+    .software-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+    
+    .software-card {
+      background: rgba(30, 27, 75, 0.3);
+      backdrop-filter: blur(15px);
+      border-radius: 24px;
+      padding: 1.5rem;
+      border: 1px solid rgba(139, 92, 246, 0.25);
+      transition: all 0.3s;
+    }
+    
+    .software-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+      border-color: rgba(139, 92, 246, 0.5);
+    }
+    
+    .software-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, rgba(139, 92, 246, 0.4), rgba(109, 40, 217, 0.4));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      color: #c4b5fd;
+      margin-bottom: 1rem;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+    }
+    
+    .software-name {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #ede9fe;
+      margin-bottom: 0.5rem;
+    }
+    
+    .software-version {
+      color: #a78bfa;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    
+    .software-preview {
+      width: 100%;
+      height: 160px;
+      background: rgba(17, 24, 39, 0.4);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem 0;
+      border: 1px solid rgba(139, 92, 246, 0.2);
+      overflow: hidden;
+    }
+    
+    .software-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      margin: 0.5rem 0;
+    }
+    
+    .status-active { background: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
+    .status-maintenance { background: rgba(245, 158, 11, 0.3); color: #fcd34d; }
+    .status-discontinued { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
+    .status-down { background: rgba(107, 114, 128, 0.3); color: #d1d5db; }
+    
+    .software-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    
+    /* Modal */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
       z-index: 999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    
+    .modal {
+      background: rgba(30, 27, 75, 0.95);
+      backdrop-filter: blur(30px);
+      padding: 2rem;
+      border-radius: 30px;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      max-width: 500px;
+      width: 90%;
+      max-height: 90vh;
+      overflow-y: auto;
+      color: #e0e7ff;
+    }
+    
+    .modal h3 {
+      color: #c4b5fd;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+    
     .input-group {
-      margin-bottom: 15px;
+      margin-bottom: 1.5rem;
     }
+    
     .input-group label {
       display: block;
-      margin-bottom: 5px;
-      color: #333;
+      margin-bottom: 0.5rem;
+      color: #a78bfa;
+      font-weight: 600;
     }
-    .input-group input {
+    
+    .input-group input,
+    .input-group select,
+    .input-group textarea {
       width: 100%;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
+      padding: 0.8rem;
+      border-radius: 15px;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      background: rgba(17, 24, 39, 0.6);
+      color: #e0e7ff;
+      font-size: 1rem;
     }
-    .software-card {
-      background: rgba(255,255,255,0.2);
-      padding: 20px;
-      border-radius: 10px;
-      margin: 10px 0;
+    
+    .input-group input:focus,
+    .input-group select:focus,
+    .input-group textarea:focus {
+      outline: none;
+      border-color: #8b5cf6;
+      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
     }
+    
+    .file-upload {
+      border: 2px dashed rgba(139, 92, 246, 0.5);
+      border-radius: 15px;
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .file-upload:hover {
+      border-color: #8b5cf6;
+      background: rgba(139, 92, 246, 0.1);
+    }
+    
+    .file-upload i {
+      font-size: 2rem;
+      color: #a78bfa;
+      margin-bottom: 0.5rem;
+    }
+    
+    .modal-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: flex-end;
+      margin-top: 1.5rem;
+    }
+    
     .hidden {
       display: none !important;
     }
-    #status {
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
+    
+    .empty-message {
+      text-align: center;
+      padding: 3rem;
+      color: #8b5cf6;
+      grid-column: 1 / -1;
     }
-    .success {
-      background: rgba(76, 175, 80, 0.3);
+    
+    #iconPreview img, #previewImagePreview img {
+      margin-top: 10px;
+      border-radius: 10px;
+      border: 2px solid rgba(139, 92, 246, 0.4);
     }
-    .error {
-      background: rgba(244, 67, 54, 0.3);
+    
+    #iconPreview img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+    }
+    
+    #previewImagePreview img {
+      width: 100%;
+      max-height: 120px;
+      object-fit: cover;
     }
   </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
-    <h1>Software Hub Test</h1>
-    <div>
-      <span id="userStatus">Nicht angemeldet</span>
-      <button class="btn" id="loginBtn">Anmelden</button>
-      <button class="btn hidden" id="logoutBtn">Abmelden</button>
+    <h1><i class="fas fa-cube"></i> SoftRepo · lzhenwei</h1>
+    <div class="auth-area">
+      <span id="userEmailDisplay">Gast</span>
+      <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Anmelden</button>
+      <button class="btn hidden" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</button>
     </div>
   </div>
 
-  <div id="status"></div>
-
-  <div>
-    <h2>Abteilungen</h2>
-    <button class="btn" id="addDeptBtn" disabled>Neue Abteilung</button>
-    <div id="departmentsList"></div>
+  <div class="section-header">
+    <h2><i class="fas fa-folder-tree"></i> Abteilungen</h2>
+    <button class="btn hidden" id="addDeptBtn"><i class="fas fa-plus"></i> Neue Abteilung</button>
   </div>
+  <div class="departments-grid" id="departmentsContainer"></div>
 
-  <div>
-    <h2>Software</h2>
-    <button class="btn" id="addSoftwareBtn" disabled>Neue Software</button>
-    <div id="softwareList"></div>
+  <div class="software-section">
+    <div class="section-header">
+      <h2 id="currentDeptTitle">Alle Software</h2>
+      <button class="btn hidden" id="addSoftwareBtn"><i class="fas fa-plus"></i> Software hinzufügen</button>
+    </div>
+    <div class="software-grid" id="softwareContainer">
+      <div class="empty-message"><i class="fas fa-spinner fa-spin"></i><br>Lade Software...</div>
+    </div>
+  </div>
+</div>
+
+<!-- Software Modal -->
+<div class="modal-overlay hidden" id="softwareModal">
+  <div class="modal">
+    <h3>Software hinzufügen</h3>
+    
+    <div class="input-group">
+      <label>Name *</label>
+      <input type="text" id="swName" placeholder="Meine App">
+    </div>
+    
+    <div class="input-group">
+      <label>Version</label>
+      <input type="text" id="swVersion" placeholder="1.0.0" value="1.0.0">
+    </div>
+    
+    <div class="input-group">
+      <label>Download-Link *</label>
+      <input type="text" id="swLink" placeholder="https://github.com/.../app.dmg">
+    </div>
+    
+    <div class="input-group">
+      <label>Status</label>
+      <select id="swStatus">
+        <option value="active">🟢 Aktiv</option>
+        <option value="maintenance">🟡 Wartung</option>
+        <option value="discontinued">🔴 Eingestellt</option>
+        <option value="down">⚫ Down</option>
+      </select>
+    </div>
+    
+    <div class="input-group">
+      <label>Icon (optional)</label>
+      <div class="file-upload" id="iconUploadBtn">
+        <i class="fas fa-image"></i>
+        <p>Klick zum Hochladen</p>
+      </div>
+      <input type="file" id="iconFile" accept="image/*" style="display: none;">
+      <div id="iconPreview"></div>
+    </div>
+    
+    <div class="input-group">
+      <label>Vorschaubild (optional)</label>
+      <div class="file-upload" id="previewUploadBtn">
+        <i class="fas fa-image"></i>
+        <p>Klick zum Hochladen</p>
+      </div>
+      <input type="file" id="previewFile" accept="image/*" style="display: none;">
+      <div id="previewImagePreview"></div>
+    </div>
+    
+    <div class="input-group">
+      <label>Beschreibung</label>
+      <textarea id="swDescription" rows="3" placeholder="Beschreibung..."></textarea>
+    </div>
+    
+    <div class="modal-actions">
+      <button class="btn" id="cancelSwBtn">Abbrechen</button>
+      <button class="btn btn-primary" id="saveSwBtn">Speichern</button>
+    </div>
   </div>
 </div>
 
@@ -117,37 +471,22 @@
     <h3>Anmelden</h3>
     <div class="input-group">
       <label>E-Mail</label>
-      <input type="email" id="email" placeholder="deine@email.com">
+      <input type="email" id="loginEmail" placeholder="deine@email.com">
     </div>
     <div class="input-group">
       <label>Passwort</label>
-      <input type="password" id="password" placeholder="••••••••">
+      <input type="password" id="loginPassword" placeholder="••••••••">
     </div>
-    <div id="loginError" style="color: red; margin-bottom: 10px;"></div>
-    <button class="btn" id="doLogin">Anmelden</button>
-    <button class="btn" id="cancelLogin">Abbrechen</button>
-  </div>
-</div>
-
-<!-- Software Modal -->
-<div class="modal-overlay hidden" id="softwareModal">
-  <div class="modal">
-    <h3>Software hinzufügen</h3>
-    <div class="input-group">
-      <label>Name *</label>
-      <input type="text" id="swName" placeholder="Meine App">
+    <div id="loginError" style="color: #fca5a5; margin-bottom: 1rem;"></div>
+    <div class="modal-actions">
+      <button class="btn" id="cancelLoginBtn">Abbrechen</button>
+      <button class="btn btn-primary" id="submitLoginBtn">Anmelden</button>
     </div>
-    <div class="input-group">
-      <label>Download-Link *</label>
-      <input type="text" id="swLink" placeholder="https://...">
-    </div>
-    <button class="btn" id="saveSoftware">Speichern</button>
-    <button class="btn" id="cancelSoftware">Abbrechen</button>
   </div>
 </div>
 
 <script type="module">
-  // Firebase Konfiguration
+  // Firebase Config
   const firebaseConfig = {
     apiKey: "AIzaSyDjXg0y3vnuk8L7xBh9d_W80kzmWjilheo",
     authDomain: "software-lzw.firebaseapp.com",
@@ -157,211 +496,308 @@
     appId: "1:115286936457:web:2f0d6be270bd4e3717ef58"
   };
 
-  console.log('🚀 Starte App...');
-
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
-  try {
-    const app = initializeApp(firebaseConfig);
-    console.log('✅ Firebase initialisiert');
-    
-    const db = getFirestore(app);
-    console.log('✅ Firestore initialisiert');
-    
-    const auth = getAuth(app);
-    console.log('✅ Auth initialisiert');
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const auth = getAuth(app);
+  const storage = getStorage(app);
+  
+  const ADMIN_EMAIL = 'lzhenwei.dev@gmail.com';
+  
+  let departments = [];
+  let software = [];
+  let currentUser = null;
+  let selectedDeptId = null;
+  let iconFile = null;
+  let previewFile = null;
 
-    const ADMIN_EMAIL = 'lzhenwei.dev@gmail.com';
-    let currentUser = null;
+  // UI Elements
+  const userEmailDisplay = document.getElementById('userEmailDisplay');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const addDeptBtn = document.getElementById('addDeptBtn');
+  const addSoftwareBtn = document.getElementById('addSoftwareBtn');
+  const softwareContainer = document.getElementById('softwareContainer');
+  const currentDeptTitle = document.getElementById('currentDeptTitle');
+  const loginModal = document.getElementById('loginModal');
+  const softwareModal = document.getElementById('softwareModal');
 
-    // UI Elements
-    const userStatus = document.getElementById('userStatus');
-    const loginBtn = document.getElementById('loginBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const addDeptBtn = document.getElementById('addDeptBtn');
-    const addSoftwareBtn = document.getElementById('addSoftwareBtn');
-    const loginModal = document.getElementById('loginModal');
-    const softwareModal = document.getElementById('softwareModal');
-    const statusDiv = document.getElementById('status');
-
-    function showStatus(message, isError = false) {
-      statusDiv.innerHTML = message;
-      statusDiv.className = isError ? 'error' : 'success';
-      setTimeout(() => statusDiv.innerHTML = '', 3000);
-    }
-
-    // Auth Observer
-    onAuthStateChanged(auth, (user) => {
-      console.log('👤 Auth State:', user?.email);
-      currentUser = user;
-      
-      if (user) {
-        userStatus.textContent = `Angemeldet als: ${user.email}`;
-        loginBtn.classList.add('hidden');
-        logoutBtn.classList.remove('hidden');
-        
-        const isAdmin = user.email === ADMIN_EMAIL;
-        addDeptBtn.disabled = !isAdmin;
-        addSoftwareBtn.disabled = !isAdmin;
-        
-        showStatus(`✅ Angemeldet als ${user.email} ${isAdmin ? '(Admin)' : '(User)'}`);
-      } else {
-        userStatus.textContent = 'Nicht angemeldet';
-        loginBtn.classList.remove('hidden');
-        logoutBtn.classList.add('hidden');
-        addDeptBtn.disabled = true;
-        addSoftwareBtn.disabled = true;
-      }
-      
-      loadData();
-    });
-
-    // Daten laden
-    function loadData() {
-      console.log('📊 Lade Daten...');
-      
-      // Departments laden
-      const deptsRef = collection(db, "departments");
-      onSnapshot(deptsRef, (snapshot) => {
-        console.log(`📁 ${snapshot.docs.length} Abteilungen geladen`);
-        const deptsList = document.getElementById('departmentsList');
-        deptsList.innerHTML = snapshot.docs.map(doc => 
-          `<div>📁 ${doc.data().name}</div>`
-        ).join('') || '<div>Keine Abteilungen</div>';
-      });
-
-      // Software laden
-      const softwareRef = collection(db, "software");
-      onSnapshot(softwareRef, (snapshot) => {
-        console.log(`💾 ${snapshot.docs.length} Software geladen`);
-        const swList = document.getElementById('softwareList');
-        swList.innerHTML = snapshot.docs.map(doc => {
-          const data = doc.data();
-          return `<div class="software-card">
-            <h3>${data.name}</h3>
-            <a href="${data.url}" target="_blank">Download</a>
-          </div>`;
-        }).join('') || '<div>Keine Software</div>';
-      });
-    }
-
-    // Login
-    loginBtn.addEventListener('click', () => {
-      console.log('🔓 Login Modal öffnen');
-      loginModal.classList.remove('hidden');
-    });
-
-    document.getElementById('cancelLogin').addEventListener('click', () => {
-      loginModal.classList.add('hidden');
-    });
-
-    document.getElementById('doLogin').addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      
-      console.log('🔐 Login Versuch:', email);
-      
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        console.log('✅ Login erfolgreich');
-        loginModal.classList.add('hidden');
-        showStatus('✅ Login erfolgreich!');
-      } catch (error) {
-        console.error('❌ Login Fehler:', error);
-        document.getElementById('loginError').textContent = error.message;
-        showStatus(`❌ Login fehlgeschlagen: ${error.message}`, true);
-      }
-    });
-
-    // Logout
-    logoutBtn.addEventListener('click', async () => {
-      console.log('🚪 Logout');
-      await signOut(auth);
-      showStatus('👋 Abgemeldet');
-    });
-
-    // Software hinzufügen
-    addSoftwareBtn.addEventListener('click', () => {
-      console.log('➕ Software Modal öffnen');
-      if (!currentUser) {
-        showStatus('❌ Bitte zuerst anmelden!', true);
-        return;
-      }
-      softwareModal.classList.remove('hidden');
-    });
-
-    document.getElementById('cancelSoftware').addEventListener('click', () => {
-      softwareModal.classList.add('hidden');
-    });
-
-    document.getElementById('saveSoftware').addEventListener('click', async () => {
-      const name = document.getElementById('swName').value;
-      const url = document.getElementById('swLink').value;
-      
-      console.log('💾 Speichere Software:', { name, url });
-      
-      if (!name || !url) {
-        showStatus('❌ Name und Link sind erforderlich!', true);
-        return;
-      }
-
-      try {
-        // Erste Abteilung finden oder erstellen
-        const deptsSnapshot = await getDocs(collection(db, "departments"));
-        let deptId;
-        
-        if (deptsSnapshot.empty) {
-          console.log('📁 Erstelle erste Abteilung...');
-          const newDept = await addDoc(collection(db, "departments"), {
-            name: "Allgemein"
-          });
-          deptId = newDept.id;
-          console.log('✅ Abteilung erstellt:', deptId);
-        } else {
-          deptId = deptsSnapshot.docs[0].id;
-        }
-
-        // Software speichern
-        const softwareData = {
-          name: name,
-          url: url,
-          departmentId: deptId,
-          status: 'active',
-          version: '1.0.0',
-          createdAt: new Date().toISOString()
-        };
-
-        console.log('💾 Speichere in Firestore:', softwareData);
-        const docRef = await addDoc(collection(db, "software"), softwareData);
-        console.log('✅ Software gespeichert mit ID:', docRef.id);
-        
-        softwareModal.classList.add('hidden');
-        document.getElementById('swName').value = '';
-        document.getElementById('swLink').value = '';
-        showStatus('✅ Software erfolgreich hinzugefügt!');
-      } catch (error) {
-        console.error('❌ Fehler beim Speichern:', error);
-        showStatus(`❌ Fehler: ${error.message}`, true);
-      }
-    });
-
-    // Overlay schließen
-    loginModal.addEventListener('click', (e) => {
-      if (e.target === loginModal) loginModal.classList.add('hidden');
-    });
-    
-    softwareModal.addEventListener('click', (e) => {
-      if (e.target === softwareModal) softwareModal.classList.add('hidden');
-    });
-
-    console.log('✅ App vollständig geladen!');
-
-  } catch (error) {
-    console.error('❌ FATALER FEHLER:', error);
-    document.body.innerHTML = `<h1 style="color: red;">Fehler: ${error.message}</h1>`;
+  function isAdmin() {
+    return currentUser && currentUser.email === ADMIN_EMAIL;
   }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
+  }
+
+  // Auth Observer
+  onAuthStateChanged(auth, (user) => {
+    currentUser = user;
+    userEmailDisplay.textContent = user ? user.email : 'Gast';
+    loginBtn.classList.toggle('hidden', !!user);
+    logoutBtn.classList.toggle('hidden', !user);
+    
+    const admin = isAdmin();
+    addDeptBtn.classList.toggle('hidden', !admin);
+    addSoftwareBtn.classList.toggle('hidden', !admin);
+    
+    loadData();
+  });
+
+  // Daten laden
+  function loadData() {
+    // Departments
+    onSnapshot(collection(db, "departments"), (snapshot) => {
+      departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderDepartments();
+    });
+
+    // Software
+    onSnapshot(query(collection(db, "software"), orderBy("createdAt", "desc")), (snapshot) => {
+      software = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderSoftware();
+    });
+  }
+
+  function renderDepartments() {
+    const container = document.getElementById('departmentsContainer');
+    let html = '';
+    departments.forEach(dept => {
+      html += `<div class="dept-card ${selectedDeptId === dept.id ? 'active' : ''}" data-id="${dept.id}">
+        <i class="fas fa-folder"></i> ${escapeHtml(dept.name)}
+      </div>`;
+    });
+    html += `<div class="dept-card ${selectedDeptId === null ? 'active' : ''}" data-id="all">
+      <i class="fas fa-globe"></i> Alle Software
+    </div>`;
+    container.innerHTML = html;
+
+    container.querySelectorAll('.dept-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const id = card.dataset.id;
+        selectedDeptId = id === 'all' ? null : id;
+        renderDepartments();
+        renderSoftware();
+      });
+    });
+  }
+
+  function renderSoftware() {
+    const filtered = selectedDeptId 
+      ? software.filter(s => s.departmentId === selectedDeptId)
+      : software;
+    
+    const deptName = selectedDeptId 
+      ? departments.find(d => d.id === selectedDeptId)?.name || 'Unbekannt'
+      : 'Alle Software';
+    currentDeptTitle.textContent = deptName;
+
+    if (filtered.length === 0) {
+      softwareContainer.innerHTML = '<div class="empty-message"><i class="fas fa-box-open"></i><br>Keine Software vorhanden</div>';
+      return;
+    }
+
+    let html = '';
+    filtered.forEach(sw => {
+      const statusClass = `status-${sw.status || 'active'}`;
+      const statusText = { active: 'Aktiv', maintenance: 'Wartung', discontinued: 'Eingestellt', down: 'Down' }[sw.status] || 'Aktiv';
+
+      html += `<div class="software-card">
+        <div class="software-icon">
+          ${sw.iconUrl ? `<img src="${escapeHtml(sw.iconUrl)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
+        </div>
+        <div class="software-name">${escapeHtml(sw.name)}</div>
+        <div class="software-version">v${escapeHtml(sw.version || '1.0.0')}</div>
+        
+        <div class="software-preview">
+          ${sw.previewUrl ? `<img src="${escapeHtml(sw.previewUrl)}" alt="Preview">` : '<i class="fas fa-image fa-2x" style="color: #8b5cf6;"></i>'}
+        </div>
+        
+        ${sw.description ? `<p style="color: #cbd5e1; margin: 0.5rem 0;">${escapeHtml(sw.description)}</p>` : ''}
+        
+        <span class="status-badge ${statusClass}">${statusText}</span>
+        
+        <div class="software-actions">
+          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download style="flex: 1; text-align: center; text-decoration: none;">
+            <i class="fas fa-download"></i> Download
+          </a>
+        </div>
+      </div>`;
+    });
+    softwareContainer.innerHTML = html;
+  }
+
+  // Login
+  loginBtn.addEventListener('click', () => loginModal.classList.remove('hidden'));
+  
+  document.getElementById('cancelLoginBtn').addEventListener('click', () => {
+    loginModal.classList.add('hidden');
+    document.getElementById('loginError').textContent = '';
+  });
+  
+  document.getElementById('submitLoginBtn').addEventListener('click', async () => {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) {
+      document.getElementById('loginError').textContent = 'Bitte E-Mail und Passwort eingeben';
+      return;
+    }
+    
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      loginModal.classList.add('hidden');
+      document.getElementById('loginEmail').value = '';
+      document.getElementById('loginPassword').value = '';
+    } catch (error) {
+      document.getElementById('loginError').textContent = 'Anmeldung fehlgeschlagen: ' + error.message;
+    }
+  });
+
+  // Logout
+  logoutBtn.addEventListener('click', () => signOut(auth));
+
+  // Software Modal
+  addSoftwareBtn.addEventListener('click', () => {
+    if (departments.length === 0) {
+      alert('Erstelle zuerst eine Abteilung!');
+      // Erstelle automatisch eine Abteilung
+      addDoc(collection(db, "departments"), { name: "Allgemein" }).then(() => {
+        softwareModal.classList.remove('hidden');
+      });
+      return;
+    }
+    
+    document.getElementById('swName').value = '';
+    document.getElementById('swVersion').value = '1.0.0';
+    document.getElementById('swLink').value = '';
+    document.getElementById('swDescription').value = '';
+    document.getElementById('iconPreview').innerHTML = '';
+    document.getElementById('previewImagePreview').innerHTML = '';
+    iconFile = null;
+    previewFile = null;
+    
+    softwareModal.classList.remove('hidden');
+  });
+  
+  document.getElementById('cancelSwBtn').addEventListener('click', () => {
+    softwareModal.classList.add('hidden');
+  });
+
+  // File Uploads
+  document.getElementById('iconUploadBtn').addEventListener('click', () => {
+    document.getElementById('iconFile').click();
+  });
+  
+  document.getElementById('iconFile').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      iconFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('iconPreview').innerHTML = `<img src="${e.target.result}">`;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  document.getElementById('previewUploadBtn').addEventListener('click', () => {
+    document.getElementById('previewFile').click();
+  });
+  
+  document.getElementById('previewFile').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      previewFile = file;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        document.getElementById('previewImagePreview').innerHTML = `<img src="${e.target.result}">`;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Software speichern
+  document.getElementById('saveSwBtn').addEventListener('click', async () => {
+    const name = document.getElementById('swName').value.trim();
+    const version = document.getElementById('swVersion').value.trim() || '1.0.0';
+    const url = document.getElementById('swLink').value.trim();
+    const status = document.getElementById('swStatus').value;
+    const description = document.getElementById('swDescription').value.trim();
+
+    if (!name || !url) {
+      alert('Name und Download-Link sind erforderlich!');
+      return;
+    }
+
+    let targetDept = selectedDeptId;
+    if (!targetDept && departments.length > 0) {
+      targetDept = departments[0].id;
+    }
+
+    try {
+      let iconUrl = null;
+      let previewUrl = null;
+
+      if (iconFile) {
+        const iconRef = ref(storage, `icons/${Date.now()}_${iconFile.name}`);
+        await uploadBytes(iconRef, iconFile);
+        iconUrl = await getDownloadURL(iconRef);
+      }
+
+      if (previewFile) {
+        const previewRef = ref(storage, `previews/${Date.now()}_${previewFile.name}`);
+        await uploadBytes(previewRef, previewFile);
+        previewUrl = await getDownloadURL(previewRef);
+      }
+
+      await addDoc(collection(db, "software"), {
+        name,
+        version,
+        url,
+        status,
+        description,
+        departmentId: targetDept,
+        iconUrl,
+        previewUrl,
+        createdAt: serverTimestamp()
+      });
+
+      softwareModal.classList.add('hidden');
+      alert('✅ Software erfolgreich hinzugefügt!');
+    } catch (error) {
+      alert('❌ Fehler: ' + error.message);
+    }
+  });
+
+  // Overlay schließen
+  loginModal.addEventListener('click', (e) => {
+    if (e.target === loginModal) loginModal.classList.add('hidden');
+  });
+  
+  softwareModal.addEventListener('click', (e) => {
+    if (e.target === softwareModal) softwareModal.classList.add('hidden');
+  });
+
+  // Enter für Login
+  document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') document.getElementById('submitLoginBtn').click();
+  });
+
+  // Automatische erste Abteilung erstellen
+  addDeptBtn.addEventListener('click', async () => {
+    const name = prompt('Name der Abteilung:');
+    if (name) {
+      await addDoc(collection(db, "departments"), { name });
+    }
+  });
+
+  console.log('✅ Software Hub ist bereit!');
 </script>
 </body>
 </html>
