@@ -190,7 +190,7 @@
     
     .dates-info { font-size: 0.75rem; color: #a78bfa; margin: 0.5rem 0; }
     .software-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
-    .software-actions .btn { padding: 0.5rem 1rem; font-size: 0.85rem; flex: 1; text-align: center; }
+    .software-actions .btn { padding: 0.5rem 1rem; font-size: 0.85rem; flex: 1; text-align: center; text-decoration: none; }
     .icon-btn { padding: 0.5rem; width: 38px; height: 38px; flex: 0; }
     
     .modal-overlay {
@@ -250,11 +250,10 @@
       margin-top: 10px;
       border-radius: 10px;
       border: 2px solid rgba(139, 92, 246, 0.4);
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
     }
-    #previewImagePreview img { width: 100%; height: auto; max-height: 120px; }
+    
+    #iconPreview img { width: 80px; height: 80px; object-fit: cover; }
+    #previewImagePreview img { width: 100%; height: auto; max-height: 120px; object-fit: cover; }
   </style>
 </head>
 <body>
@@ -355,7 +354,7 @@
     <h3>Anmelden</h3>
     <div class="input-group">
       <label>E-Mail</label>
-      <input type="email" id="loginEmail" placeholder="lzhenwei.dev@gmail.com">
+      <input type="email" id="loginEmail" placeholder="lzhenwei.dev@gmail.com" value="lzhenwei.dev@gmail.com">
     </div>
     <div class="input-group">
       <label>Passwort</label>
@@ -370,7 +369,6 @@
 </div>
 
 <script type="module">
-  // Firebase Konfiguration - NUR Firestore, KEIN Storage!
   const firebaseConfig = {
     apiKey: "AIzaSyDjXg0y3vnuk8L7xBh9d_W80kzmWjilheo",
     authDomain: "software-lzw.firebaseapp.com",
@@ -397,6 +395,8 @@
   let editingSwId = null;
   let iconBase64 = null;
   let previewBase64 = null;
+  let existingIcon = null;
+  let existingPreview = null;
 
   const userEmailDisplay = document.getElementById('userEmailDisplay');
   const loginBtn = document.getElementById('loginBtn');
@@ -456,7 +456,6 @@
     departments.forEach(dept => {
       html += `<div class="dept-card ${selectedDeptId === dept.id ? 'active' : ''}" data-id="${dept.id}">
         <i class="fas fa-folder"></i> ${escapeHtml(dept.name)}
-        ${isAdmin() ? `<button class="delete-dept-btn" data-id="${dept.id}" style="margin-left: auto; background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1.2rem;">🗑️</button>` : ''}
       </div>`;
     });
     html += `<div class="dept-card ${selectedDeptId === null ? 'active' : ''}" data-id="all">
@@ -465,31 +464,13 @@
     container.innerHTML = html;
 
     container.querySelectorAll('.dept-card').forEach(card => {
-      card.addEventListener('click', (e) => {
-        if (e.target.classList.contains('delete-dept-btn')) return;
+      card.addEventListener('click', () => {
         const id = card.dataset.id;
         selectedDeptId = id === 'all' ? null : id;
         renderDepartments();
         renderSoftware();
       });
     });
-
-    if (isAdmin()) {
-      container.querySelectorAll('.delete-dept-btn').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          if (confirm('Abteilung und alle Software löschen?')) {
-            const deptId = btn.dataset.id;
-            const swToDelete = software.filter(s => s.departmentId === deptId);
-            for (const sw of swToDelete) {
-              await deleteDoc(doc(db, "software", sw.id));
-            }
-            await deleteDoc(doc(db, "departments", deptId));
-            if (selectedDeptId === deptId) selectedDeptId = null;
-          }
-        });
-      });
-    }
   }
 
   function renderSoftware() {
@@ -535,7 +516,7 @@
         </div>
         
         <div class="software-actions">
-          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download>Download</a>
+          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download style="text-decoration: none;">Download</a>
           ${isAdmin() ? `<button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>` : ''}
         </div>
       </div>`;
@@ -553,7 +534,6 @@
   
   document.getElementById('cancelLoginBtn').addEventListener('click', () => {
     loginModal.classList.add('hidden');
-    document.getElementById('loginError').textContent = '';
   });
   
   document.getElementById('submitLoginBtn').addEventListener('click', async () => {
@@ -583,6 +563,8 @@
     document.getElementById('previewImagePreview').innerHTML = '';
     iconBase64 = null;
     previewBase64 = null;
+    existingIcon = null;
+    existingPreview = null;
     
     if (swId) {
       const sw = software.find(s => s.id === swId);
@@ -592,8 +574,8 @@
         document.getElementById('swLink').value = sw.url || '';
         document.getElementById('swStatus').value = sw.status || 'working';
         document.getElementById('swDescription').value = sw.description || '';
-        iconBase64 = sw.iconBase64;
-        previewBase64 = sw.previewBase64;
+        existingIcon = sw.iconBase64 || null;
+        existingPreview = sw.previewBase64 || null;
         
         if (sw.iconBase64) {
           document.getElementById('iconPreview').innerHTML = `<img src="${sw.iconBase64}">`;
@@ -623,7 +605,6 @@
   
   document.getElementById('cancelSwBtn').addEventListener('click', () => softwareModal.classList.add('hidden'));
 
-  // Bild zu Base64 konvertieren
   function fileToBase64(file) {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -637,6 +618,7 @@
     const file = e.target.files[0];
     if (file) {
       iconBase64 = await fileToBase64(file);
+      existingIcon = null;
       document.getElementById('iconPreview').innerHTML = `<img src="${iconBase64}">`;
     }
   });
@@ -646,6 +628,7 @@
     const file = e.target.files[0];
     if (file) {
       previewBase64 = await fileToBase64(file);
+      existingPreview = null;
       document.getElementById('previewImagePreview').innerHTML = `<img src="${previewBase64}">`;
     }
   });
@@ -670,11 +653,18 @@
 
     let targetDept = selectedDeptId || (departments[0]?.id || null);
 
+    // WICHTIG: Nur definierte Werte übergeben
     const softwareData = {
       name, version, url, status, description,
-      iconBase64, previewBase64,
       lastUpdated: serverTimestamp()
     };
+
+    // Bilder nur hinzufügen wenn vorhanden
+    if (iconBase64) softwareData.iconBase64 = iconBase64;
+    else if (existingIcon) softwareData.iconBase64 = existingIcon;
+    
+    if (previewBase64) softwareData.previewBase64 = previewBase64;
+    else if (existingPreview) softwareData.previewBase64 = existingPreview;
 
     if (editingSwId) {
       await updateDoc(doc(db, "software", editingSwId), softwareData);
