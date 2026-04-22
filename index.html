@@ -6,20 +6,10 @@
   <title>Software Hub · lzhenwei.dev</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    }
-    
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
-    :root {
-      --primary: #8b5cf6;
-      --primary-dark: #6d28d9;
-      --primary-light: #a78bfa;
-    }
+    :root { --primary: #8b5cf6; --primary-dark: #6d28d9; --primary-light: #a78bfa; }
     
     body {
       background: radial-gradient(circle at 20% 30%, #1e1b4b 0%, #111827 50%, #030712 100%);
@@ -48,14 +38,8 @@
       66% { transform: translate(1%, 2%) rotate(-1deg); }
     }
     
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
+    .container { max-width: 1400px; margin: 0 auto; position: relative; z-index: 1; }
     
-    /* Header */
     .header {
       display: flex;
       justify-content: space-between;
@@ -63,7 +47,6 @@
       padding: 1.5rem 2rem;
       background: rgba(30, 27, 75, 0.4);
       backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
       border-radius: 60px;
       border: 1px solid rgba(139, 92, 246, 0.3);
       margin-bottom: 2rem;
@@ -80,12 +63,7 @@
       text-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
     }
     
-    .auth-area {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      color: #e0e7ff;
-    }
+    .auth-area { display: flex; align-items: center; gap: 1rem; color: #e0e7ff; }
     
     .btn {
       padding: 0.7rem 1.5rem;
@@ -107,41 +85,13 @@
       border-color: rgba(167, 139, 250, 0.6);
     }
     
-    .btn-primary {
-      background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6));
-      border-color: rgba(167, 139, 250, 0.6);
-    }
+    .btn-primary { background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6)); border-color: rgba(167, 139, 250, 0.6); }
+    .btn-danger { background: rgba(239, 68, 68, 0.3); border-color: rgba(239, 68, 68, 0.4); }
     
-    .btn-danger {
-      background: rgba(239, 68, 68, 0.3);
-      border-color: rgba(239, 68, 68, 0.4);
-    }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 1.5rem; }
+    h2 { font-size: 1.8rem; font-weight: 700; color: #ddd6fe; }
     
-    .btn-danger:hover {
-      background: rgba(239, 68, 68, 0.5);
-      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.3);
-    }
-    
-    /* Departments */
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 2rem 0 1.5rem;
-    }
-    
-    h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #ddd6fe;
-    }
-    
-    .departments-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
+    .departments-grid { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; }
     
     .dept-card {
       padding: 0.9rem 1.8rem;
@@ -158,18 +108,9 @@
       gap: 10px;
     }
     
-    .dept-card:hover {
-      background: rgba(139, 92, 246, 0.3);
-      transform: translateY(-3px);
-    }
+    .dept-card:hover { background: rgba(139, 92, 246, 0.3); transform: translateY(-3px); }
+    .dept-card.active { border: 2px solid #8b5cf6; background: rgba(139, 92, 246, 0.4); }
     
-    .dept-card.active {
-      border: 2px solid #8b5cf6;
-      background: rgba(139, 92, 246, 0.4);
-      box-shadow: 0 0 30px rgba(139, 92, 246, 0.3);
-    }
-    
-    /* Software Grid */
     .software-section {
       background: rgba(30, 27, 75, 0.2);
       backdrop-filter: blur(25px);
@@ -194,18 +135,9 @@
       transition: all 0.3s;
     }
     
-    .software-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
-      border-color: rgba(139, 92, 246, 0.5);
-    }
+    .software-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2); }
     
-    .software-header {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1rem;
-    }
+    .software-header { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
     
     .software-icon {
       width: 60px;
@@ -222,27 +154,9 @@
       flex-shrink: 0;
     }
     
-    .software-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .software-title {
-      flex: 1;
-    }
-    
-    .software-name {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #ede9fe;
-      margin-bottom: 0.25rem;
-    }
-    
-    .software-version {
-      color: #a78bfa;
-      font-size: 0.85rem;
-    }
+    .software-icon img { width: 100%; height: 100%; object-fit: cover; }
+    .software-name { font-size: 1.2rem; font-weight: 700; color: #ede9fe; }
+    .software-version { color: #a78bfa; font-size: 0.85rem; }
     
     .software-preview {
       width: 100%;
@@ -257,18 +171,7 @@
       overflow: hidden;
     }
     
-    .software-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .software-description {
-      color: #cbd5e1;
-      font-size: 0.9rem;
-      margin: 0.75rem 0;
-      line-height: 1.4;
-    }
+    .software-preview img { width: 100%; height: 100%; object-fit: cover; }
     
     .status-badge {
       display: inline-block;
@@ -277,52 +180,19 @@
       font-size: 0.75rem;
       font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
     }
     
-    .status-working { background: rgba(16, 185, 129, 0.3); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .status-stable { background: rgba(59, 130, 246, 0.3); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.4); }
-    .status-beta { background: rgba(245, 158, 11, 0.3); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .status-discontinued { background: rgba(239, 68, 68, 0.3); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .status-down { background: rgba(107, 114, 128, 0.3); color: #d1d5db; border: 1px solid rgba(107, 114, 128, 0.4); }
+    .status-working { background: rgba(16, 185, 129, 0.3); color: #6ee7b7; }
+    .status-stable { background: rgba(59, 130, 246, 0.3); color: #93c5fd; }
+    .status-beta { background: rgba(245, 158, 11, 0.3); color: #fcd34d; }
+    .status-discontinued { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
+    .status-down { background: rgba(107, 114, 128, 0.3); color: #d1d5db; }
     
-    .software-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 0.75rem 0;
-    }
+    .dates-info { font-size: 0.75rem; color: #a78bfa; margin: 0.5rem 0; }
+    .software-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
+    .software-actions .btn { padding: 0.5rem 1rem; font-size: 0.85rem; flex: 1; text-align: center; }
+    .icon-btn { padding: 0.5rem; width: 38px; height: 38px; flex: 0; }
     
-    .dates-info {
-      font-size: 0.75rem;
-      color: #a78bfa;
-    }
-    
-    .dates-info i {
-      margin-right: 4px;
-    }
-    
-    .software-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    
-    .software-actions .btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.85rem;
-    }
-    
-    .icon-btn {
-      padding: 0.5rem;
-      width: 38px;
-      height: 38px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
-    /* Modal */
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
@@ -347,26 +217,11 @@
       color: #e0e7ff;
     }
     
-    .modal h3 {
-      color: #c4b5fd;
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
-    }
+    .modal h3 { color: #c4b5fd; margin-bottom: 1.5rem; }
+    .input-group { margin-bottom: 1.5rem; }
+    .input-group label { display: block; margin-bottom: 0.5rem; color: #a78bfa; }
     
-    .input-group {
-      margin-bottom: 1.5rem;
-    }
-    
-    .input-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #a78bfa;
-      font-weight: 600;
-    }
-    
-    .input-group input,
-    .input-group select,
-    .input-group textarea {
+    .input-group input, .input-group select, .input-group textarea {
       width: 100%;
       padding: 0.8rem;
       border-radius: 15px;
@@ -376,69 +231,30 @@
       font-size: 1rem;
     }
     
-    .input-group input:focus,
-    .input-group select:focus,
-    .input-group textarea:focus {
-      outline: none;
-      border-color: #8b5cf6;
-      box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-    }
-    
     .file-upload {
       border: 2px dashed rgba(139, 92, 246, 0.5);
       border-radius: 15px;
       padding: 1.5rem;
       text-align: center;
       cursor: pointer;
-      transition: all 0.3s;
     }
     
-    .file-upload:hover {
-      border-color: #8b5cf6;
-      background: rgba(139, 92, 246, 0.1);
-    }
+    .file-upload:hover { border-color: #8b5cf6; background: rgba(139, 92, 246, 0.1); }
+    .file-upload i { font-size: 2rem; color: #a78bfa; }
     
-    .file-upload i {
-      font-size: 2rem;
-      color: #a78bfa;
-      margin-bottom: 0.5rem;
-    }
-    
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: flex-end;
-      margin-top: 1.5rem;
-    }
-    
-    .hidden {
-      display: none !important;
-    }
-    
-    .empty-message {
-      text-align: center;
-      padding: 3rem;
-      color: #8b5cf6;
-      grid-column: 1 / -1;
-    }
+    .modal-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 1.5rem; }
+    .hidden { display: none !important; }
+    .empty-message { text-align: center; padding: 3rem; color: #8b5cf6; grid-column: 1 / -1; }
     
     #iconPreview img, #previewImagePreview img {
       margin-top: 10px;
       border-radius: 10px;
       border: 2px solid rgba(139, 92, 246, 0.4);
-    }
-    
-    #iconPreview img {
       width: 80px;
       height: 80px;
       object-fit: cover;
     }
-    
-    #previewImagePreview img {
-      width: 100%;
-      max-height: 120px;
-      object-fit: cover;
-    }
+    #previewImagePreview img { width: 100%; height: auto; max-height: 120px; }
   </style>
 </head>
 <body>
@@ -539,7 +355,7 @@
     <h3>Anmelden</h3>
     <div class="input-group">
       <label>E-Mail</label>
-      <input type="email" id="loginEmail" placeholder="deine@email.com">
+      <input type="email" id="loginEmail" placeholder="lzhenwei.dev@gmail.com">
     </div>
     <div class="input-group">
       <label>Passwort</label>
@@ -554,12 +370,12 @@
 </div>
 
 <script type="module">
-  // Firebase Config
+  // Firebase Konfiguration - NUR Firestore, KEIN Storage!
   const firebaseConfig = {
     apiKey: "AIzaSyDjXg0y3vnuk8L7xBh9d_W80kzmWjilheo",
     authDomain: "software-lzw.firebaseapp.com",
     projectId: "software-lzw",
-    storageBucket: "software-lzw.firebasestorage.app",
+    storageBucket: "software-lzw.appspot.com",
     messagingSenderId: "115286936457",
     appId: "1:115286936457:web:2f0d6be270bd4e3717ef58"
   };
@@ -567,12 +383,10 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
   import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const auth = getAuth(app);
-  const storage = getStorage(app);
   
   const ADMIN_EMAIL = 'lzhenwei.dev@gmail.com';
   
@@ -581,12 +395,9 @@
   let currentUser = null;
   let selectedDeptId = null;
   let editingSwId = null;
-  let iconFile = null;
-  let previewFile = null;
-  let existingIconUrl = null;
-  let existingPreviewUrl = null;
+  let iconBase64 = null;
+  let previewBase64 = null;
 
-  // UI Elements
   const userEmailDisplay = document.getElementById('userEmailDisplay');
   const loginBtn = document.getElementById('loginBtn');
   const logoutBtn = document.getElementById('logoutBtn');
@@ -611,10 +422,9 @@
   function formatDate(timestamp) {
     if (!timestamp) return '—';
     const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return date.toLocaleDateString('de-DE');
   }
 
-  // Auth Observer
   onAuthStateChanged(auth, (user) => {
     currentUser = user;
     userEmailDisplay.textContent = user ? user.email : 'Gast';
@@ -628,7 +438,6 @@
     loadData();
   });
 
-  // Daten laden
   function loadData() {
     onSnapshot(collection(db, "departments"), (snapshot) => {
       departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -701,36 +510,24 @@
     let html = '';
     filtered.forEach(sw => {
       const statusClass = `status-${sw.status || 'working'}`;
-      const statusText = { 
-        working: 'Working', 
-        stable: 'Stable', 
-        beta: 'Beta', 
-        discontinued: 'Discontinued', 
-        down: 'Down' 
-      }[sw.status] || 'Working';
+      const statusText = { working: 'Working', stable: 'Stable', beta: 'Beta', discontinued: 'Discontinued', down: 'Down' }[sw.status] || 'Working';
 
       html += `<div class="software-card">
         <div class="software-header">
           <div class="software-icon">
-            ${sw.iconUrl ? `<img src="${escapeHtml(sw.iconUrl)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
+            ${sw.iconBase64 ? `<img src="${escapeHtml(sw.iconBase64)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
           </div>
-          <div class="software-title">
+          <div>
             <div class="software-name">${escapeHtml(sw.name)}</div>
-            <div class="software-version">
-              <i class="fas fa-code-branch"></i> v${escapeHtml(sw.version || '1.0.0')}
-            </div>
+            <div class="software-version">v${escapeHtml(sw.version || '1.0.0')}</div>
           </div>
         </div>
         
         <div class="software-preview">
-          ${sw.previewUrl ? `<img src="${escapeHtml(sw.previewUrl)}" alt="Preview">` : '<i class="fas fa-image fa-2x" style="color: #8b5cf6;"></i>'}
+          ${sw.previewBase64 ? `<img src="${escapeHtml(sw.previewBase64)}" alt="Preview">` : '<i class="fas fa-image fa-2x" style="color: #8b5cf6;"></i>'}
         </div>
         
-        ${sw.description ? `<div class="software-description">${escapeHtml(sw.description)}</div>` : ''}
-        
-        <div class="software-meta">
-          <span class="status-badge ${statusClass}">${statusText}</span>
-        </div>
+        <span class="status-badge ${statusClass}">${statusText}</span>
         
         <div class="dates-info">
           <div><i class="far fa-calendar-plus"></i> Erstellt: ${formatDate(sw.createdAt)}</div>
@@ -738,12 +535,8 @@
         </div>
         
         <div class="software-actions">
-          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download target="_blank" style="flex: 1; text-align: center; text-decoration: none;">
-            <i class="fas fa-download"></i> Download
-          </a>
-          ${isAdmin() ? `
-            <button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>
-          ` : ''}
+          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download>Download</a>
+          ${isAdmin() ? `<button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>` : ''}
         </div>
       </div>`;
     });
@@ -756,7 +549,6 @@
     }
   }
 
-  // Login
   loginBtn.addEventListener('click', () => loginModal.classList.remove('hidden'));
   
   document.getElementById('cancelLoginBtn').addEventListener('click', () => {
@@ -768,29 +560,20 @@
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     
-    if (!email || !password) {
-      document.getElementById('loginError').textContent = 'Bitte E-Mail und Passwort eingeben';
-      return;
-    }
-    
     try {
       await signInWithEmailAndPassword(auth, email, password);
       loginModal.classList.add('hidden');
-      document.getElementById('loginEmail').value = '';
-      document.getElementById('loginPassword').value = '';
     } catch (error) {
-      document.getElementById('loginError').textContent = 'Anmeldung fehlgeschlagen: ' + error.message;
+      document.getElementById('loginError').textContent = 'Fehler: ' + error.message;
     }
   });
 
   logoutBtn.addEventListener('click', () => signOut(auth));
 
-  // Software Modal
   function openSoftwareModal(swId = null) {
     if (!isAdmin()) return;
     
     editingSwId = swId;
-    
     document.getElementById('swName').value = '';
     document.getElementById('swVersion').value = '1.0.0';
     document.getElementById('swLink').value = '';
@@ -798,10 +581,8 @@
     document.getElementById('swDescription').value = '';
     document.getElementById('iconPreview').innerHTML = '';
     document.getElementById('previewImagePreview').innerHTML = '';
-    iconFile = null;
-    previewFile = null;
-    existingIconUrl = null;
-    existingPreviewUrl = null;
+    iconBase64 = null;
+    previewBase64 = null;
     
     if (swId) {
       const sw = software.find(s => s.id === swId);
@@ -811,14 +592,14 @@
         document.getElementById('swLink').value = sw.url || '';
         document.getElementById('swStatus').value = sw.status || 'working';
         document.getElementById('swDescription').value = sw.description || '';
-        existingIconUrl = sw.iconUrl;
-        existingPreviewUrl = sw.previewUrl;
+        iconBase64 = sw.iconBase64;
+        previewBase64 = sw.previewBase64;
         
-        if (sw.iconUrl) {
-          document.getElementById('iconPreview').innerHTML = `<img src="${sw.iconUrl}">`;
+        if (sw.iconBase64) {
+          document.getElementById('iconPreview').innerHTML = `<img src="${sw.iconBase64}">`;
         }
-        if (sw.previewUrl) {
-          document.getElementById('previewImagePreview').innerHTML = `<img src="${sw.previewUrl}">`;
+        if (sw.previewBase64) {
+          document.getElementById('previewImagePreview').innerHTML = `<img src="${sw.previewBase64}">`;
         }
         
         modalTitle.textContent = 'Software bearbeiten';
@@ -834,71 +615,47 @@
 
   addSoftwareBtn.addEventListener('click', () => {
     if (departments.length === 0) {
-      addDoc(collection(db, "departments"), { name: "Allgemein" }).then(() => {
-        openSoftwareModal(null);
-      });
+      addDoc(collection(db, "departments"), { name: "Allgemein" }).then(() => openSoftwareModal(null));
       return;
     }
     openSoftwareModal(null);
   });
   
-  document.getElementById('cancelSwBtn').addEventListener('click', () => {
-    softwareModal.classList.add('hidden');
-  });
+  document.getElementById('cancelSwBtn').addEventListener('click', () => softwareModal.classList.add('hidden'));
 
-  // File Uploads
-  document.getElementById('iconUploadBtn').addEventListener('click', () => {
-    document.getElementById('iconFile').click();
-  });
-  
-  document.getElementById('iconFile').addEventListener('change', (e) => {
+  // Bild zu Base64 konvertieren
+  function fileToBase64(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  document.getElementById('iconUploadBtn').addEventListener('click', () => document.getElementById('iconFile').click());
+  document.getElementById('iconFile').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (file) {
-      iconFile = file;
-      existingIconUrl = null;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('iconPreview').innerHTML = `<img src="${e.target.result}">`;
-      };
-      reader.readAsDataURL(file);
+      iconBase64 = await fileToBase64(file);
+      document.getElementById('iconPreview').innerHTML = `<img src="${iconBase64}">`;
     }
   });
 
-  document.getElementById('previewUploadBtn').addEventListener('click', () => {
-    document.getElementById('previewFile').click();
-  });
-  
-  document.getElementById('previewFile').addEventListener('change', (e) => {
+  document.getElementById('previewUploadBtn').addEventListener('click', () => document.getElementById('previewFile').click());
+  document.getElementById('previewFile').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (file) {
-      previewFile = file;
-      existingPreviewUrl = null;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('previewImagePreview').innerHTML = `<img src="${e.target.result}">`;
-      };
-      reader.readAsDataURL(file);
+      previewBase64 = await fileToBase64(file);
+      document.getElementById('previewImagePreview').innerHTML = `<img src="${previewBase64}">`;
     }
   });
 
-  // Delete Software
   deleteSwBtn.addEventListener('click', async () => {
-    if (!editingSwId) return;
-    if (!confirm('Software wirklich löschen?')) return;
-    
-    const sw = software.find(s => s.id === editingSwId);
-    if (sw?.iconUrl) {
-      try { await deleteObject(ref(storage, sw.iconUrl)); } catch(e) {}
-    }
-    if (sw?.previewUrl) {
-      try { await deleteObject(ref(storage, sw.previewUrl)); } catch(e) {}
-    }
-    
+    if (!editingSwId || !confirm('Löschen?')) return;
     await deleteDoc(doc(db, "software", editingSwId));
     softwareModal.classList.add('hidden');
   });
 
-  // Save Software
   document.getElementById('saveSwBtn').addEventListener('click', async () => {
     const name = document.getElementById('swName').value.trim();
     const version = document.getElementById('swVersion').value.trim() || '1.0.0';
@@ -911,73 +668,36 @@
       return;
     }
 
-    let targetDept = selectedDeptId;
-    if (!targetDept && departments.length > 0) {
-      targetDept = departments[0].id;
+    let targetDept = selectedDeptId || (departments[0]?.id || null);
+
+    const softwareData = {
+      name, version, url, status, description,
+      iconBase64, previewBase64,
+      lastUpdated: serverTimestamp()
+    };
+
+    if (editingSwId) {
+      await updateDoc(doc(db, "software", editingSwId), softwareData);
+    } else {
+      softwareData.departmentId = targetDept;
+      softwareData.createdAt = serverTimestamp();
+      await addDoc(collection(db, "software"), softwareData);
     }
 
-    try {
-      let iconUrl = existingIconUrl;
-      let previewUrl = existingPreviewUrl;
-
-      if (iconFile) {
-        const iconRef = ref(storage, `icons/${Date.now()}_${iconFile.name}`);
-        await uploadBytes(iconRef, iconFile);
-        iconUrl = await getDownloadURL(iconRef);
-      }
-
-      if (previewFile) {
-        const previewRef = ref(storage, `previews/${Date.now()}_${previewFile.name}`);
-        await uploadBytes(previewRef, previewFile);
-        previewUrl = await getDownloadURL(previewRef);
-      }
-
-      const softwareData = {
-        name,
-        version,
-        url,
-        status,
-        description,
-        iconUrl,
-        previewUrl,
-        lastUpdated: serverTimestamp()
-      };
-
-      if (editingSwId) {
-        await updateDoc(doc(db, "software", editingSwId), softwareData);
-      } else {
-        softwareData.departmentId = targetDept;
-        softwareData.createdAt = serverTimestamp();
-        await addDoc(collection(db, "software"), softwareData);
-      }
-
-      softwareModal.classList.add('hidden');
-    } catch (error) {
-      alert('Fehler: ' + error.message);
-    }
+    softwareModal.classList.add('hidden');
   });
 
-  // Overlay schließen
-  loginModal.addEventListener('click', (e) => {
-    if (e.target === loginModal) loginModal.classList.add('hidden');
-  });
+  loginModal.addEventListener('click', (e) => { if (e.target === loginModal) loginModal.classList.add('hidden'); });
+  softwareModal.addEventListener('click', (e) => { if (e.target === softwareModal) softwareModal.classList.add('hidden'); });
   
-  softwareModal.addEventListener('click', (e) => {
-    if (e.target === softwareModal) softwareModal.classList.add('hidden');
-  });
-
   document.getElementById('loginPassword').addEventListener('keypress', (e) => {
     if (e.key === 'Enter') document.getElementById('submitLoginBtn').click();
   });
 
   addDeptBtn.addEventListener('click', async () => {
     const name = prompt('Name der Abteilung:');
-    if (name) {
-      await addDoc(collection(db, "departments"), { name });
-    }
+    if (name) await addDoc(collection(db, "departments"), { name });
   });
-
-  console.log('✅ Software Hub ist bereit!');
 </script>
 </body>
 </html>
