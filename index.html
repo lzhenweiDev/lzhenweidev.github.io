@@ -115,6 +115,68 @@
     
     .settings-panel.active { transform: translateX(0); }
     
+    /* Schöner Toggle Switch */
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 26px;
+      margin-left: 10px;
+    }
+    
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(76, 29, 149, 0.5);
+      transition: .3s;
+      border-radius: 26px;
+      border: 1px solid rgba(139, 92, 246, 0.5);
+    }
+    
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 2px;
+      background: linear-gradient(135deg, #c4b5fd, #ede9fe);
+      transition: .3s;
+      border-radius: 50%;
+    }
+    
+    input:checked + .toggle-slider {
+      background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    }
+    
+    input:checked + .toggle-slider:before {
+      transform: translateX(26px);
+    }
+    
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+    }
+    
+    .setting-item label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #e0e7ff;
+    }
+    
     .section-header { display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 1.5rem; }
     h2 { font-size: 1.8rem; font-weight: 700; color: #ddd6fe; }
     
@@ -264,6 +326,7 @@
     .image-modal {
       max-width: 90vw;
       max-height: 90vh;
+      position: relative;
     }
     
     .image-modal img {
@@ -325,19 +388,7 @@
     #iconPreview img { width: 80px; height: 80px; object-fit: cover; }
     #previewImagePreview img { width: 100%; height: auto; max-height: 120px; object-fit: cover; }
     
-    .relative-time {
-      color: #a78bfa;
-      font-size: 0.7rem;
-      margin-left: 5px;
-    }
-
-    .image-actions {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      display: flex;
-      gap: 5px;
-    }
+    .relative-time { color: #a78bfa; font-size: 0.7rem; margin-left: 5px; }
   </style>
 </head>
 <body>
@@ -371,20 +422,24 @@
 <!-- Settings Button & Panel -->
 <button class="settings-btn hidden" id="settingsBtn"><i class="fas fa-cog"></i></button>
 <div class="settings-panel" id="settingsPanel">
-  <h3 style="margin-bottom: 1rem; color: #c4b5fd;"><i class="fas fa-sliders-h"></i> Einstellungen</h3>
-  <div class="input-group">
-    <label>
-      <input type="checkbox" id="showDownloadCount"> Download-Zähler anzeigen
+  <h3 style="margin-bottom: 1.5rem; color: #c4b5fd;"><i class="fas fa-sliders-h"></i> Einstellungen</h3>
+  
+  <div class="setting-item">
+    <label><i class="fas fa-download"></i> Downloads anzeigen</label>
+    <label class="toggle-switch">
+      <input type="checkbox" id="showDownloadCount">
+      <span class="toggle-slider"></span>
     </label>
   </div>
-  <button class="btn btn-primary" id="closeSettings" style="width: 100%;">Schließen</button>
+  
+  <button class="btn btn-primary" id="closeSettings" style="width: 100%; margin-top: 1rem;">Schließen</button>
 </div>
 
 <!-- Image Modal -->
 <div class="modal-overlay hidden" id="imageModal">
   <div class="image-modal">
     <img id="fullImage" src="" alt="Full Size">
-    <button class="btn" id="closeImageModal" style="position: absolute; top: 20px; right: 20px;">
+    <button class="btn" id="closeImageModal" style="position: absolute; top: -50px; right: 0;">
       <i class="fas fa-times"></i>
     </button>
   </div>
@@ -541,21 +596,18 @@
     return `vor ${Math.floor(diff / 31536000)} Jahren`;
   }
 
-  // Check if software is new (< 3 days)
   function isNew(timestamp) {
     if (!timestamp) return false;
     const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
     const now = new Date();
     const diff = Math.floor((now - date) / 1000);
-    return diff < 259200; // 3 days
+    return diff < 259200;
   }
 
-  // Check if popular (> 5 downloads)
   function isPopular(downloads) {
     return downloads >= 5;
   }
 
-  // Image compression
   function compressImage(base64, maxWidth = 800, maxHeight = 600, quality = 0.6) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -608,8 +660,8 @@
     return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
   }
 
-  // Show full image
   function showFullImage(src) {
+    if (!src) return;
     fullImage.src = src;
     imageModal.classList.remove('hidden');
   }
@@ -624,7 +676,6 @@
 
   async function downloadFile(url, filename, swId) {
     try {
-      // Increment download count
       await updateDoc(doc(db, "software", swId), {
         downloadCount: increment(1)
       });
@@ -674,7 +725,6 @@
     const container = document.getElementById('departmentsContainer');
     let html = '';
     
-    // Add New section if there are new items
     const hasNew = software.some(sw => isNew(sw.createdAt));
     if (hasNew) {
       html += `<div class="dept-card ${selectedDeptId === 'new' ? 'active' : ''}" data-id="new">
@@ -682,7 +732,6 @@
       </div>`;
     }
     
-    // Add Popular section if there are popular items
     const popularItems = software.filter(sw => isPopular(sw.downloadCount || 0));
     if (popularItems.length > 0) {
       html += `<div class="dept-card ${selectedDeptId === 'popular' ? 'active' : ''}" data-id="popular">
@@ -741,13 +790,15 @@
       const newItem = isNew(sw.createdAt);
       const popular = isPopular(sw.downloadCount || 0);
       const relativeTime = getRelativeTime(sw.lastUpdated);
+      const createdDate = sw.createdAt?.toDate ? sw.createdAt.toDate() : new Date();
+      const updatedDate = sw.lastUpdated?.toDate ? sw.lastUpdated.toDate() : new Date();
 
       html += `<div class="software-card" data-sw-id="${sw.id}">
         ${newItem ? '<span class="new-badge">NEU</span>' : ''}
         ${popular ? '<span class="popular-badge" style="left: auto; right: -8px;">TOP</span>' : ''}
         
         <div class="software-header">
-          <div class="software-icon" onclick="document.getElementById('fullImage').src='${sw.iconBase64 || ''}'; document.getElementById('imageModal').classList.remove('hidden');">
+          <div class="software-icon" data-image="${sw.iconBase64 || ''}">
             ${sw.iconBase64 ? `<img src="${escapeHtml(sw.iconBase64)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
           </div>
           <div>
@@ -756,15 +807,17 @@
           </div>
         </div>
         
-        <div class="software-preview" onclick="document.getElementById('fullImage').src='${sw.previewBase64 || ''}'; document.getElementById('imageModal').classList.remove('hidden');">
+        <div class="software-preview" data-image="${sw.previewBase64 || ''}">
           ${sw.previewBase64 ? `<img src="${escapeHtml(sw.previewBase64)}" alt="Preview">` : '<i class="fas fa-image fa-2x" style="color: #8b5cf6;"></i>'}
         </div>
+        
+        ${sw.description ? `<p style="color: #cbd5e1; margin: 0.5rem 0; font-size: 0.9rem;">${escapeHtml(sw.description)}</p>` : ''}
         
         <span class="status-badge ${statusClass}">${statusText}</span>
         
         <div class="dates-info">
-          <div><i class="far fa-calendar-plus"></i> Erstellt: ${new Date(sw.createdAt?.toDate()).toLocaleDateString('de-DE')}</div>
-          <div><i class="far fa-calendar-check"></i> Update: ${new Date(sw.lastUpdated?.toDate()).toLocaleDateString('de-DE')} 
+          <div><i class="far fa-calendar-plus"></i> Erstellt: ${createdDate.toLocaleDateString('de-DE')}</div>
+          <div><i class="far fa-calendar-check"></i> Update: ${updatedDate.toLocaleDateString('de-DE')} 
             <span class="relative-time">${relativeTime}</span>
           </div>
         </div>
@@ -781,17 +834,15 @@
     });
     softwareContainer.innerHTML = html;
 
-    // Make showFullImage available globally
-    window.showFullImage = showFullImage;
-    window.document = document;
-
+    // Event Listener für Bilder
     document.querySelectorAll('.software-icon, .software-preview').forEach(el => {
       el.addEventListener('click', (e) => {
-        const img = el.querySelector('img');
-        if (img) showFullImage(img.src);
+        const imgSrc = el.dataset.image;
+        if (imgSrc) showFullImage(imgSrc);
       });
     });
 
+    // Download buttons
     document.querySelectorAll('.download-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         e.preventDefault();
@@ -799,9 +850,12 @@
       });
     });
 
+    // Edit buttons
     if (isAdmin()) {
       document.querySelectorAll('.edit-sw').forEach(btn => {
-        btn.addEventListener('click', () => openSoftwareModal(btn.dataset.id));
+        btn.addEventListener('click', () => {
+          openSoftwareModal(btn.dataset.id);
+        });
       });
     }
   }
@@ -872,7 +926,6 @@
     softwareModal.classList.remove('hidden');
   }
 
-  // Remove image handlers
   removeIconBtn.addEventListener('click', () => {
     iconBase64 = null;
     existingIcon = null;
@@ -998,7 +1051,7 @@
     if (name) await addDoc(collection(db, "departments"), { name });
   });
 
-  console.log('✅ Software Hub ULTIMATE ist bereit!');
+  console.log('✅ Software Hub ist bereit!');
 </script>
 </body>
 </html>
