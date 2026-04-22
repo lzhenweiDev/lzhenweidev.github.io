@@ -75,13 +75,45 @@
       transition: all 0.3s;
     }
     
-    .btn:hover {
+    .btn:hover { background: rgba(139, 92, 246, 0.4); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
+    .btn-primary { background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6)); }
+    
+    .settings-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 56px;
+      height: 56px;
+      border-radius: 28px;
       background: rgba(139, 92, 246, 0.4);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(139, 92, 246, 0.5);
+      color: #e0e7ff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 100;
+      transition: all 0.3s;
     }
     
-    .btn-primary { background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6)); }
+    .settings-btn:hover { transform: scale(1.1) rotate(45deg); background: rgba(139, 92, 246, 0.6); }
+    
+    .settings-panel {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 300px;
+      background: rgba(30, 27, 75, 0.95);
+      backdrop-filter: blur(30px);
+      border-radius: 20px;
+      padding: 1.5rem;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      z-index: 99;
+      transform: translateX(350px);
+      transition: transform 0.3s;
+      color: #e0e7ff;
+    }
+    
+    .settings-panel.active { transform: translateX(0); }
     
     .section-header { display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 1.5rem; }
     h2 { font-size: 1.8rem; font-weight: 700; color: #ddd6fe; }
@@ -101,10 +133,36 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      position: relative;
     }
     
     .dept-card:hover { background: rgba(139, 92, 246, 0.3); transform: translateY(-3px); }
     .dept-card.active { border: 2px solid #8b5cf6; background: rgba(139, 92, 246, 0.4); }
+    
+    .new-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: #10b981;
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+    
+    .popular-badge {
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      background: #f59e0b;
+      color: white;
+      font-size: 0.6rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+    }
     
     .software-section {
       background: rgba(30, 27, 75, 0.2);
@@ -128,6 +186,7 @@
       padding: 1.5rem;
       border: 1px solid rgba(139, 92, 246, 0.25);
       transition: all 0.3s;
+      position: relative;
     }
     
     .software-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2); }
@@ -147,6 +206,7 @@
       border: 1px solid rgba(139, 92, 246, 0.4);
       overflow: hidden;
       flex-shrink: 0;
+      cursor: pointer;
     }
     
     .software-icon img { width: 100%; height: 100%; object-fit: cover; }
@@ -164,6 +224,7 @@
       margin: 1rem 0;
       border: 1px solid rgba(139, 92, 246, 0.2);
       overflow: hidden;
+      cursor: pointer;
     }
     
     .software-preview img { width: 100%; height: 100%; object-fit: cover; }
@@ -184,6 +245,7 @@
     .status-down { background: rgba(107, 114, 128, 0.3); color: #d1d5db; }
     
     .dates-info { font-size: 0.75rem; color: #a78bfa; margin: 0.5rem 0; }
+    .download-count { font-size: 0.8rem; color: #6ee7b7; margin: 0.25rem 0; }
     .software-actions { display: flex; gap: 0.5rem; margin-top: 1rem; }
     .software-actions .btn { padding: 0.5rem 1rem; font-size: 0.85rem; flex: 1; text-align: center; }
     .icon-btn { padding: 0.5rem; width: 38px; height: 38px; flex: 0; }
@@ -191,12 +253,25 @@
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.9);
       backdrop-filter: blur(10px);
       z-index: 999;
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    
+    .image-modal {
+      max-width: 90vw;
+      max-height: 90vh;
+    }
+    
+    .image-modal img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 20px;
+      border: 2px solid rgba(139, 92, 246, 0.5);
     }
     
     .modal {
@@ -250,10 +325,18 @@
     #iconPreview img { width: 80px; height: 80px; object-fit: cover; }
     #previewImagePreview img { width: 100%; height: auto; max-height: 120px; object-fit: cover; }
     
-    .size-warning {
-      color: #fca5a5;
-      font-size: 0.8rem;
-      margin-top: 0.5rem;
+    .relative-time {
+      color: #a78bfa;
+      font-size: 0.7rem;
+      margin-left: 5px;
+    }
+
+    .image-actions {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
     }
   </style>
 </head>
@@ -282,6 +365,28 @@
     <div class="software-grid" id="softwareContainer">
       <div class="empty-message"><i class="fas fa-spinner fa-spin"></i><br>Lade Software...</div>
     </div>
+  </div>
+</div>
+
+<!-- Settings Button & Panel -->
+<button class="settings-btn hidden" id="settingsBtn"><i class="fas fa-cog"></i></button>
+<div class="settings-panel" id="settingsPanel">
+  <h3 style="margin-bottom: 1rem; color: #c4b5fd;"><i class="fas fa-sliders-h"></i> Einstellungen</h3>
+  <div class="input-group">
+    <label>
+      <input type="checkbox" id="showDownloadCount"> Download-Zähler anzeigen
+    </label>
+  </div>
+  <button class="btn btn-primary" id="closeSettings" style="width: 100%;">Schließen</button>
+</div>
+
+<!-- Image Modal -->
+<div class="modal-overlay hidden" id="imageModal">
+  <div class="image-modal">
+    <img id="fullImage" src="" alt="Full Size">
+    <button class="btn" id="closeImageModal" style="position: absolute; top: 20px; right: 20px;">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
 </div>
 
@@ -317,23 +422,25 @@
     </div>
     
     <div class="input-group">
-      <label>Icon (max. 500KB, wird automatisch komprimiert)</label>
+      <label>Icon</label>
       <div class="file-upload" id="iconUploadBtn">
         <i class="fas fa-image"></i>
         <p>Klick zum Hochladen</p>
       </div>
       <input type="file" id="iconFile" accept="image/*" style="display: none;">
       <div id="iconPreview"></div>
+      <button class="btn btn-danger btn-sm hidden" id="removeIconBtn" style="margin-top: 5px;">Icon entfernen</button>
     </div>
     
     <div class="input-group">
-      <label>Vorschaubild (max. 500KB, wird automatisch komprimiert)</label>
+      <label>Vorschaubild</label>
       <div class="file-upload" id="previewUploadBtn">
         <i class="fas fa-image"></i>
         <p>Klick zum Hochladen</p>
       </div>
       <input type="file" id="previewFile" accept="image/*" style="display: none;">
       <div id="previewImagePreview"></div>
+      <button class="btn btn-danger btn-sm hidden" id="removePreviewBtn" style="margin-top: 5px;">Vorschau entfernen</button>
     </div>
     
     <div class="input-group">
@@ -380,7 +487,7 @@
   };
 
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, increment } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
 
   const app = initializeApp(firebaseConfig);
@@ -398,9 +505,58 @@
   let previewBase64 = null;
   let existingIcon = null;
   let existingPreview = null;
+  let showDownloadCount = false;
 
-  // Bild-Komprimierungsfunktion
-  function compressImage(base64, maxWidth = 800, maxHeight = 600, quality = 0.7) {
+  // Settings
+  const settingsBtn = document.getElementById('settingsBtn');
+  const settingsPanel = document.getElementById('settingsPanel');
+  const showDownloadCountCheck = document.getElementById('showDownloadCount');
+  
+  settingsBtn.addEventListener('click', () => settingsPanel.classList.toggle('active'));
+  document.getElementById('closeSettings').addEventListener('click', () => settingsPanel.classList.remove('active'));
+  
+  showDownloadCountCheck.addEventListener('change', (e) => {
+    showDownloadCount = e.target.checked;
+    localStorage.setItem('showDownloadCount', showDownloadCount);
+    renderSoftware();
+  });
+
+  // Load settings
+  showDownloadCount = localStorage.getItem('showDownloadCount') === 'true';
+  showDownloadCountCheck.checked = showDownloadCount;
+
+  // Relative time function
+  function getRelativeTime(timestamp) {
+    if (!timestamp) return '';
+    const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000);
+    
+    if (diff < 60) return `vor ${diff} Sekunden`;
+    if (diff < 3600) return `vor ${Math.floor(diff / 60)} Minuten`;
+    if (diff < 86400) return `vor ${Math.floor(diff / 3600)} Stunden`;
+    if (diff < 604800) return `vor ${Math.floor(diff / 86400)} Tagen`;
+    if (diff < 2592000) return `vor ${Math.floor(diff / 604800)} Wochen`;
+    if (diff < 31536000) return `vor ${Math.floor(diff / 2592000)} Monaten`;
+    return `vor ${Math.floor(diff / 31536000)} Jahren`;
+  }
+
+  // Check if software is new (< 3 days)
+  function isNew(timestamp) {
+    if (!timestamp) return false;
+    const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
+    const now = new Date();
+    const diff = Math.floor((now - date) / 1000);
+    return diff < 259200; // 3 days
+  }
+
+  // Check if popular (> 5 downloads)
+  function isPopular(downloads) {
+    return downloads >= 5;
+  }
+
+  // Image compression
+  function compressImage(base64, maxWidth = 800, maxHeight = 600, quality = 0.6) {
     return new Promise((resolve) => {
       const img = new Image();
       img.src = base64;
@@ -409,7 +565,6 @@
         let width = img.width;
         let height = img.height;
         
-        // Skalieren wenn nötig
         if (width > maxWidth) {
           height = (maxWidth / width) * height;
           width = maxWidth;
@@ -423,17 +578,7 @@
         canvas.height = height;
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
-        
-        // Komprimieren
-        const compressed = canvas.toDataURL('image/jpeg', quality);
-        
-        // Prüfe Größe und komprimiere weiter wenn nötig
-        const sizeInMB = (compressed.length * 0.75) / (1024 * 1024);
-        if (sizeInMB > 0.5) {
-          resolve(compressImage(base64, maxWidth * 0.7, maxHeight * 0.7, quality * 0.7));
-        } else {
-          resolve(compressed);
-        }
+        resolve(canvas.toDataURL('image/jpeg', quality));
       };
     });
   }
@@ -447,8 +592,12 @@
   const currentDeptTitle = document.getElementById('currentDeptTitle');
   const loginModal = document.getElementById('loginModal');
   const softwareModal = document.getElementById('softwareModal');
+  const imageModal = document.getElementById('imageModal');
+  const fullImage = document.getElementById('fullImage');
   const modalTitle = document.getElementById('modalTitle');
   const deleteSwBtn = document.getElementById('deleteSwBtn');
+  const removeIconBtn = document.getElementById('removeIconBtn');
+  const removePreviewBtn = document.getElementById('removePreviewBtn');
 
   function isAdmin() {
     return currentUser && currentUser.email === ADMIN_EMAIL;
@@ -459,14 +608,27 @@
     return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
   }
 
-  function formatDate(timestamp) {
-    if (!timestamp) return '—';
-    const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString('de-DE');
+  // Show full image
+  function showFullImage(src) {
+    fullImage.src = src;
+    imageModal.classList.remove('hidden');
   }
 
-  async function downloadFile(url, filename) {
+  document.getElementById('closeImageModal').addEventListener('click', () => {
+    imageModal.classList.add('hidden');
+  });
+  
+  imageModal.addEventListener('click', (e) => {
+    if (e.target === imageModal) imageModal.classList.add('hidden');
+  });
+
+  async function downloadFile(url, filename, swId) {
     try {
+      // Increment download count
+      await updateDoc(doc(db, "software", swId), {
+        downloadCount: increment(1)
+      });
+      
       const response = await fetch(url);
       const blob = await response.blob();
       const blobUrl = window.URL.createObjectURL(blob);
@@ -491,6 +653,7 @@
     const admin = isAdmin();
     addDeptBtn.classList.toggle('hidden', !admin);
     addSoftwareBtn.classList.toggle('hidden', !admin);
+    settingsBtn.classList.toggle('hidden', !admin);
     
     loadData();
   });
@@ -510,14 +673,33 @@
   function renderDepartments() {
     const container = document.getElementById('departmentsContainer');
     let html = '';
+    
+    // Add New section if there are new items
+    const hasNew = software.some(sw => isNew(sw.createdAt));
+    if (hasNew) {
+      html += `<div class="dept-card ${selectedDeptId === 'new' ? 'active' : ''}" data-id="new">
+        <i class="fas fa-star"></i> Neu <span class="new-badge">NEU</span>
+      </div>`;
+    }
+    
+    // Add Popular section if there are popular items
+    const popularItems = software.filter(sw => isPopular(sw.downloadCount || 0));
+    if (popularItems.length > 0) {
+      html += `<div class="dept-card ${selectedDeptId === 'popular' ? 'active' : ''}" data-id="popular">
+        <i class="fas fa-fire"></i> Beliebt <span class="popular-badge">TOP</span>
+      </div>`;
+    }
+    
     departments.forEach(dept => {
       html += `<div class="dept-card ${selectedDeptId === dept.id ? 'active' : ''}" data-id="${dept.id}">
         <i class="fas fa-folder"></i> ${escapeHtml(dept.name)}
       </div>`;
     });
+    
     html += `<div class="dept-card ${selectedDeptId === null ? 'active' : ''}" data-id="all">
       <i class="fas fa-globe"></i> Alle Software
     </div>`;
+    
     container.innerHTML = html;
 
     container.querySelectorAll('.dept-card').forEach(card => {
@@ -531,13 +713,19 @@
   }
 
   function renderSoftware() {
-    const filtered = selectedDeptId 
-      ? software.filter(s => s.departmentId === selectedDeptId)
-      : software;
+    let filtered = software;
     
-    const deptName = selectedDeptId 
-      ? departments.find(d => d.id === selectedDeptId)?.name || 'Unbekannt'
-      : 'Alle Software';
+    if (selectedDeptId === 'new') {
+      filtered = software.filter(sw => isNew(sw.createdAt));
+    } else if (selectedDeptId === 'popular') {
+      filtered = software.filter(sw => isPopular(sw.downloadCount || 0));
+    } else if (selectedDeptId) {
+      filtered = software.filter(s => s.departmentId === selectedDeptId);
+    }
+    
+    const deptName = selectedDeptId === 'new' ? 'Neue Software' :
+                     selectedDeptId === 'popular' ? 'Beliebte Software' :
+                     selectedDeptId ? (departments.find(d => d.id === selectedDeptId)?.name || 'Unbekannt') : 'Alle Software';
     currentDeptTitle.textContent = deptName;
 
     if (filtered.length === 0) {
@@ -550,10 +738,16 @@
       const statusClass = `status-${sw.status || 'working'}`;
       const statusText = { working: 'Working', stable: 'Stable', beta: 'Beta', discontinued: 'Discontinued', down: 'Down' }[sw.status] || 'Working';
       const filename = sw.url.split('/').pop() || 'download';
+      const newItem = isNew(sw.createdAt);
+      const popular = isPopular(sw.downloadCount || 0);
+      const relativeTime = getRelativeTime(sw.lastUpdated);
 
       html += `<div class="software-card" data-sw-id="${sw.id}">
+        ${newItem ? '<span class="new-badge">NEU</span>' : ''}
+        ${popular ? '<span class="popular-badge" style="left: auto; right: -8px;">TOP</span>' : ''}
+        
         <div class="software-header">
-          <div class="software-icon">
+          <div class="software-icon" onclick="document.getElementById('fullImage').src='${sw.iconBase64 || ''}'; document.getElementById('imageModal').classList.remove('hidden');">
             ${sw.iconBase64 ? `<img src="${escapeHtml(sw.iconBase64)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
           </div>
           <div>
@@ -562,19 +756,23 @@
           </div>
         </div>
         
-        <div class="software-preview">
+        <div class="software-preview" onclick="document.getElementById('fullImage').src='${sw.previewBase64 || ''}'; document.getElementById('imageModal').classList.remove('hidden');">
           ${sw.previewBase64 ? `<img src="${escapeHtml(sw.previewBase64)}" alt="Preview">` : '<i class="fas fa-image fa-2x" style="color: #8b5cf6;"></i>'}
         </div>
         
         <span class="status-badge ${statusClass}">${statusText}</span>
         
         <div class="dates-info">
-          <div><i class="far fa-calendar-plus"></i> Erstellt: ${formatDate(sw.createdAt)}</div>
-          <div><i class="far fa-calendar-check"></i> Update: ${formatDate(sw.lastUpdated)}</div>
+          <div><i class="far fa-calendar-plus"></i> Erstellt: ${new Date(sw.createdAt?.toDate()).toLocaleDateString('de-DE')}</div>
+          <div><i class="far fa-calendar-check"></i> Update: ${new Date(sw.lastUpdated?.toDate()).toLocaleDateString('de-DE')} 
+            <span class="relative-time">${relativeTime}</span>
+          </div>
         </div>
         
+        ${showDownloadCount ? `<div class="download-count"><i class="fas fa-download"></i> ${sw.downloadCount || 0} Downloads</div>` : ''}
+        
         <div class="software-actions">
-          <button class="btn btn-primary download-btn" data-url="${escapeHtml(sw.url)}" data-filename="${escapeHtml(filename)}">
+          <button class="btn btn-primary download-btn" data-url="${escapeHtml(sw.url)}" data-filename="${escapeHtml(filename)}" data-id="${sw.id}">
             <i class="fas fa-download"></i> Download
           </button>
           ${isAdmin() ? `<button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>` : ''}
@@ -583,10 +781,21 @@
     });
     softwareContainer.innerHTML = html;
 
+    // Make showFullImage available globally
+    window.showFullImage = showFullImage;
+    window.document = document;
+
+    document.querySelectorAll('.software-icon, .software-preview').forEach(el => {
+      el.addEventListener('click', (e) => {
+        const img = el.querySelector('img');
+        if (img) showFullImage(img.src);
+      });
+    });
+
     document.querySelectorAll('.download-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         e.preventDefault();
-        await downloadFile(btn.dataset.url, btn.dataset.filename);
+        await downloadFile(btn.dataset.url, btn.dataset.filename, btn.dataset.id);
       });
     });
 
@@ -629,6 +838,8 @@
     previewBase64 = null;
     existingIcon = null;
     existingPreview = null;
+    removeIconBtn.classList.add('hidden');
+    removePreviewBtn.classList.add('hidden');
     
     if (swId) {
       const sw = software.find(s => s.id === swId);
@@ -643,9 +854,11 @@
         
         if (sw.iconBase64) {
           document.getElementById('iconPreview').innerHTML = `<img src="${sw.iconBase64}">`;
+          removeIconBtn.classList.remove('hidden');
         }
         if (sw.previewBase64) {
           document.getElementById('previewImagePreview').innerHTML = `<img src="${sw.previewBase64}">`;
+          removePreviewBtn.classList.remove('hidden');
         }
         
         modalTitle.textContent = 'Software bearbeiten';
@@ -658,6 +871,23 @@
     
     softwareModal.classList.remove('hidden');
   }
+
+  // Remove image handlers
+  removeIconBtn.addEventListener('click', () => {
+    iconBase64 = null;
+    existingIcon = null;
+    document.getElementById('iconPreview').innerHTML = '';
+    document.getElementById('iconFile').value = '';
+    removeIconBtn.classList.add('hidden');
+  });
+
+  removePreviewBtn.addEventListener('click', () => {
+    previewBase64 = null;
+    existingPreview = null;
+    document.getElementById('previewImagePreview').innerHTML = '';
+    document.getElementById('previewFile').value = '';
+    removePreviewBtn.classList.add('hidden');
+  });
 
   addSoftwareBtn.addEventListener('click', () => {
     if (departments.length === 0) {
@@ -674,7 +904,6 @@
       const reader = new FileReader();
       reader.onload = async (e) => {
         let base64 = e.target.result;
-        // Komprimiere das Bild
         const maxSize = isPreview ? 600 : 400;
         base64 = await compressImage(base64, maxSize, maxSize, 0.6);
         resolve(base64);
@@ -687,13 +916,10 @@
   document.getElementById('iconFile').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        alert('Bild ist zu groß! Maximal 2MB erlaubt.');
-        return;
-      }
       iconBase64 = await fileToBase64(file, false);
       existingIcon = null;
       document.getElementById('iconPreview').innerHTML = `<img src="${iconBase64}">`;
+      removeIconBtn.classList.remove('hidden');
     }
   });
 
@@ -701,13 +927,10 @@
   document.getElementById('previewFile').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 3 * 1024 * 1024) {
-        alert('Bild ist zu groß! Maximal 3MB erlaubt.');
-        return;
-      }
       previewBase64 = await fileToBase64(file, true);
       existingPreview = null;
       document.getElementById('previewImagePreview').innerHTML = `<img src="${previewBase64}">`;
+      removePreviewBtn.classList.remove('hidden');
     }
   });
 
@@ -729,18 +952,23 @@
       return;
     }
 
-    let targetDept = selectedDeptId || (departments[0]?.id || null);
+    let targetDept = selectedDeptId;
+    if (targetDept === 'new' || targetDept === 'popular' || !targetDept) {
+      targetDept = departments[0]?.id || null;
+    }
 
     const softwareData = {
       name, version, url, status, description,
       lastUpdated: serverTimestamp()
     };
 
-    if (iconBase64) softwareData.iconBase64 = iconBase64;
+    if (iconBase64 !== null) softwareData.iconBase64 = iconBase64;
     else if (existingIcon) softwareData.iconBase64 = existingIcon;
+    else softwareData.iconBase64 = null;
     
-    if (previewBase64) softwareData.previewBase64 = previewBase64;
+    if (previewBase64 !== null) softwareData.previewBase64 = previewBase64;
     else if (existingPreview) softwareData.previewBase64 = existingPreview;
+    else softwareData.previewBase64 = null;
 
     try {
       if (editingSwId) {
@@ -748,6 +976,7 @@
       } else {
         softwareData.departmentId = targetDept;
         softwareData.createdAt = serverTimestamp();
+        softwareData.downloadCount = 0;
         await addDoc(collection(db, "software"), softwareData);
       }
       softwareModal.classList.add('hidden');
@@ -769,7 +998,7 @@
     if (name) await addDoc(collection(db, "departments"), { name });
   });
 
-  console.log('✅ Software Hub mit Bildkomprimierung ist bereit!');
+  console.log('✅ Software Hub ULTIMATE ist bereit!');
 </script>
 </body>
 </html>
