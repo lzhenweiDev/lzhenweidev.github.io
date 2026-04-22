@@ -77,6 +77,35 @@
     
     .btn:hover { background: rgba(139, 92, 246, 0.4); transform: translateY(-2px); box-shadow: 0 10px 25px rgba(139, 92, 246, 0.3); }
     .btn-primary { background: linear-gradient(135deg, rgba(139, 92, 246, 0.6), rgba(109, 40, 217, 0.6)); }
+    .btn-warning { background: rgba(245, 158, 11, 0.4); border-color: rgba(245, 158, 11, 0.6); }
+    
+    .os-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+    
+    .os-windows { background: rgba(0, 120, 215, 0.3); color: #6eb5ff; }
+    .os-macos { background: rgba(100, 100, 100, 0.3); color: #cecece; }
+    .os-linux { background: rgba(240, 147, 0, 0.3); color: #ffb86b; }
+    .os-cross { background: rgba(139, 92, 246, 0.3); color: #c4b5fd; }
+    
+    .detected-os {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0.3rem 1rem;
+      background: rgba(139, 92, 246, 0.2);
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: #c4b5fd;
+      margin-right: 1rem;
+    }
     
     .settings-btn {
       position: fixed;
@@ -115,7 +144,6 @@
     
     .settings-panel.active { transform: translateX(0); }
     
-    /* Schöner Toggle Switch */
     .toggle-switch {
       position: relative;
       display: inline-block;
@@ -168,13 +196,6 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1.5rem;
-    }
-    
-    .setting-item label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #e0e7ff;
     }
     
     .section-header { display: flex; justify-content: space-between; align-items: center; margin: 2rem 0 1.5rem; }
@@ -272,7 +293,7 @@
     }
     
     .software-icon img { width: 100%; height: 100%; object-fit: cover; }
-    .software-name { font-size: 1.2rem; font-weight: 700; color: #ede9fe; }
+    .software-name { font-size: 1.2rem; font-weight: 700; color: #ede9fe; display: flex; align-items: center; flex-wrap: wrap; gap: 6px; }
     .software-version { color: #a78bfa; font-size: 0.85rem; }
     
     .software-preview {
@@ -389,6 +410,55 @@
     #previewImagePreview img { width: 100%; height: auto; max-height: 120px; object-fit: cover; }
     
     .relative-time { color: #a78bfa; font-size: 0.7rem; margin-left: 5px; }
+    
+    .warning-modal {
+      max-width: 450px;
+      text-align: center;
+    }
+    
+    .warning-icon {
+      font-size: 4rem;
+      color: #f59e0b;
+      margin-bottom: 1rem;
+    }
+    
+    .warning-message {
+      color: #e0e7ff;
+      margin: 1.5rem 0;
+      line-height: 1.6;
+    }
+    
+    .os-selector {
+      display: flex;
+      gap: 10px;
+      margin: 10px 0;
+    }
+    
+    .os-option {
+      flex: 1;
+      padding: 8px;
+      border-radius: 12px;
+      background: rgba(76, 29, 149, 0.3);
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      color: #e0e7ff;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    
+    .os-option:hover {
+      background: rgba(139, 92, 246, 0.4);
+    }
+    
+    .os-option.selected {
+      border: 2px solid #8b5cf6;
+      background: rgba(139, 92, 246, 0.5);
+    }
+    
+    .os-option i {
+      font-size: 1.5rem;
+      margin-bottom: 4px;
+    }
   </style>
 </head>
 <body>
@@ -396,6 +466,10 @@
   <div class="header">
     <h1><i class="fas fa-cube"></i> SoftRepo · lzhenwei</h1>
     <div class="auth-area">
+      <div class="detected-os" id="detectedOsDisplay">
+        <i class="fab fa-windows"></i>
+        <span id="osText">Windows</span>
+      </div>
       <span id="userEmailDisplay">Gast</span>
       <button class="btn btn-primary" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Anmelden</button>
       <button class="btn hidden" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Abmelden</button>
@@ -415,6 +489,26 @@
     </div>
     <div class="software-grid" id="softwareContainer">
       <div class="empty-message"><i class="fas fa-spinner fa-spin"></i><br>Lade Software...</div>
+    </div>
+  </div>
+</div>
+
+<!-- OS Warning Modal -->
+<div class="modal-overlay hidden" id="osWarningModal">
+  <div class="modal warning-modal">
+    <div class="warning-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h3 style="color: #f59e0b;">Betriebssystem-Warnung</h3>
+    <div class="warning-message" id="warningMessage">
+      Diese Software ist möglicherweise nicht mit deinem Betriebssystem kompatibel.
+    </div>
+    <div id="osMismatchInfo" style="margin: 1rem 0; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 12px;">
+      <!-- Dynamisch gefüllt -->
+    </div>
+    <div class="modal-actions">
+      <button class="btn" id="cancelDownloadBtn">Abbrechen</button>
+      <button class="btn btn-warning" id="forceDownloadBtn">Trotzdem herunterladen</button>
     </div>
   </div>
 </div>
@@ -458,6 +552,25 @@
     <div class="input-group">
       <label>Version</label>
       <input type="text" id="swVersion" placeholder="1.0.0" value="1.0.0">
+    </div>
+    
+    <div class="input-group">
+      <label>Betriebssystem</label>
+      <div class="os-selector" id="osSelector">
+        <div class="os-option" data-os="windows">
+          <i class="fab fa-windows"></i><br>Windows
+        </div>
+        <div class="os-option" data-os="macos">
+          <i class="fab fa-apple"></i><br>macOS
+        </div>
+        <div class="os-option" data-os="linux">
+          <i class="fab fa-linux"></i><br>Linux
+        </div>
+        <div class="os-option" data-os="cross">
+          <i class="fas fa-globe"></i><br>Cross
+        </div>
+      </div>
+      <input type="hidden" id="swOS" value="windows">
     </div>
     
     <div class="input-group">
@@ -551,6 +664,24 @@
   
   const ADMIN_EMAIL = 'lzhenwei.dev@gmail.com';
   
+  // OS Detection
+  function detectOS() {
+    const userAgent = window.navigator.userAgent.toLowerCase();
+    const platform = window.navigator.platform.toLowerCase();
+    
+    if (userAgent.includes('win') || platform.includes('win')) return 'windows';
+    if (userAgent.includes('mac') || platform.includes('mac')) return 'macos';
+    if (userAgent.includes('linux') || platform.includes('linux')) return 'linux';
+    return 'unknown';
+  }
+  
+  const detectedOS = detectOS();
+  const osNames = { windows: 'Windows', macos: 'macOS', linux: 'Linux', unknown: 'Unbekannt' };
+  const osIcons = { windows: 'fab fa-windows', macos: 'fab fa-apple', linux: 'fab fa-linux', unknown: 'fas fa-question' };
+  
+  document.getElementById('osText').textContent = osNames[detectedOS];
+  document.getElementById('detectedOsDisplay').innerHTML = `<i class="${osIcons[detectedOS]}"></i><span id="osText">${osNames[detectedOS]}</span>`;
+  
   let departments = [];
   let software = [];
   let currentUser = null;
@@ -561,6 +692,7 @@
   let existingIcon = null;
   let existingPreview = null;
   let showDownloadCount = false;
+  let pendingDownload = null;
 
   // Settings
   const settingsBtn = document.getElementById('settingsBtn');
@@ -576,11 +708,54 @@
     renderSoftware();
   });
 
-  // Load settings
   showDownloadCount = localStorage.getItem('showDownloadCount') === 'true';
   showDownloadCountCheck.checked = showDownloadCount;
 
-  // Relative time function
+  // OS Selector
+  const osOptions = document.querySelectorAll('.os-option');
+  const swOSInput = document.getElementById('swOS');
+  
+  osOptions.forEach(opt => {
+    opt.addEventListener('click', () => {
+      osOptions.forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      swOSInput.value = opt.dataset.os;
+    });
+  });
+
+  // OS Warning Modal
+  const osWarningModal = document.getElementById('osWarningModal');
+  const warningMessage = document.getElementById('warningMessage');
+  const osMismatchInfo = document.getElementById('osMismatchInfo');
+  const cancelDownloadBtn = document.getElementById('cancelDownloadBtn');
+  const forceDownloadBtn = document.getElementById('forceDownloadBtn');
+  
+  cancelDownloadBtn.addEventListener('click', () => {
+    osWarningModal.classList.add('hidden');
+    pendingDownload = null;
+  });
+  
+  forceDownloadBtn.addEventListener('click', async () => {
+    if (pendingDownload) {
+      await executeDownload(pendingDownload.url, pendingDownload.filename, pendingDownload.id);
+    }
+    osWarningModal.classList.add('hidden');
+    pendingDownload = null;
+  });
+  
+  osWarningModal.addEventListener('click', (e) => {
+    if (e.target === osWarningModal) {
+      osWarningModal.classList.add('hidden');
+      pendingDownload = null;
+    }
+  });
+
+  function checkOSCompatibility(softwareOS) {
+    if (softwareOS === 'cross') return true;
+    if (detectedOS === 'unknown') return true;
+    return softwareOS === detectedOS;
+  }
+
   function getRelativeTime(timestamp) {
     if (!timestamp) return '';
     const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
@@ -674,7 +849,7 @@
     if (e.target === imageModal) imageModal.classList.add('hidden');
   });
 
-  async function downloadFile(url, filename, swId) {
+  async function executeDownload(url, filename, swId) {
     try {
       await updateDoc(doc(db, "software", swId), {
         downloadCount: increment(1)
@@ -693,6 +868,37 @@
     } catch (error) {
       window.open(url, '_blank');
     }
+  }
+
+  async function handleDownload(url, filename, swId, softwareOS) {
+    if (!checkOSCompatibility(softwareOS)) {
+      const osName = osNames[detectedOS] || 'dein';
+      const softwareOSName = osNames[softwareOS] || softwareOS;
+      
+      warningMessage.textContent = `Diese Software ist für ${softwareOSName} optimiert, aber du verwendest ${osName}.`;
+      osMismatchInfo.innerHTML = `
+        <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+          <div style="text-align: center;">
+            <i class="${osIcons[detectedOS]}" style="font-size: 2rem;"></i><br>
+            <span>Dein System</span><br>
+            <strong>${osName}</strong>
+          </div>
+          <i class="fas fa-arrow-right" style="color: #f59e0b;"></i>
+          <div style="text-align: center;">
+            <i class="${osIcons[softwareOS] || 'fas fa-cube'}" style="font-size: 2rem;"></i><br>
+            <span>Benötigt</span><br>
+            <strong>${softwareOSName}</strong>
+          </div>
+        </div>
+        <p style="margin-top: 1rem; color: #fca5a5;">Die Software könnte trotzdem funktionieren, wird aber nicht offiziell unterstützt.</p>
+      `;
+      
+      pendingDownload = { url, filename, id: swId };
+      osWarningModal.classList.remove('hidden');
+      return;
+    }
+    
+    await executeDownload(url, filename, swId);
   }
 
   onAuthStateChanged(auth, (user) => {
@@ -792,6 +998,10 @@
       const relativeTime = getRelativeTime(sw.lastUpdated);
       const createdDate = sw.createdAt?.toDate ? sw.createdAt.toDate() : new Date();
       const updatedDate = sw.lastUpdated?.toDate ? sw.lastUpdated.toDate() : new Date();
+      const softwareOS = sw.os || 'windows';
+      const osClass = `os-${softwareOS}`;
+      const osIcon = osIcons[softwareOS] || 'fas fa-cube';
+      const osName = osNames[softwareOS] || softwareOS;
 
       html += `<div class="software-card" data-sw-id="${sw.id}">
         ${newItem ? '<span class="new-badge">NEU</span>' : ''}
@@ -802,7 +1012,12 @@
             ${sw.iconBase64 ? `<img src="${escapeHtml(sw.iconBase64)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
           </div>
           <div>
-            <div class="software-name">${escapeHtml(sw.name)}</div>
+            <div class="software-name">
+              ${escapeHtml(sw.name)}
+              <span class="os-badge ${osClass}">
+                <i class="${osIcon}"></i> ${osName}
+              </span>
+            </div>
             <div class="software-version">v${escapeHtml(sw.version || '1.0.0')}</div>
           </div>
         </div>
@@ -825,7 +1040,7 @@
         ${showDownloadCount ? `<div class="download-count"><i class="fas fa-download"></i> ${sw.downloadCount || 0} Downloads</div>` : ''}
         
         <div class="software-actions">
-          <button class="btn btn-primary download-btn" data-url="${escapeHtml(sw.url)}" data-filename="${escapeHtml(filename)}" data-id="${sw.id}">
+          <button class="btn btn-primary download-btn" data-url="${escapeHtml(sw.url)}" data-filename="${escapeHtml(filename)}" data-id="${sw.id}" data-os="${softwareOS}">
             <i class="fas fa-download"></i> Download
           </button>
           ${isAdmin() ? `<button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>` : ''}
@@ -834,7 +1049,6 @@
     });
     softwareContainer.innerHTML = html;
 
-    // Event Listener für Bilder
     document.querySelectorAll('.software-icon, .software-preview').forEach(el => {
       el.addEventListener('click', (e) => {
         const imgSrc = el.dataset.image;
@@ -842,15 +1056,14 @@
       });
     });
 
-    // Download buttons
     document.querySelectorAll('.download-btn').forEach(btn => {
       btn.addEventListener('click', async (e) => {
         e.preventDefault();
-        await downloadFile(btn.dataset.url, btn.dataset.filename, btn.dataset.id);
+        const softwareOS = btn.dataset.os;
+        await handleDownload(btn.dataset.url, btn.dataset.filename, btn.dataset.id, softwareOS);
       });
     });
 
-    // Edit buttons
     if (isAdmin()) {
       document.querySelectorAll('.edit-sw').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -895,6 +1108,11 @@
     removeIconBtn.classList.add('hidden');
     removePreviewBtn.classList.add('hidden');
     
+    osOptions.forEach(o => o.classList.remove('selected'));
+    const defaultOS = document.querySelector('[data-os="windows"]');
+    if (defaultOS) defaultOS.classList.add('selected');
+    swOSInput.value = 'windows';
+    
     if (swId) {
       const sw = software.find(s => s.id === swId);
       if (sw) {
@@ -905,6 +1123,13 @@
         document.getElementById('swDescription').value = sw.description || '';
         existingIcon = sw.iconBase64 || null;
         existingPreview = sw.previewBase64 || null;
+        
+        const swOS = sw.os || 'windows';
+        swOSInput.value = swOS;
+        osOptions.forEach(o => {
+          o.classList.remove('selected');
+          if (o.dataset.os === swOS) o.classList.add('selected');
+        });
         
         if (sw.iconBase64) {
           document.getElementById('iconPreview').innerHTML = `<img src="${sw.iconBase64}">`;
@@ -999,6 +1224,7 @@
     const url = document.getElementById('swLink').value.trim();
     const status = document.getElementById('swStatus').value;
     const description = document.getElementById('swDescription').value.trim();
+    const os = swOSInput.value;
 
     if (!name || !url) {
       alert('Name und Download-Link sind erforderlich!');
@@ -1011,7 +1237,7 @@
     }
 
     const softwareData = {
-      name, version, url, status, description,
+      name, version, url, status, description, os,
       lastUpdated: serverTimestamp()
     };
 
@@ -1051,7 +1277,7 @@
     if (name) await addDoc(collection(db, "departments"), { name });
   });
 
-  console.log('✅ Software Hub ist bereit!');
+  console.log('✅ Software Hub mit OS-Erkennung ist bereit!');
 </script>
 </body>
 </html>
