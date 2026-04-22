@@ -3,493 +3,146 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Software Hub · lzhenwei.dev</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <title>Software Hub Test</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: system-ui, sans-serif; }
-    :root { --primary-hue: 270; --primary-color: hsl(270, 80%, 60%); }
-    
     body {
-      background: radial-gradient(circle at 20% 30%, #2d1b4e 0%, #1a0f2e 50%, #0d0620 100%);
-      min-height: 100vh;
-      padding: 2rem;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
     }
-    
-    .container { max-width: 1400px; margin: 0 auto; }
-    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      padding: 1rem 2rem;
-      background: rgba(45, 27, 78, 0.4);
-      backdrop-filter: blur(20px);
-      border-radius: 60px;
-      border: 1.5px solid rgba(168, 85, 247, 0.3);
+      background: rgba(255,255,255,0.2);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
     }
-    
-    h1 {
-      background: linear-gradient(135deg, #c084fc, #e9d5ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      font-size: 2rem;
-    }
-    
-    .auth-area {
-      display: flex;
-      gap: 1rem;
-      align-items: center;
-      color: #e9d5ff;
-    }
-    
     .btn {
-      padding: 0.7rem 1.5rem;
-      border-radius: 40px;
-      border: 1.5px solid rgba(168, 85, 247, 0.4);
-      background: rgba(45, 27, 78, 0.5);
-      backdrop-filter: blur(20px);
-      color: #e9d5ff;
+      background: white;
+      color: #667eea;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
       cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s;
-      font-size: 0.95rem;
+      margin: 5px;
     }
-    
-    .btn:hover {
-      background: rgba(147, 51, 234, 0.6);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
-      border-color: rgba(192, 132, 252, 0.6);
+    .modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      color: #333;
+      padding: 30px;
+      border-radius: 10px;
+      z-index: 1000;
+      max-width: 500px;
+      width: 90%;
     }
-    
-    .btn-primary {
-      background: rgba(147, 51, 234, 0.7);
-      border-color: rgba(192, 132, 252, 0.6);
-    }
-    
-    .departments-section {
-      margin: 2rem 0;
-    }
-    
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    
-    h2 {
-      color: #d8b4fe;
-      font-size: 1.8rem;
-    }
-    
-    .departments-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    
-    .dept-card {
-      background: rgba(45, 27, 78, 0.4);
-      backdrop-filter: blur(20px);
-      padding: 1rem 2rem;
-      border-radius: 20px;
-      border: 1.5px solid rgba(168, 85, 247, 0.3);
-      color: #e9d5ff;
-      cursor: pointer;
-      font-weight: 600;
-      transition: all 0.3s;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .dept-card:hover {
-      background: rgba(147, 51, 234, 0.4);
-      transform: translateY(-3px);
-    }
-    
-    .dept-card.active {
-      border: 2px solid #a855f7;
-      background: rgba(147, 51, 234, 0.5);
-      box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-    }
-    
-    .software-section {
-      background: rgba(45, 27, 78, 0.3);
-      backdrop-filter: blur(30px);
-      border-radius: 30px;
-      padding: 2rem;
-      border: 1.5px solid rgba(168, 85, 247, 0.25);
-    }
-    
-    .software-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1.5rem;
-      margin-top: 1.5rem;
-    }
-    
-    .software-card {
-      background: rgba(45, 27, 78, 0.4);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      padding: 1.5rem;
-      border: 1.5px solid rgba(168, 85, 247, 0.3);
-      transition: all 0.3s;
-    }
-    
-    .software-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 15px 30px rgba(168, 85, 247, 0.25);
-      border-color: rgba(168, 85, 247, 0.5);
-    }
-    
-    .software-icon {
-      width: 60px;
-      height: 60px;
-      background: rgba(147, 51, 234, 0.5);
-      border-radius: 15px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      color: #e9d5ff;
-      margin-bottom: 1rem;
-      overflow: hidden;
-      border: 1px solid rgba(168, 85, 247, 0.4);
-    }
-    
-    .software-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .software-name {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #f3e8ff;
-      margin-bottom: 0.5rem;
-    }
-    
-    .software-version {
-      color: #c084fc;
-      font-size: 0.9rem;
-      margin-bottom: 1rem;
-    }
-    
-    .software-preview {
-      width: 100%;
-      height: 160px;
-      background: rgba(20, 10, 40, 0.5);
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 1rem 0;
-      overflow: hidden;
-      border: 1px solid rgba(168, 85, 247, 0.3);
-    }
-    
-    .software-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-    
-    .status-badge {
-      display: inline-block;
-      padding: 0.3rem 1rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin: 0.5rem 0;
-    }
-    
-    .status-active { background: rgba(16, 185, 129, 0.3); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .status-maintenance { background: rgba(245, 158, 11, 0.3); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .status-discontinued { background: rgba(239, 68, 68, 0.3); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .status-down { background: rgba(107, 114, 128, 0.3); color: #d1d5db; border: 1px solid rgba(107, 114, 128, 0.4); }
-    
-    .software-actions {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    
-    .software-actions .btn {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
-    }
-    
-    .icon-btn {
-      padding: 0.5rem;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    
     .modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.8);
-      backdrop-filter: blur(15px);
+      background: rgba(0,0,0,0.7);
       z-index: 999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    
-    .modal {
-      background: rgba(30, 15, 60, 0.95);
-      backdrop-filter: blur(30px);
-      padding: 2rem;
-      border-radius: 30px;
-      border: 1.5px solid rgba(168, 85, 247, 0.4);
-      max-width: 550px;
-      width: 90%;
-      max-height: 90vh;
-      overflow-y: auto;
-      color: #e9d5ff;
-    }
-    
-    .modal h3 {
-      color: #d8b4fe;
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
-    }
-    
     .input-group {
-      margin-bottom: 1.5rem;
+      margin-bottom: 15px;
     }
-    
     .input-group label {
       display: block;
-      margin-bottom: 0.5rem;
-      color: #c084fc;
-      font-weight: 600;
+      margin-bottom: 5px;
+      color: #333;
     }
-    
-    .input-group input,
-    .input-group select,
-    .input-group textarea {
+    .input-group input {
       width: 100%;
-      padding: 0.8rem;
-      border-radius: 15px;
-      border: 1.5px solid rgba(168, 85, 247, 0.4);
-      background: rgba(20, 10, 40, 0.6);
-      color: #e9d5ff;
-      font-size: 1rem;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
     }
-    
-    .input-group input:focus,
-    .input-group select:focus,
-    .input-group textarea:focus {
-      outline: none;
-      border-color: #a855f7;
-      box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
-    }
-    
-    .file-upload {
-      border: 2px dashed rgba(168, 85, 247, 0.5);
-      border-radius: 15px;
-      padding: 1.5rem;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s;
-    }
-    
-    .file-upload:hover {
-      border-color: #a855f7;
-      background: rgba(147, 51, 234, 0.2);
-    }
-    
-    .file-upload i {
-      font-size: 2rem;
-      color: #c084fc;
-      margin-bottom: 0.5rem;
-    }
-    
-    .hidden { display: none !important; }
-    
-    .empty-message {
-      text-align: center;
-      padding: 3rem;
-      color: #8b5cf6;
-      grid-column: 1 / -1;
-    }
-    
-    .delete-btn {
-      background: none;
-      border: none;
-      color: #ef4444;
-      cursor: pointer;
-      margin-left: 0.5rem;
-      font-size: 1.2rem;
-      padding: 0.2rem 0.5rem;
+    .software-card {
+      background: rgba(255,255,255,0.2);
+      padding: 20px;
       border-radius: 10px;
-      transition: all 0.3s;
+      margin: 10px 0;
     }
-    
-    .delete-btn:hover {
-      background: rgba(239, 68, 68, 0.2);
+    .hidden {
+      display: none !important;
     }
-    
-    .modal-actions {
-      display: flex;
-      gap: 1rem;
-      justify-content: flex-end;
-      margin-top: 1.5rem;
+    #status {
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
     }
-    
-    #iconPreview img, #previewImagePreview img {
-      margin-top: 10px;
-      border-radius: 10px;
-      border: 2px solid rgba(168, 85, 247, 0.4);
+    .success {
+      background: rgba(76, 175, 80, 0.3);
     }
-    
-    #iconPreview img {
-      width: 80px;
-      height: 80px;
-      object-fit: cover;
-    }
-    
-    #previewImagePreview img {
-      width: 100%;
-      max-height: 120px;
-      object-fit: cover;
+    .error {
+      background: rgba(244, 67, 54, 0.3);
     }
   </style>
 </head>
 <body>
 <div class="container">
   <div class="header">
-    <h1><i class="fas fa-cube"></i> SoftRepo · lzhenwei</h1>
-    <div class="auth-area">
-      <span id="userEmailDisplay">Gast</span>
-      <button class="btn btn-primary" id="loginBtn">Anmelden</button>
+    <h1>Software Hub Test</h1>
+    <div>
+      <span id="userStatus">Nicht angemeldet</span>
+      <button class="btn" id="loginBtn">Anmelden</button>
       <button class="btn hidden" id="logoutBtn">Abmelden</button>
     </div>
   </div>
 
-  <div class="departments-section">
-    <div class="section-header">
-      <h2><i class="fas fa-folder-tree"></i> Abteilungen</h2>
-      <button class="btn hidden" id="addDeptBtn"><i class="fas fa-plus"></i> Neue Abteilung</button>
-    </div>
-    <div class="departments-grid" id="departmentsContainer"></div>
+  <div id="status"></div>
+
+  <div>
+    <h2>Abteilungen</h2>
+    <button class="btn" id="addDeptBtn" disabled>Neue Abteilung</button>
+    <div id="departmentsList"></div>
   </div>
 
-  <div class="software-section">
-    <div class="section-header">
-      <h2 id="currentDeptTitle">Alle Software</h2>
-      <button class="btn hidden" id="addSoftwareBtn"><i class="fas fa-plus"></i> Software hinzufügen</button>
-    </div>
-    <div class="software-grid" id="softwareContainer">
-      <div class="empty-message"><i class="fas fa-spinner fa-spin"></i><br>Lade Software...</div>
-    </div>
-  </div>
-</div>
-
-<!-- Abteilung Modal -->
-<div class="modal-overlay hidden" id="deptModalOverlay">
-  <div class="modal">
-    <h3 id="deptModalTitle">Neue Abteilung</h3>
-    <div class="input-group">
-      <label>Name der Abteilung</label>
-      <input type="text" id="deptNameInput" placeholder="z.B. Entwicklung" autocomplete="off">
-    </div>
-    <div class="modal-actions">
-      <button class="btn" id="cancelDeptBtn">Abbrechen</button>
-      <button class="btn btn-primary" id="saveDeptBtn">Speichern</button>
-    </div>
-  </div>
-</div>
-
-<!-- Software Modal -->
-<div class="modal-overlay hidden" id="softwareModalOverlay">
-  <div class="modal">
-    <h3 id="softwareModalTitle">Software hinzufügen</h3>
-    
-    <div class="input-group">
-      <label>Name *</label>
-      <input type="text" id="swName" placeholder="Meine App" autocomplete="off">
-    </div>
-    
-    <div class="input-group">
-      <label>Version</label>
-      <input type="text" id="swVersion" placeholder="1.0.0" value="1.0.0" autocomplete="off">
-    </div>
-    
-    <div class="input-group">
-      <label>Download-Link (GitHub) *</label>
-      <input type="url" id="swLink" placeholder="https://github.com/.../app.dmg" autocomplete="off">
-    </div>
-    
-    <div class="input-group">
-      <label>Status</label>
-      <select id="swStatus">
-        <option value="active">🟢 Aktiv</option>
-        <option value="maintenance">🟡 Wartung</option>
-        <option value="discontinued">🔴 Eingestellt</option>
-        <option value="down">⚫ Down</option>
-      </select>
-    </div>
-    
-    <div class="input-group">
-      <label>Icon (optional)</label>
-      <div class="file-upload" id="iconUploadBtn">
-        <i class="fas fa-image"></i>
-        <p>Klick zum Hochladen</p>
-      </div>
-      <input type="file" id="iconFile" accept="image/*" style="display: none;">
-      <div id="iconPreview"></div>
-    </div>
-    
-    <div class="input-group">
-      <label>Vorschaubild (optional)</label>
-      <div class="file-upload" id="previewUploadBtn">
-        <i class="fas fa-image"></i>
-        <p>Klick zum Hochladen</p>
-      </div>
-      <input type="file" id="previewFile" accept="image/*" style="display: none;">
-      <div id="previewImagePreview"></div>
-    </div>
-    
-    <div class="input-group">
-      <label>Beschreibung</label>
-      <textarea id="swDescription" rows="3" placeholder="Beschreibung..."></textarea>
-    </div>
-    
-    <div class="modal-actions">
-      <button class="btn" id="cancelSwBtn">Abbrechen</button>
-      <button class="btn btn-primary" id="saveSwBtn">Speichern</button>
-    </div>
+  <div>
+    <h2>Software</h2>
+    <button class="btn" id="addSoftwareBtn" disabled>Neue Software</button>
+    <div id="softwareList"></div>
   </div>
 </div>
 
 <!-- Login Modal -->
-<div class="modal-overlay hidden" id="loginModalOverlay">
+<div class="modal-overlay hidden" id="loginModal">
   <div class="modal">
     <h3>Anmelden</h3>
     <div class="input-group">
       <label>E-Mail</label>
-      <input type="email" id="loginEmail" placeholder="deine@email.com" autocomplete="email">
+      <input type="email" id="email" placeholder="deine@email.com">
     </div>
     <div class="input-group">
       <label>Passwort</label>
-      <input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password">
+      <input type="password" id="password" placeholder="••••••••">
     </div>
-    <div id="loginError" style="color: #fca5a5; margin-bottom: 1rem;"></div>
-    <div class="modal-actions">
-      <button class="btn" id="cancelLoginBtn">Abbrechen</button>
-      <button class="btn btn-primary" id="submitLoginBtn">Anmelden</button>
+    <div id="loginError" style="color: red; margin-bottom: 10px;"></div>
+    <button class="btn" id="doLogin">Anmelden</button>
+    <button class="btn" id="cancelLogin">Abbrechen</button>
+  </div>
+</div>
+
+<!-- Software Modal -->
+<div class="modal-overlay hidden" id="softwareModal">
+  <div class="modal">
+    <h3>Software hinzufügen</h3>
+    <div class="input-group">
+      <label>Name *</label>
+      <input type="text" id="swName" placeholder="Meine App">
     </div>
+    <div class="input-group">
+      <label>Download-Link *</label>
+      <input type="text" id="swLink" placeholder="https://...">
+    </div>
+    <button class="btn" id="saveSoftware">Speichern</button>
+    <button class="btn" id="cancelSoftware">Abbrechen</button>
   </div>
 </div>
 
@@ -504,447 +157,211 @@
     appId: "1:115286936457:web:2f0d6be270bd4e3717ef58"
   };
 
+  console.log('🚀 Starte App...');
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
-  import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, serverTimestamp, updateDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
+  import { getFirestore, collection, addDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
   import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
-  import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-storage.js";
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-  const storage = getStorage(app);
-  
-  const ADMIN_EMAIL = 'lzhenwei.dev@gmail.com';
-  
-  let departments = [];
-  let software = [];
-  let currentUser = null;
-  let selectedDeptId = null;
-  let editingSwId = null;
-  let editingDeptId = null;
-  let iconFile = null;
-  let previewFile = null;
-  let existingIconUrl = null;
-  let existingPreviewUrl = null;
-
-  // UI Elements
-  const userEmailDisplay = document.getElementById('userEmailDisplay');
-  const loginBtn = document.getElementById('loginBtn');
-  const logoutBtn = document.getElementById('logoutBtn');
-  const addDeptBtn = document.getElementById('addDeptBtn');
-  const addSoftwareBtn = document.getElementById('addSoftwareBtn');
-  const departmentsContainer = document.getElementById('departmentsContainer');
-  const softwareContainer = document.getElementById('softwareContainer');
-  const currentDeptTitle = document.getElementById('currentDeptTitle');
-  
-  const deptModalOverlay = document.getElementById('deptModalOverlay');
-  const softwareModalOverlay = document.getElementById('softwareModalOverlay');
-  const loginModalOverlay = document.getElementById('loginModalOverlay');
-
-  function isAdmin() {
-    return currentUser && currentUser.email === ADMIN_EMAIL;
-  }
-
-  function escapeHtml(text) {
-    if (!text) return '';
-    return String(text).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'})[c]);
-  }
-
-  function formatDate(timestamp) {
-    if (!timestamp) return 'Neu';
-    const date = timestamp?.toDate ? timestamp.toDate() : new Date(timestamp);
-    return date.toLocaleDateString('de-DE');
-  }
-
-  // Auth Observer
-  onAuthStateChanged(auth, (user) => {
-    currentUser = user;
-    userEmailDisplay.textContent = user ? user.email : 'Gast';
-    loginBtn.classList.toggle('hidden', !!user);
-    logoutBtn.classList.toggle('hidden', !user);
+  try {
+    const app = initializeApp(firebaseConfig);
+    console.log('✅ Firebase initialisiert');
     
-    const admin = isAdmin();
-    addDeptBtn.classList.toggle('hidden', !admin);
-    addSoftwareBtn.classList.toggle('hidden', !admin);
+    const db = getFirestore(app);
+    console.log('✅ Firestore initialisiert');
     
-    loadData();
-  });
+    const auth = getAuth(app);
+    console.log('✅ Auth initialisiert');
 
-  // Daten laden
-  function loadData() {
-    // Departments
-    onSnapshot(collection(db, "departments"), (snapshot) => {
-      departments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderDepartments();
-    });
+    const ADMIN_EMAIL = 'lzhenwei.dev@gmail.com';
+    let currentUser = null;
 
-    // Software
-    onSnapshot(query(collection(db, "software"), orderBy("createdAt", "desc")), (snapshot) => {
-      software = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      renderSoftware();
-    });
-  }
+    // UI Elements
+    const userStatus = document.getElementById('userStatus');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const addDeptBtn = document.getElementById('addDeptBtn');
+    const addSoftwareBtn = document.getElementById('addSoftwareBtn');
+    const loginModal = document.getElementById('loginModal');
+    const softwareModal = document.getElementById('softwareModal');
+    const statusDiv = document.getElementById('status');
 
-  function renderDepartments() {
-    let html = '';
-    departments.forEach(dept => {
-      html += `<div class="dept-card ${selectedDeptId === dept.id ? 'active' : ''}" data-id="${dept.id}">
-        <i class="fas fa-folder"></i> ${escapeHtml(dept.name)}
-        ${isAdmin() ? `<button class="delete-btn delete-dept" data-id="${dept.id}"><i class="fas fa-trash"></i></button>` : ''}
-      </div>`;
-    });
-    html += `<div class="dept-card ${selectedDeptId === null ? 'active' : ''}" data-id="all">
-      <i class="fas fa-globe"></i> Alle Software
-    </div>`;
-    departmentsContainer.innerHTML = html;
-
-    document.querySelectorAll('.dept-card').forEach(card => {
-      card.addEventListener('click', (e) => {
-        if (e.target.closest('.delete-dept')) return;
-        const id = card.dataset.id;
-        selectedDeptId = id === 'all' ? null : id;
-        renderDepartments();
-        renderSoftware();
-      });
-    });
-
-    if (isAdmin()) {
-      document.querySelectorAll('.delete-dept').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.stopPropagation();
-          if (confirm('Abteilung und alle enthaltene Software löschen?')) {
-            // Lösche Software in dieser Abteilung
-            const swToDelete = software.filter(s => s.departmentId === btn.dataset.id);
-            for (const sw of swToDelete) {
-              await deleteDoc(doc(db, "software", sw.id));
-            }
-            await deleteDoc(doc(db, "departments", btn.dataset.id));
-            if (selectedDeptId === btn.dataset.id) selectedDeptId = null;
-          }
-        });
-      });
-    }
-  }
-
-  function renderSoftware() {
-    const filtered = selectedDeptId 
-      ? software.filter(s => s.departmentId === selectedDeptId)
-      : software;
-    
-    const deptName = selectedDeptId 
-      ? departments.find(d => d.id === selectedDeptId)?.name || 'Unbekannt'
-      : 'Alle Software';
-    currentDeptTitle.textContent = deptName;
-
-    if (filtered.length === 0) {
-      softwareContainer.innerHTML = '<div class="empty-message"><i class="fas fa-box-open"></i><br>Keine Software vorhanden</div>';
-      return;
+    function showStatus(message, isError = false) {
+      statusDiv.innerHTML = message;
+      statusDiv.className = isError ? 'error' : 'success';
+      setTimeout(() => statusDiv.innerHTML = '', 3000);
     }
 
-    let html = '';
-    filtered.forEach(sw => {
-      const statusClass = `status-${sw.status || 'active'}`;
-      const statusText = { active: 'Aktiv', maintenance: 'Wartung', discontinued: 'Eingestellt', down: 'Down' }[sw.status] || 'Aktiv';
-
-      html += `<div class="software-card">
-        <div class="software-icon">
-          ${sw.iconUrl ? `<img src="${escapeHtml(sw.iconUrl)}" alt="Icon">` : '<i class="fas fa-cube"></i>'}
-        </div>
-        <div class="software-name">${escapeHtml(sw.name)}</div>
-        <div class="software-version"><i class="fas fa-code-branch"></i> v${escapeHtml(sw.version || '1.0.0')}</div>
+    // Auth Observer
+    onAuthStateChanged(auth, (user) => {
+      console.log('👤 Auth State:', user?.email);
+      currentUser = user;
+      
+      if (user) {
+        userStatus.textContent = `Angemeldet als: ${user.email}`;
+        loginBtn.classList.add('hidden');
+        logoutBtn.classList.remove('hidden');
         
-        <div class="software-preview">
-          ${sw.previewUrl ? `<img src="${escapeHtml(sw.previewUrl)}" alt="Preview">` : '<i class="fas fa-image fa-2x" style="color: #8b5cf6;"></i>'}
-        </div>
+        const isAdmin = user.email === ADMIN_EMAIL;
+        addDeptBtn.disabled = !isAdmin;
+        addSoftwareBtn.disabled = !isAdmin;
         
-        ${sw.description ? `<p style="color: #cbd5e1; margin: 0.5rem 0; font-size: 0.9rem;">${escapeHtml(sw.description)}</p>` : ''}
-        
-        <span class="status-badge ${statusClass}">${statusText}</span>
-        <div style="color: #a78bfa; font-size: 0.8rem; margin: 0.5rem 0;">
-          <i class="far fa-calendar"></i> Erstellt: ${formatDate(sw.createdAt)}
-        </div>
-        
-        <div class="software-actions">
-          <a href="${escapeHtml(sw.url)}" class="btn btn-primary" download style="flex: 1; text-align: center; text-decoration: none;">
-            <i class="fas fa-download"></i> Download
-          </a>
-          ${isAdmin() ? `
-            <button class="btn icon-btn edit-sw" data-id="${sw.id}"><i class="fas fa-edit"></i></button>
-            <button class="btn icon-btn delete-sw" data-id="${sw.id}"><i class="fas fa-trash"></i></button>
-          ` : ''}
-        </div>
-      </div>`;
-    });
-    softwareContainer.innerHTML = html;
-
-    if (isAdmin()) {
-      document.querySelectorAll('.edit-sw').forEach(btn => {
-        btn.addEventListener('click', () => openSoftwareModal(btn.dataset.id));
-      });
-      document.querySelectorAll('.delete-sw').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          if (confirm('Software löschen?')) {
-            const sw = software.find(s => s.id === btn.dataset.id);
-            // Lösche Bilder aus Storage
-            if (sw?.iconUrl) {
-              try { 
-                const iconRef = ref(storage, sw.iconUrl);
-                await deleteObject(iconRef);
-              } catch(e) {}
-            }
-            if (sw?.previewUrl) {
-              try { 
-                const previewRef = ref(storage, sw.previewUrl);
-                await deleteObject(previewRef);
-              } catch(e) {}
-            }
-            await deleteDoc(doc(db, "software", btn.dataset.id));
-          }
-        });
-      });
-    }
-  }
-
-  // Modal Funktionen
-  function openDeptModal(deptId = null) {
-    editingDeptId = deptId;
-    const dept = deptId ? departments.find(d => d.id === deptId) : null;
-    document.getElementById('deptNameInput').value = dept?.name || '';
-    document.getElementById('deptModalTitle').textContent = deptId ? 'Abteilung bearbeiten' : 'Neue Abteilung';
-    deptModalOverlay.classList.remove('hidden');
-  }
-
-  function openSoftwareModal(swId = null) {
-    if (!isAdmin()) return;
-    
-    editingSwId = swId;
-    
-    // Reset
-    document.getElementById('swName').value = '';
-    document.getElementById('swVersion').value = '1.0.0';
-    document.getElementById('swLink').value = '';
-    document.getElementById('swStatus').value = 'active';
-    document.getElementById('swDescription').value = '';
-    document.getElementById('iconPreview').innerHTML = '';
-    document.getElementById('previewImagePreview').innerHTML = '';
-    iconFile = null;
-    previewFile = null;
-    existingIconUrl = null;
-    existingPreviewUrl = null;
-    
-    if (swId) {
-      const sw = software.find(s => s.id === swId);
-      if (sw) {
-        document.getElementById('swName').value = sw.name || '';
-        document.getElementById('swVersion').value = sw.version || '1.0.0';
-        document.getElementById('swLink').value = sw.url || '';
-        document.getElementById('swStatus').value = sw.status || 'active';
-        document.getElementById('swDescription').value = sw.description || '';
-        existingIconUrl = sw.iconUrl;
-        existingPreviewUrl = sw.previewUrl;
-        
-        if (sw.iconUrl) {
-          document.getElementById('iconPreview').innerHTML = `<img src="${sw.iconUrl}" style="width: 80px; height: 80px; object-fit: cover;">`;
-        }
-        if (sw.previewUrl) {
-          document.getElementById('previewImagePreview').innerHTML = `<img src="${sw.previewUrl}" style="width: 100%; max-height: 120px; object-fit: cover;">`;
-        }
-        document.getElementById('softwareModalTitle').textContent = 'Software bearbeiten';
-      }
-    } else {
-      document.getElementById('softwareModalTitle').textContent = 'Neue Software';
-    }
-    
-    softwareModalOverlay.classList.remove('hidden');
-  }
-
-  // Event Listener
-  loginBtn.addEventListener('click', () => loginModalOverlay.classList.remove('hidden'));
-  logoutBtn.addEventListener('click', () => signOut(auth));
-  
-  document.getElementById('cancelLoginBtn').addEventListener('click', () => {
-    loginModalOverlay.classList.add('hidden');
-    document.getElementById('loginError').textContent = '';
-  });
-  
-  document.getElementById('submitLoginBtn').addEventListener('click', async () => {
-    const email = document.getElementById('loginEmail').value.trim();
-    const password = document.getElementById('loginPassword').value;
-    
-    if (!email || !password) {
-      document.getElementById('loginError').textContent = 'Bitte E-Mail und Passwort eingeben';
-      return;
-    }
-    
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      loginModalOverlay.classList.add('hidden');
-      document.getElementById('loginEmail').value = '';
-      document.getElementById('loginPassword').value = '';
-      document.getElementById('loginError').textContent = '';
-    } catch (error) {
-      document.getElementById('loginError').textContent = 'Anmeldung fehlgeschlagen: ' + error.message;
-    }
-  });
-
-  // Abteilung Modal
-  addDeptBtn.addEventListener('click', () => openDeptModal(null));
-  document.getElementById('cancelDeptBtn').addEventListener('click', () => deptModalOverlay.classList.add('hidden'));
-  
-  document.getElementById('saveDeptBtn').addEventListener('click', async () => {
-    const name = document.getElementById('deptNameInput').value.trim();
-    if (!name) {
-      alert('Bitte einen Namen eingeben');
-      return;
-    }
-    
-    try {
-      if (editingDeptId) {
-        await updateDoc(doc(db, "departments", editingDeptId), { name });
+        showStatus(`✅ Angemeldet als ${user.email} ${isAdmin ? '(Admin)' : '(User)'}`);
       } else {
-        await addDoc(collection(db, "departments"), { name });
+        userStatus.textContent = 'Nicht angemeldet';
+        loginBtn.classList.remove('hidden');
+        logoutBtn.classList.add('hidden');
+        addDeptBtn.disabled = true;
+        addSoftwareBtn.disabled = true;
       }
-      deptModalOverlay.classList.add('hidden');
-    } catch (error) {
-      alert('Fehler: ' + error.message);
-    }
-  });
+      
+      loadData();
+    });
 
-  // Software Modal
-  addSoftwareBtn.addEventListener('click', () => {
-    if (departments.length === 0) {
-      alert('Bitte zuerst eine Abteilung erstellen!');
-      openDeptModal(null);
-      return;
-    }
-    openSoftwareModal(null);
-  });
-  
-  document.getElementById('cancelSwBtn').addEventListener('click', () => softwareModalOverlay.classList.add('hidden'));
-  
-  // File Uploads
-  document.getElementById('iconUploadBtn').addEventListener('click', () => document.getElementById('iconFile').click());
-  document.getElementById('iconFile').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      iconFile = file;
-      existingIconUrl = null;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('iconPreview').innerHTML = `<img src="${e.target.result}" style="width: 80px; height: 80px; object-fit: cover;">`;
-      };
-      reader.readAsDataURL(file);
-    }
-  });
+    // Daten laden
+    function loadData() {
+      console.log('📊 Lade Daten...');
+      
+      // Departments laden
+      const deptsRef = collection(db, "departments");
+      onSnapshot(deptsRef, (snapshot) => {
+        console.log(`📁 ${snapshot.docs.length} Abteilungen geladen`);
+        const deptsList = document.getElementById('departmentsList');
+        deptsList.innerHTML = snapshot.docs.map(doc => 
+          `<div>📁 ${doc.data().name}</div>`
+        ).join('') || '<div>Keine Abteilungen</div>';
+      });
 
-  document.getElementById('previewUploadBtn').addEventListener('click', () => document.getElementById('previewFile').click());
-  document.getElementById('previewFile').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      previewFile = file;
-      existingPreviewUrl = null;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        document.getElementById('previewImagePreview').innerHTML = `<img src="${e.target.result}" style="width: 100%; max-height: 120px; object-fit: cover;">`;
-      };
-      reader.readAsDataURL(file);
+      // Software laden
+      const softwareRef = collection(db, "software");
+      onSnapshot(softwareRef, (snapshot) => {
+        console.log(`💾 ${snapshot.docs.length} Software geladen`);
+        const swList = document.getElementById('softwareList');
+        swList.innerHTML = snapshot.docs.map(doc => {
+          const data = doc.data();
+          return `<div class="software-card">
+            <h3>${data.name}</h3>
+            <a href="${data.url}" target="_blank">Download</a>
+          </div>`;
+        }).join('') || '<div>Keine Software</div>';
+      });
     }
-  });
 
-  // Software speichern
-  document.getElementById('saveSwBtn').addEventListener('click', async () => {
-    const name = document.getElementById('swName').value.trim();
-    const version = document.getElementById('swVersion').value.trim() || '1.0.0';
-    const url = document.getElementById('swLink').value.trim();
-    const status = document.getElementById('swStatus').value;
-    const description = document.getElementById('swDescription').value.trim();
+    // Login
+    loginBtn.addEventListener('click', () => {
+      console.log('🔓 Login Modal öffnen');
+      loginModal.classList.remove('hidden');
+    });
 
-    if (!name) {
-      alert('Bitte einen Namen eingeben');
-      return;
-    }
+    document.getElementById('cancelLogin').addEventListener('click', () => {
+      loginModal.classList.add('hidden');
+    });
+
+    document.getElementById('doLogin').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      console.log('🔐 Login Versuch:', email);
+      
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        console.log('✅ Login erfolgreich');
+        loginModal.classList.add('hidden');
+        showStatus('✅ Login erfolgreich!');
+      } catch (error) {
+        console.error('❌ Login Fehler:', error);
+        document.getElementById('loginError').textContent = error.message;
+        showStatus(`❌ Login fehlgeschlagen: ${error.message}`, true);
+      }
+    });
+
+    // Logout
+    logoutBtn.addEventListener('click', async () => {
+      console.log('🚪 Logout');
+      await signOut(auth);
+      showStatus('👋 Abgemeldet');
+    });
+
+    // Software hinzufügen
+    addSoftwareBtn.addEventListener('click', () => {
+      console.log('➕ Software Modal öffnen');
+      if (!currentUser) {
+        showStatus('❌ Bitte zuerst anmelden!', true);
+        return;
+      }
+      softwareModal.classList.remove('hidden');
+    });
+
+    document.getElementById('cancelSoftware').addEventListener('click', () => {
+      softwareModal.classList.add('hidden');
+    });
+
+    document.getElementById('saveSoftware').addEventListener('click', async () => {
+      const name = document.getElementById('swName').value;
+      const url = document.getElementById('swLink').value;
+      
+      console.log('💾 Speichere Software:', { name, url });
+      
+      if (!name || !url) {
+        showStatus('❌ Name und Link sind erforderlich!', true);
+        return;
+      }
+
+      try {
+        // Erste Abteilung finden oder erstellen
+        const deptsSnapshot = await getDocs(collection(db, "departments"));
+        let deptId;
+        
+        if (deptsSnapshot.empty) {
+          console.log('📁 Erstelle erste Abteilung...');
+          const newDept = await addDoc(collection(db, "departments"), {
+            name: "Allgemein"
+          });
+          deptId = newDept.id;
+          console.log('✅ Abteilung erstellt:', deptId);
+        } else {
+          deptId = deptsSnapshot.docs[0].id;
+        }
+
+        // Software speichern
+        const softwareData = {
+          name: name,
+          url: url,
+          departmentId: deptId,
+          status: 'active',
+          version: '1.0.0',
+          createdAt: new Date().toISOString()
+        };
+
+        console.log('💾 Speichere in Firestore:', softwareData);
+        const docRef = await addDoc(collection(db, "software"), softwareData);
+        console.log('✅ Software gespeichert mit ID:', docRef.id);
+        
+        softwareModal.classList.add('hidden');
+        document.getElementById('swName').value = '';
+        document.getElementById('swLink').value = '';
+        showStatus('✅ Software erfolgreich hinzugefügt!');
+      } catch (error) {
+        console.error('❌ Fehler beim Speichern:', error);
+        showStatus(`❌ Fehler: ${error.message}`, true);
+      }
+    });
+
+    // Overlay schließen
+    loginModal.addEventListener('click', (e) => {
+      if (e.target === loginModal) loginModal.classList.add('hidden');
+    });
     
-    if (!url) {
-      alert('Bitte einen Download-Link eingeben');
-      return;
-    }
+    softwareModal.addEventListener('click', (e) => {
+      if (e.target === softwareModal) softwareModal.classList.add('hidden');
+    });
 
-    let targetDept = selectedDeptId;
-    if (!targetDept && departments.length > 0) {
-      targetDept = departments[0].id;
-    }
-    
-    if (!targetDept) {
-      alert('Bitte wähle eine Abteilung aus');
-      return;
-    }
+    console.log('✅ App vollständig geladen!');
 
-    try {
-      let iconUrl = existingIconUrl;
-      let previewUrl = existingPreviewUrl;
-
-      if (iconFile) {
-        const iconRef = ref(storage, `icons/${Date.now()}_${iconFile.name}`);
-        await uploadBytes(iconRef, iconFile);
-        iconUrl = await getDownloadURL(iconRef);
-      }
-
-      if (previewFile) {
-        const previewRef = ref(storage, `previews/${Date.now()}_${previewFile.name}`);
-        await uploadBytes(previewRef, previewFile);
-        previewUrl = await getDownloadURL(previewRef);
-      }
-
-      const softwareData = {
-        name,
-        version,
-        url,
-        status,
-        description,
-        departmentId: targetDept,
-        iconUrl,
-        previewUrl,
-        lastUpdated: serverTimestamp()
-      };
-
-      if (editingSwId) {
-        await updateDoc(doc(db, "software", editingSwId), softwareData);
-      } else {
-        softwareData.createdAt = serverTimestamp();
-        await addDoc(collection(db, "software"), softwareData);
-      }
-
-      softwareModalOverlay.classList.add('hidden');
-    } catch (error) {
-      console.error('Fehler:', error);
-      alert('Fehler beim Speichern: ' + error.message);
-    }
-  });
-
-  // Overlay Clicks
-  deptModalOverlay.addEventListener('click', (e) => {
-    if (e.target === deptModalOverlay) deptModalOverlay.classList.add('hidden');
-  });
-  
-  softwareModalOverlay.addEventListener('click', (e) => {
-    if (e.target === softwareModalOverlay) softwareModalOverlay.classList.add('hidden');
-  });
-  
-  loginModalOverlay.addEventListener('click', (e) => {
-    if (e.target === loginModalOverlay) {
-      loginModalOverlay.classList.add('hidden');
-      document.getElementById('loginError').textContent = '';
-    }
-  });
-
-  // Enter-Taste für Login
-  document.getElementById('loginPassword').addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-      document.getElementById('submitLoginBtn').click();
-    }
-  });
-
-  console.log('✅ Software Hub geladen - Bereit!');
+  } catch (error) {
+    console.error('❌ FATALER FEHLER:', error);
+    document.body.innerHTML = `<h1 style="color: red;">Fehler: ${error.message}</h1>`;
+  }
 </script>
 </body>
 </html>
