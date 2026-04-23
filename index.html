@@ -6,6 +6,7 @@
   <title>Software Hub · lzhenwei.dev</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
+    /* Alle Styles bleiben gleich wie in der vorherigen Version */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     
@@ -504,7 +505,6 @@
       Diese Software ist möglicherweise nicht mit deinem Betriebssystem kompatibel.
     </div>
     <div id="osMismatchInfo" style="margin: 1rem 0; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 12px;">
-      <!-- Dynamisch gefüllt -->
     </div>
     <div class="modal-actions">
       <button class="btn" id="cancelDownloadBtn">Abbrechen</button>
@@ -676,8 +676,8 @@
   }
   
   const detectedOS = detectOS();
-  const osNames = { windows: 'Windows', macos: 'macOS', linux: 'Linux', unknown: 'Unbekannt' };
-  const osIcons = { windows: 'fab fa-windows', macos: 'fab fa-apple', linux: 'fab fa-linux', unknown: 'fas fa-question' };
+  const osNames = { windows: 'Windows', macos: 'macOS', linux: 'Linux', unknown: 'Unbekannt', cross: 'Cross-Platform' };
+  const osIcons = { windows: 'fab fa-windows', macos: 'fab fa-apple', linux: 'fab fa-linux', unknown: 'fas fa-question', cross: 'fas fa-globe' };
   
   document.getElementById('osText').textContent = osNames[detectedOS];
   document.getElementById('detectedOsDisplay').innerHTML = `<i class="${osIcons[detectedOS]}"></i><span id="osText">${osNames[detectedOS]}</span>`;
@@ -735,9 +735,9 @@
     pendingDownload = null;
   });
   
-  forceDownloadBtn.addEventListener('click', async () => {
+  forceDownloadBtn.addEventListener('click', () => {
     if (pendingDownload) {
-      await executeDownload(pendingDownload.url, pendingDownload.filename, pendingDownload.id);
+      executeDownload(pendingDownload.url, pendingDownload.filename, pendingDownload.id);
     }
     osWarningModal.classList.add('hidden');
     pendingDownload = null;
@@ -849,28 +849,30 @@
     if (e.target === imageModal) imageModal.classList.add('hidden');
   });
 
+  // DIREKTER DOWNLOAD - KEIN FETCH!
   async function executeDownload(url, filename, swId) {
     try {
+      // Download-Zähler erhöhen
       await updateDoc(doc(db, "software", swId), {
         downloadCount: increment(1)
       });
       
-      const response = await fetch(url);
-      const blob = await response.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
+      // Direkter Download - öffnet den Link im Browser
       const a = document.createElement('a');
-      a.href = blobUrl;
+      a.href = url;
       a.download = filename || url.split('/').pop();
+      a.target = '_blank';
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      window.URL.revokeObjectURL(blobUrl);
     } catch (error) {
+      console.error('Download error:', error);
+      // Fallback: direkt öffnen
       window.open(url, '_blank');
     }
   }
 
-  async function handleDownload(url, filename, swId, softwareOS) {
+  function handleDownload(url, filename, swId, softwareOS) {
     if (!checkOSCompatibility(softwareOS)) {
       const osName = osNames[detectedOS] || 'dein';
       const softwareOSName = osNames[softwareOS] || softwareOS;
@@ -898,7 +900,7 @@
       return;
     }
     
-    await executeDownload(url, filename, swId);
+    executeDownload(url, filename, swId);
   }
 
   onAuthStateChanged(auth, (user) => {
@@ -1057,10 +1059,10 @@
     });
 
     document.querySelectorAll('.download-btn').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
+      btn.addEventListener('click', (e) => {
         e.preventDefault();
         const softwareOS = btn.dataset.os;
-        await handleDownload(btn.dataset.url, btn.dataset.filename, btn.dataset.id, softwareOS);
+        handleDownload(btn.dataset.url, btn.dataset.filename, btn.dataset.id, softwareOS);
       });
     });
 
@@ -1277,7 +1279,7 @@
     if (name) await addDoc(collection(db, "departments"), { name });
   });
 
-  console.log('✅ Software Hub mit OS-Erkennung ist bereit!');
+  console.log('✅ Software Hub mit direktem Download ist bereit!');
 </script>
 </body>
 </html>
